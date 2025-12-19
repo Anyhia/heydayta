@@ -1,0 +1,47 @@
+.App {
+  text-align: center;
+}
+
+
+/* Box sizing - the width and height of an element include its padding and border widths*/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set core root defaults - the browser will scroll smoothly to the element, rather than jumping to it abruptly.*/
+html:focus-within {
+    scroll-behavior: smooth;
+}
+  
+  
+  /* Set core body defaults */
+body {
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    margin-inline: auto;
+    width: 100%;
+    font-family: system-ui, sans-serif; 
+    font-size: 1rem;
+    background-color: black;
+}
+
+/* Inherit fonts for inputs and buttons */
+/* Specifying font: inherit; for these elements ensures consistency across all browsers. */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+li, ul[role="list"] {
+    list-style: none;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,193 @@
+/* small screens */
+
+.container.create-log-container {
+    padding: 0;
+    margin: 0.5rem auto;
+    padding-inline: 0.5rem;
+}
+
+.create-log-form-container {
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid var(--grey-bg-card);
+    border-left: 4px solid var(--clr-tactical);
+    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.create-log-form {
+    padding-block: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.new-entry-text {
+    width: auto;
+    align-self: flex-start;
+    background-color: var(--clr-tactical);
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-700);
+    border: 0.5px solid var(--clr-tactical);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    padding: 0.3rem;
+    color: var(--grey-bg-deep);
+}
+
+.create-log-form-select {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding-block: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-log-type {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+textarea.create-log-form-control::placeholder {
+    color: var(--grey-text-muted);
+    opacity: 1;
+}
+
+.create-log-form-container .form-control {
+    outline: none;
+    color: var(--grey-text-muted);
+}
+
+.create-log-form-container .form-control:focus {
+    background-color: var(--grey-bg-inner);
+    border-color: var(--grey-bg-inner);
+    box-shadow: 0 0 0 0.2rem rgba(31, 41, 51, 0.5);
+    outline: none;
+    color: var(--grey-text-muted);
+}
+
+.create-log-form-select .select-log-type:focus {
+    border-color: var(--grey-border);
+    box-shadow: 0 0 0 0.15rem rgba(31, 41, 51, 0.7);
+    outline: none;
+}
+
+/* Save button */
+.create-log-form-button.btn-primary,
+.create-log-form-button.btn-primary:active {
+    width: auto;
+    align-self: flex-start;
+    background-color: var(--clr-tactical);
+    border: 0.5px solid var(--clr-tactical);
+    border-radius: 0.5rem;
+    color: var(--grey-bg-deep);
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-700);
+    padding: 0.3rem 0.9rem;
+    text-align: center;
+}
+
+.create-log-form-button.btn-primary:hover,
+.create-log-form-button.btn-primary:focus {
+    width: auto;
+    align-self: flex-start;
+    background-color: var(--clr-tactical-hover);
+    border: 0.5px solid var(--clr-tactical-hover);
+    border-radius: 0.5rem;
+    color: var(--grey-bg-deep);
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-700);
+    padding: 0.3rem 0.9rem;
+    text-align: center;
+}
+
+/* Logs filter buttons */
+.container.show-logs {
+    padding: 0;
+}
+
+.logs-buttons.btn-primary {
+    background-color: var(--grey-bg-inner);
+    border: 0.5px solid var(--grey-bg-inner);
+    color: var(--grey-text-muted);
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-700);
+    border-radius: 1rem;
+}
+
+.logs-buttons-active.btn-primary {
+    background-color: var(--clr-lcars-purple);
+    color: var(--grey-bg-deep);
+    border: 0.5px solid var(--clr-lcars-purple);
+}
+
+.btn.logs-buttons.btn-primary:active,
+.btn.logs-buttons.btn-primary:hover {
+    border: 0.5px solid var(--clr-lcars-purple-hover);
+    background-color: var(--clr-lcars-purple-hover);
+    color: var(--grey-bg-deep);
+}
+.btn.logs-buttons-active.btn-primary:hover,
+.btn.logs-buttons-active.btn-primary:active {
+    background-color: var(--clr-lcars-purple-hover);
+    color: var(--grey-bg-deep);
+    border: 0.5px solid var(--clr-lcars-purple-hover);
+}
+
+
+@media (min-width: 576px) {
+    .create-log-form {
+        padding: 1.25rem 1.5rem;
+    }
+    .new-entry-text {
+        font-size: var(--fs-small);
+        margin-bottom: 1rem;
+    }
+    .create-log-form-button.btn-primary {
+        font-size: var(--fs-small);
+        margin-top: 0.3rem;
+        padding: 0.3rem;
+        padding-inline: 0.9rem;
+    }
+    .create-log-form-button.btn-primary:hover,
+    .create-log-form-button.btn-primary:focus {
+        background-color: var(--clr-tactical-hover);
+        border: 0.5px solid var(--clr-tactical-hover);
+        font-size: var(--fs-small);
+        margin-top: 0.3rem;
+        padding: 0.3rem;
+        padding-inline: 0.9rem;
+    }
+    .container.show-logs {
+        margin-top: 1.5rem;
+    }
+    .logs-buttons.btn-primary {
+        padding: 0.5rem;
+        padding-inline: 0.7rem;
+        font-size: var(--fs-mobilesmall);
+        font-weight: var(--fw-700);
+    }
+}
+
+@media (min-width: 768px) {
+    .create-log-form {
+        padding-inline: 1.5rem;
+        padding-block: 1rem;
+    }
+}
+
+/* Large screens*/
+@media (min-width: 992px) {
+    .container.create-log-container {
+        max-width: 55%;
+        margin: 0 auto;
+    }
+    .new-entry-text {
+        font-size: var(--fs-small);
+        font-weight: var(--fw-600);
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.3rem;
+    }
+}

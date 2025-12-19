@@ -1,0 +1,102 @@
+.tag {
+    text-transform: uppercase;
+    margin-block: 0.5rem;
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-700);
+    color: var(--clr-gold);
+}
+
+textarea.form-control.create-log-form-control {
+    background-color: var(--grey-bg-inner);
+    color: var(--grey-text-muted);
+    border-color: var(--grey-bg-inner);
+}
+/* .create-log-form-control .form-control {
+    outline: none;
+    color: var(--grey-text-muted);
+} */
+
+/* textarea.form-control.create-log-form-control:focus::placeholder {
+    color: var(--grey-text-muted);
+    opacity: 1;
+} */
+
+textarea.form-control.create-log-form-control:focus {
+    background-color: var(--grey-bg-inner);
+    border-color: var(--grey-bg-inner);
+    box-shadow: 0 0 0 0.2rem rgba(31, 41, 51, 0.5);
+    outline: none;
+    color: var(--grey-text-muted);
+}
+
+.container.show-logs {
+    margin-top: 1rem;
+}
+
+.container.show-logs-container, ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+.log-card-container {
+    padding: 0.5rem;
+    padding-left: 1.5rem;
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid var(--grey-bg-card);
+    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.log-card-journal{
+    border-left: 4px solid var(--clr-gold);
+}
+
+.log-card-reminder {
+    border-left: 4px solid var(--clr-lcars-purple);
+}
+
+.date-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    color: var(--grey-bg-card);
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid var(--grey-bg-card);
+}
+
+button.btn.edit-button.btn-primary {
+    background-color: var(--grey-bg-card);
+    color: var(--clr-lcars-blue);
+    border: 0.5px solid var(--grey-bg-card);
+    font-size: var(--fs-small);
+}
+
+button.btn.edit-button.btn-primary:hover {
+    color: var(--clr-lcars-blue-hover);
+    border: 0.5px solid var(--grey-bg-card);
+
+}
+
+button.btn.delete.btn-primary:hover {
+    color: var(--clr-alert);
+    border: 0.5px solid var(--grey-bg-card);
+
+}
+
+
+.date {
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-300);
+    color: var(--clr-tactical);
+}
+
+.entry-text {
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-500);
+    color: var(--grey-text-light);
+}
+
+.list {
+    margin: 0px;
+    padding: 0px;
+}

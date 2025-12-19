@@ -1,0 +1,15 @@
+django
+djangorestframework
+django_cors_headers
+celery
+# because the email notifications are not sent on a predefined schedule, no need for django-celery-beat
+# django-celery-beat is for repeating/periodic tasks 
+django-celery-beat
+python-dotenv
+psycopg
+djangorestframework-simplejwt
+django-allauth
+pgvector
+openai
+dateparser
+

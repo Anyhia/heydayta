@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from datetime import timedelta
 
+import dj_database_url
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -106,6 +108,8 @@ WSGI_APPLICATION = 'CS50w_final_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
+    # Default database settings for local development.
+    # These values come from your local .env file and point to your own Postgres instance.
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME'),
@@ -115,6 +119,16 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# On Heroku, the Postgres add-on exposes the connection string in the DATABASE_URL
+# environment variable. When this variable is present, override the local settings
+# above and use the Heroku database instead.
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    # dj_database_url.parse turns the URL string into the dict format that Django expects
+    # for DATABASES['default']. conn_max_age enables persistent connections, and
+    # ssl_require=True makes sure the connection to Heroku Postgres uses SSL.
+    DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
 
 
 # Password validation

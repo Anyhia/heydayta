@@ -17,4 +17,6 @@ google-auth-oauthlib
 cryptography
 requests
 Pillow
+dj-database-url
+gunicorn
 

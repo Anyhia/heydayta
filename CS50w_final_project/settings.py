@@ -35,10 +35,13 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # OpenAI API
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+HEROKU_APP_HOST = os.getenv("HEROKU_APP_HOST")  # e.g. "heydayta-12345e6789ab.herokuapp.com"
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+if HEROKU_APP_HOST:
+    ALLOWED_HOSTS.append(HEROKU_APP_HOST)
+    ALLOWED_HOSTS.append(".herokuapp.com")
 
 
 # Application definition
@@ -51,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'django_celery_beat',
     'allauth',
     'allauth.account',
@@ -73,6 +77,7 @@ AUTHENTICATION_BACKENDS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -167,7 +172,10 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

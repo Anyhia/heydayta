@@ -12,4 +12,9 @@ django-allauth
 pgvector
 openai
 dateparser
+google-auth
+google-auth-oauthlib
+cryptography
+requests
+Pillow
 

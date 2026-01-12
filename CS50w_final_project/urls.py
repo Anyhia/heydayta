@@ -3,7 +3,7 @@ URL configuration for CS50w_final_project project.
 
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework_simplejwt.views import TokenRefreshView
 from apps.accounts.views import CustomTokenObtainPairView, CustomTokenRefreshView
 
@@ -12,6 +12,7 @@ from django.conf import settings
 import os
 
 from django.views.static import serve
+
 
 
 urlpatterns = [
@@ -29,8 +30,8 @@ urlpatterns = [
     path('logo512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'logo512.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
 
-    # Serve React app for all other routes
-    path('', TemplateView.as_view(
+    # Serve React app for all other routes (catch-all for React Router)
+    re_path(r'^.*$', TemplateView.as_view(
         template_name='index.html',
         extra_context={'STATIC_URL': settings.STATIC_URL}
     )),

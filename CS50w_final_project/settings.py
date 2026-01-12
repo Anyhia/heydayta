@@ -174,7 +174,7 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'frontend' / 'build' / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'frontend' / 'build']
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

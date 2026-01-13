@@ -204,7 +204,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
-
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -218,6 +218,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # it allows React to communicate with Django
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://heydayta-590c2392dfd2.herokuapp.com",
 
 ]
 CORS_ALLOW_CREDENTIALS = True

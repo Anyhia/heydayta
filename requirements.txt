@@ -19,4 +19,4 @@ requests
 Pillow
 dj-database-url
 gunicorn
-whitenoise
+whitenoise==6.11.0

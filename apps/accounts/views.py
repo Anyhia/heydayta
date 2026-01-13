@@ -51,7 +51,7 @@ class GoogleLoginAPIView(APIView):
                     password=None, # Unusable value
                 )
                 user.set_unusable_password() # For Google authentication, nobody can log in with a password (only with Google).
-                user.save
+                user.save()
                 created = True
 
             # Prepare data for frontend
@@ -60,12 +60,25 @@ class GoogleLoginAPIView(APIView):
             refresh = RefreshToken.for_user(user)
             access = str(refresh.access_token)
 
-            return Response({
-                'access':access, # Already a string
-                'refresh':str(refresh), # Convert to string
-                'username':serializer.data['username'],
-                'created':created,
+            # Create response with access token and username only
+            response = Response({
+                'access': access,
+                'username': serializer.data['username'],
+                'created': created,
             })
+
+            # Store refresh token in httpOnly cookie (same as regular login)
+            response.set_cookie(
+                key='refresh_token',
+                value=str(refresh),
+                max_age=60*60*24*7,  # 7 days
+                httponly=True,
+                secure=False,  # Set to True in production with HTTPS
+                samesite='Lax',
+                path='/'
+            )
+
+            return response
 
         except ValueError:
             return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)

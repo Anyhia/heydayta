@@ -12,12 +12,6 @@ def create_embedding(log):
     )
     return response.data[0].embedding
 
-# def get_reminder_time(log):
-#     reminder_time = dateparser.parse(log)
-#     if not reminder_time:
-#         raise ValueError("Could not parse reminder time from input!")
-#     return reminder_time
-
 def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     """
     Extract reminder datetime from log text using OpenAI.
@@ -30,7 +24,7 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     Returns:
         datetime object in UTC, or None if extraction failed
     """
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone as dt_timezone
     from django.utils import timezone
     
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
@@ -71,15 +65,14 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         offset = timedelta(minutes=timezone_offset_minutes)
         reminder_dt_utc_naive = reminder_dt_naive - offset
         
-        # Make it timezone-aware in UTC
-        reminder_dt_utc = timezone.make_aware(reminder_dt_utc_naive, timezone.utc)
+        # Make it timezone-aware in UTC (use dt_timezone.utc, not timezone.utc)
+        reminder_dt_utc = timezone.make_aware(reminder_dt_utc_naive, dt_timezone.utc)
         
         return reminder_dt_utc
         
     except (ValueError, AttributeError) as e:
         print(f"Error parsing datetime from OpenAI: {result}, error: {e}")
         return None
-
 
 
 def get_answer(context):

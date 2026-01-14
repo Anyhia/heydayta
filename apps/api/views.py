@@ -78,40 +78,47 @@ class LogViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post']) 
     def ask_question(self, request):
-        # Get the question from user and embedd it
-        question=request.data['question']
-        question_embedding=create_embedding(question)
+        # Get the question from user and embed it
+        question = request.data['question']
+        question_embedding = create_embedding(question)
         if question_embedding is None:
             return Response(
                 {'error': 'Embedding creation failed. Please check your OpenAI quota and API key.'}, 
                 status=status.HTTP_400_BAD_REQUEST)
-        # Get the date from the question
-        local_date=int(request.data.get('localDate', 0)) # localDate in minutes (ex. -60)
-        UTC = timezone.now() # current UTC date and time
-        question_date = UTC - timedelta(minutes=local_date) # user’s local datetime
+        
+        # Get the timezone offset from the request
+        timezone_offset_minutes = int(request.data.get('localDate', 0))  # e.g., -60 for CET
+        UTC = timezone.now()  # current UTC date and time
+        question_date = UTC - timedelta(minutes=timezone_offset_minutes)  # user's local datetime
 
         # If the date is naive, add timezone
         if timezone.is_naive(question_date):
-            question_date = timezone.make_aware(question_date, timezone.utc) # Adds +00:00 to the hour
-
-        closest_matches = None
+            question_date = timezone.make_aware(question_date, timezone.utc)
 
         # Compare the question embedding with the embeddings from the user
         closest_matches = Log.objects.filter(
             user=request.user
-            ).order_by(
-                L2Distance('embedding', question_embedding)
-            )
+        ).order_by(
+            L2Distance('embedding', question_embedding)
+        )
+        
         print("Closest matches", closest_matches)
         if not closest_matches.exists():
             return Response(
-            {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
-            status=status.HTTP_400_BAD_REQUEST)
-      
-        # Instead of passing a query set to the context, make it plain text
+                {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
+                status=status.HTTP_400_BAD_REQUEST)
+    
+        # Convert query set to plain text with local timestamps
         log_data = []
+        user_tz_offset = timedelta(minutes=timezone_offset_minutes)
         for log in closest_matches:
-            log_data.append(f"{log.created_at}: {log.entry}")
+            # Convert UTC to user's local time
+            local_time = log.created_at - user_tz_offset
+            
+            # Format in a friendly way
+            date_str = local_time.strftime('%Y-%m-%d at %H:%M')
+            log_data.append(f"{date_str}: {log.entry}")
+        
         logs_text = "\n".join(log_data)
         context = {
             'question': question,
@@ -123,12 +130,11 @@ class LogViewSet(viewsets.ModelViewSet):
             answer = get_answer(context)
             if answer is None:
                 return Response(
-                {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
-                status=status.HTTP_400_BAD_REQUEST)
-            return Response({'answer':answer})
+                    {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
+                    status=status.HTTP_400_BAD_REQUEST)
+            return Response({'answer': answer})
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 

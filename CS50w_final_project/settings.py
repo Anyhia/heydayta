@@ -228,6 +228,11 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
+# SSL config for Heroku Redis
+CELERY_BROKER_USE_SSL = {
+    'ssl_cert_reqs': None  # Heroku Redis uses self-signed certs
+}
+
 # Django EMAIL settings (production-ready)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")

@@ -56,16 +56,18 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         return None
     
     try:
-        # Parse the ISO string from OpenAI (naive datetime)
+        # Parse the ISO string from OpenAI (naive datetime in user's local time)
         reminder_dt_naive = datetime.fromisoformat(result.replace('Z', ''))
         
         # Convert from user's local time to UTC
-        # offset is negative for timezones ahead of UTC (e.g., -60 for CET = UTC+1)
-        # So to convert local to UTC: subtract the offset (which adds because it's negative)
+        # timezone_offset_minutes is NEGATIVE for timezones ahead of UTC
+        # e.g., CET = UTC+1 → offset = -60 minutes
+        # To convert local to UTC: ADD the offset (because it's negative, this subtracts 1 hour)
+        # Example: 6:52 PM CET + (-60 min) = 6:52 PM - 1 hour = 5:52 PM UTC ✅
         offset = timedelta(minutes=timezone_offset_minutes)
-        reminder_dt_utc_naive = reminder_dt_naive - offset
+        reminder_dt_utc_naive = reminder_dt_naive + offset  # CHANGED from - to +
         
-        # Make it timezone-aware in UTC (use dt_timezone.utc, not timezone.utc)
+        # Make it timezone-aware in UTC
         reminder_dt_utc = timezone.make_aware(reminder_dt_utc_naive, dt_timezone.utc)
         
         return reminder_dt_utc

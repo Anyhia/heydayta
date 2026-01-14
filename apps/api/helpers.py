@@ -89,6 +89,7 @@ def get_answer(context):
         "If you mention dates or times in your answer, rewrite them in a user friendly way (for example: 'on 2025‑12‑11 at 12:53') and never show timezone offsets or microseconds like '+00:00' or '.464844'."
         "Do not make any assumptions or use outside knowledge, usie only the information in the logs. "
         "Your answer should be friendly, concise, and only include information that directly answers the question. "
+        "Answer in the same language as the question."
     )
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo", # Cheaper and good for extracting date

@@ -30,15 +30,21 @@ class LogViewSet(viewsets.ModelViewSet):
             # Make a copy to work with a mutable object instead, and modify request.data without errors.
             data = request.data.copy()
             if(data.get('entry_type') == 'reminders'):
-                local_date=int(data.get('localDate', 0)) # localDate in minutes (ex. -60)
-                UTC = timezone.now() # current UTC date and time
-                local_date = UTC - timedelta(minutes=local_date) # user’s local datetime
-                result = get_reminder_time(data.get('entry'), local_date)
+                timezone_offset_minutes = int(data.get('localDate', 0))  # e.g., -60 for CET
+                UTC = timezone.now()
+                user_local_datetime = UTC - timedelta(minutes=timezone_offset_minutes)
+                
+                # Pass both the local datetime and the offset
+                result = get_reminder_time(
+                    data.get('entry'), 
+                    user_local_datetime,
+                    timezone_offset_minutes
+                )
+                
                 if result is None:
                     return Response({'error': 'Could not find a valid time to set your reminder. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
                 
-                data['reminder_time'] = result
-                
+                data['reminder_time'] = result  # result is already in UTC
                 data['entry_type'] = 'reminders'
             try:
                 #  Create the vector by passing the log text to the embedding function

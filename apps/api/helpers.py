@@ -18,33 +18,67 @@ def create_embedding(log):
 #         raise ValueError("Could not parse reminder time from input!")
 #     return reminder_time
 
-def get_reminder_time(log, date):
+def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
+    """
+    Extract reminder datetime from log text using OpenAI.
+    
+    Args:
+        log: The reminder text (e.g., "remind me in 2 minutes")
+        user_local_datetime: User's current local datetime (timezone-aware)
+        timezone_offset_minutes: User's timezone offset from UTC in minutes (e.g., -60 for CET)
+    
+    Returns:
+        datetime object in UTC, or None if extraction failed
+    """
+    from datetime import datetime, timedelta
+    from django.utils import timezone
+    
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    print(date)
+    
+    # Format the local datetime nicely for OpenAI
+    local_time_str = user_local_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    
     prompt = (
-        # Instructions
-        f"Today's date is {date}. "
-        "Please read the following text and extract the reminder date and time as an ISO 8601 datetime string. " 
-        "Interpret any relative time (for example, 'in two weeks', 'tomorrow morning', 'next month') relative to today's date. "
-        "Always choose a future datetime if the text allows it. " 
-        "Returned only the ISO string ( no extra words, labels, or punctuation etc.), " 
-        # Show the actual text for extraction, plug in the log(entry) and today's date
-        f"Text: '{log}'."
+        f"The current date and time is {local_time_str} (user's local time). "
+        "Read the following text and extract the reminder date and time. "
+        "Interpret any relative time (e.g., 'in two minutes', 'tomorrow at 3pm', 'next week') relative to the current time above. "
+        "Return ONLY the datetime in ISO 8601 format: YYYY-MM-DDTHH:MM:SS "
+        "(no timezone suffix, no extra text). "
+        f"Text: '{log}'"
     )
+    
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo", # Cheaper and good for extracting date
+        model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that extracts the date from the text."},
+            {"role": "system", "content": "You are a helpful assistant that extracts dates and times. Return only ISO 8601 datetime strings."},
             {"role": "user", "content": prompt}
         ],
         max_completion_tokens=50,
         temperature=0
     )
 
-    result = completion.choices[0].message.content
+    result = completion.choices[0].message.content.strip()
     if not result:
         return None
-    return result
+    
+    try:
+        # Parse the ISO string from OpenAI (naive datetime)
+        reminder_dt_naive = datetime.fromisoformat(result.replace('Z', ''))
+        
+        # Convert from user's local time to UTC
+        # offset is negative for timezones ahead of UTC (e.g., -60 for CET = UTC+1)
+        # So to convert local to UTC: subtract the offset (which adds because it's negative)
+        offset = timedelta(minutes=timezone_offset_minutes)
+        reminder_dt_utc_naive = reminder_dt_naive - offset
+        
+        # Make it timezone-aware in UTC
+        reminder_dt_utc = timezone.make_aware(reminder_dt_utc_naive, timezone.utc)
+        
+        return reminder_dt_utc
+        
+    except (ValueError, AttributeError) as e:
+        print(f"Error parsing datetime from OpenAI: {result}, error: {e}")
+        return None
 
 
 

@@ -15,4 +15,7 @@ def send_email_reminder(reminder_id):
         recipient_list=[log.user.email],
     )
 
+    log.status = 'sent'
+    log.save()
+
 

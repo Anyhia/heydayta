@@ -228,12 +228,11 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-# Django EMAIL settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # Print emails to the console
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' - If you want to actually send test emails to your real inbox
-# EMAIL_HOST = 'smtp.gmail.com'        # e.g., smtp.gmail.com, smtp.sendgrid.net
-# EMAIL_PORT = 587                            # usually 587 for TLS
-# EMAIL_HOST_USER = 'gabriela.maricari@gmail.com'   # your sending address
-# EMAIL_HOST_PASSWORD = 'your_password'       # the app or service password 
-# EMAIL_USE_TLS = True                        # most modern providers use TLS
-# DEFAULT_FROM_EMAIL = 'your_email@domain.com'# default “from” address 
+# Django EMAIL settings (production-ready)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)

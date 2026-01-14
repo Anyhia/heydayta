@@ -1,11 +1,23 @@
 import { Container, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faCalendar, faBrain, faLock} from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import Mascot from '../media/images/Mascot.png';
 import './About.css';
+import { useAuth } from './Auth/AuthProvider'; 
+import { useEffect } from 'react'; 
 
 function About() {
+    const { token, loading } = useAuth(); // Get token and loading state
+    const navigate = useNavigate();
+
+    // Redirect to createlog if user is already logged in
+    useEffect(() => {
+        if (!loading && token) {
+            navigate('/createlog');
+        }
+    }, [token, loading, navigate]);
+    
     return (
         <Container className='about-container'>
             <Container className='mascot-container'>

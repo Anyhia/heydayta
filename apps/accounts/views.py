@@ -118,16 +118,22 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
-        # Get refresh token from cookie instead of request body
+        # Get refresh token from httpOnly cookie instead of request body
         refresh_token = request.COOKIES.get('refresh_token')
         
         if refresh_token:
-            # Copy the data to make it mutable
-            data = request.data.copy()
-            data['refresh'] = refresh_token
-            # This tells DRF to use the custom request data (with the cookie-based refresh token) instead of the original
-            # This allows Simple JWT with httpOnly cookies, even though the frontend never sends the refresh token in the body
-            request._full_data = data
+            # Create a mutable copy of the request data
+            mutable_data = request.data.copy()
+            
+            # Add the refresh token from the cookie to the request data
+            mutable_data['refresh'] = refresh_token
+            
+            # Update the underlying Django request POST data
+            # This is the source of truth that Django REST Framework reads from
+            # Setting request._request.POST ensures SimpleJWT can find the token
+            request._request.POST = mutable_data
+        
+        # Call the parent class method to process the token refresh
         return super().post(request, *args, **kwargs)
     
 

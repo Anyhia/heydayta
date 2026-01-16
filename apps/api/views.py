@@ -61,11 +61,11 @@ class LogViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             # Get the saved log instance, to access the id and the reminder_time  
             log=serializer.save(user=request.user)
-            if log.entry_type == 'reminders' and log.reminder_time:
+            if log.entry_type == 'reminders' and log.reminder_time and log.status != 'sent':
                 try: 
                     reminder_id = log.id
                     reminder_time = log.reminder_time
-                    # Schedule the task, add the id of the log as an argument
+                    # Schedule the task only if status is NOT 'sent'
                     send_email_reminder.apply_async(
                         args=[reminder_id],
                         eta=reminder_time

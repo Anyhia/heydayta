@@ -82,7 +82,7 @@ class GoogleLoginAPIView(APIView):
                 value=str(refresh),
                 max_age=60*60*24*7,  # 7 days
                 httponly=True,
-                secure=False,  # Set to True in production with HTTPS
+                secure=not os.getenv('DEBUG', 'False') == 'True',
                 samesite='Lax',
                 path='/'
             )

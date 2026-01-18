@@ -3,6 +3,7 @@ from rest_framework import generics
 from .serializers import UserSerializer
 from .models import User
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from django.http import JsonResponse
@@ -12,6 +13,8 @@ from rest_framework import status
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.contrib.auth import get_user_model
+
+
 import os
 
 
@@ -122,26 +125,28 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             
         return response
 
+# CUSTOM SERIALIZER: Reads refresh token from cookie instead of request body
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    
+    # Tell Django: "Don't expect 'refresh' in the request body"
+    refresh = None
+    
+    # This method runs when Django checks if the refresh token is valid
+    def validate(self, attrs):
+        # attrs = data that will be validated (currently empty because body is empty)
+        
+        # Get the refresh token from the cookie (not from body)
+        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
+        
+        # Now check if this token is valid and generate a new access token
+        return super().validate(attrs)
 
+
+# CUSTOM VIEW: Uses our custom serializer that reads from cookies
 class CustomTokenRefreshView(TokenRefreshView):
-    def post(self, request, *args, **kwargs):
-        # Get refresh token from httpOnly cookie instead of request body
-        refresh_token = request.COOKIES.get('refresh_token')
-        
-        if refresh_token:
-            # Create a mutable copy of the request data
-            mutable_data = request.data.copy()
-            
-            # Add the refresh token from the cookie to the request data
-            mutable_data['refresh'] = refresh_token
-            
-            # Update the underlying Django request POST data
-            # This is the source of truth that Django REST Framework reads from
-            # Setting request._request.POST ensures SimpleJWT can find the token
-            request._request.POST = mutable_data
-        
-        # Call the parent class method to process the token refresh
-        return super().post(request, *args, **kwargs)
+    # Use CookieTokenRefreshSerializer instead of the default one
+    serializer_class = CookieTokenRefreshSerializer
+
     
 
 class LogoutAPIView(APIView):

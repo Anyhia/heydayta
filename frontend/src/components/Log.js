@@ -34,6 +34,9 @@ function CreateLog() {
         .then((response) => {
             setLogs(response.data);
         })
+        .catch((error) => {
+            console.error('Failed to fetch logs:', error);
+        });
     }
 
     const filteredLogs = logs.filter(

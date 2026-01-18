@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { useState, useEffect, createContext, useContext, useCallback } from 'react';
 import api from '../../api';
 
 //  Create context for token
@@ -43,7 +43,7 @@ function AuthProvider({ children }) {
             throw error;
         }
     }
-    const logout = async  () => {
+    const logout = useCallback(async () => {
         try {
             await api.post('/accounts/logout/');
         } catch (error) {
@@ -51,7 +51,8 @@ function AuthProvider({ children }) {
         } finally {
             setToken(null);
             setUsername(null);
-        }};
+        }
+    }, []);
     
     return (
     // AuthContext.Provider delivers the values to the rest of the app

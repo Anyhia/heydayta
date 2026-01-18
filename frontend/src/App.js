@@ -32,9 +32,9 @@ function App() {
       
       //  If error
       async (error) => {
-        if (error.config?.url === '/accounts/google/') {
-          return Promise.reject(error);  // Don't refresh token if Google login fails(creates a loop)
-        } 
+        if (error.config?.url?.includes('/accounts/google/')) {
+          return Promise.reject(error); // Don't refresh token if Google login fails(creates a loop)
+        }
 
         const originalRequest = error.config;
 
@@ -54,6 +54,7 @@ function App() {
           }catch (refreshError) {
             // Refresh failed - redirect to login
             setToken(null);
+            window.location.href = '/login'; // Force redirect
             return Promise.reject(refreshError);
           }
         }

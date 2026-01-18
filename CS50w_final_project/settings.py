@@ -32,10 +32,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY") 
 
+# Security settings for production
+SECURE_SSL_REDIRECT = not DEBUG  # Force HTTPS in production
+SESSION_COOKIE_SECURE = not DEBUG  # Secure session cookies
+CSRF_COOKIE_SECURE = not DEBUG  # Secure CSRF cookies
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+
 # OpenAI API
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = os.getenv('DEBUG', 'False') == 'True'  # False on Heroku, True locally
 
 HEROKU_APP_HOST = os.getenv("HEROKU_APP_HOST")  # e.g. "heydayta-12345e6789ab.herokuapp.com"
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]

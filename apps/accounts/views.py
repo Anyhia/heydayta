@@ -40,10 +40,12 @@ class GoogleLoginAPIView(APIView):
             )
             email=idinfo.get('email')
             username=idinfo.get('name')
+            print(f"✅ Google token verified for: {email}")
 
             try:
                 user=User.objects.get(email=email)
                 created = False # If the user exists, give a welcome back message or something
+                print(f"✅ Existing user found: {user.username}") 
             except User.DoesNotExist:
                 user = User.objects.create_user(
                     username=username,
@@ -53,6 +55,7 @@ class GoogleLoginAPIView(APIView):
                 user.set_unusable_password() # For Google authentication, nobody can log in with a password (only with Google).
                 user.save()
                 created = True
+                print(f"✅ New user created: {user.username}")
 
             # Prepare data for frontend
             serializer = UserSerializer(user)
@@ -60,12 +63,15 @@ class GoogleLoginAPIView(APIView):
             refresh = RefreshToken.for_user(user)
             access = str(refresh.access_token)
 
+            print(f"✅ JWT tokens generated")
+
             # Create response with access token and username only
             response = Response({
                 'access': access,
                 'username': serializer.data['username'],
                 'created': created,
             })
+            print(f"✅ Response object created, about to set cookie")
 
             # Store refresh token in httpOnly cookie (same as regular login)
             response.set_cookie(
@@ -77,10 +83,11 @@ class GoogleLoginAPIView(APIView):
                 samesite='Lax',
                 path='/'
             )
-
+            print(f"✅ Cookie set! Value: {str(refresh)[:20]}...")
             return response
 
         except ValueError:
+            print(f"❌ Google token verification failed")
             return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
 
         

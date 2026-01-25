@@ -33,6 +33,7 @@ function GoogleLoginButton() {
                         navigate('/createlog');
                         setError(null);
                     } catch(error) {
+                        setToken(null);
                         setError(error.response?.data?.error || 'Login failed. Please try again.');
                     }
                 }}

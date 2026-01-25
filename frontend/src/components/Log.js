@@ -159,6 +159,12 @@ function CreateLog() {
                     </Button>
                 </div>
                 {/* Pass the fetchLogs function, so everytime a log gets edited or deleted, refresh the logs */}
+                {filteredLogs.length === 0 && (
+                    <div className='empty-logs-message'>
+                        <p className='empty-logs-title'>No logs yet</p>
+                        <p className='empty-logs-subtitle'>Start your journey by creating your first entry above</p>
+                    </div>
+                )}
                 <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
             </Container>
         </Container>

@@ -135,6 +135,20 @@ textarea.create-log-form-control::placeholder {
     border: 0.5px solid var(--clr-lcars-purple-hover);
 }
 
+.empty-logs-message {
+    text-align: center;
+    margin-top: 3rem;
+    color: #888;
+}
+
+.empty-logs-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-logs-subtitle {
+    font-size: 0.9rem;
+}
 
 @media (min-width: 576px) {
     .create-log-form {

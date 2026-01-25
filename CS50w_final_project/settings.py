@@ -46,9 +46,6 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
 SECURE_HSTS_PRELOAD = not DEBUG
 
 
-
-
-
 HEROKU_APP_HOST = os.getenv("HEROKU_APP_HOST")  # e.g. "heydayta-12345e6789ab.herokuapp.com"
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 if HEROKU_APP_HOST:

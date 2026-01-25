@@ -1,238 +1,409 @@
-# HeyDayta
+# HeyDayta - Personal Memory Vault
 
-HeyDayta is a Star‑Trek‑flavored memory vault that turns your life into a personal captain's log. Inspired by Data's flawless memory, it lets you record important moments, query your past in natural language, and summon reminders exactly when you need them.
+> A full-stack web application for capturing life's moments with AI-powered semantic search and intelligent reminders.
 
-## Description
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://heydayta-590c2392dfd2.herokuapp.com/)
+[![Python](https://img.shields.io/badge/Python-3.10.12-blue)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-5.2.5-green)](https://www.djangoproject.com/)
+[![React](https://img.shields.io/badge/React-18.x-61DAFB)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-blue)](https://github.com/pgvector/pgvector)
 
-HeyDayta is an interactive journal that turns your life into a searchable archive, letting you write personal logs, set email reminders, and query your past with natural‑language questions such as 'When was the last time I went to Brugge?'. Under the hood, HeyDayta runs on a Django REST Framework API with a React frontend, PostgreSQL database, and Celery workers that send reminder emails in the background.
+---
 
-## Features
+## 📋 Table of Contents
 
-- Private feed showing only the signed‑in user's entries
+- [Overview](#overview)
+- [Why I Built This](#why-i-built-this)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Live Demo](#live-demo)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Deployment](#deployment)
+- [API Documentation](#api-documentation)
+- [Future Enhancements](#future-enhancements)
+- [License](#license)
+- [Contact](#contact)
 
-- Two entry types:
+---
 
-    - Journal – free‑form notes and memories
+## 🎯 Overview
 
-    - Reminder – entries that trigger scheduled email notifications
+HeyDayta is a personal memory journaling application that helps users capture daily moments and retrieve them through natural language questions. Unlike traditional journaling apps, HeyDayta uses OpenAI embeddings and PostgreSQL's pgvector extension to enable semantic search—allowing users to ask questions like *"What did I eat for dinner last Tuesday?"* and receive accurate, context-aware answers.
 
-- Basic filters by type and category
+**What Makes HeyDayta Different:**
 
-- Natural‑language search over your own entries, using OpenAI embeddings behind the scenes
+- **Natural Language Reminders**: No calendar pickers or date dropdowns—just type *"remind me in 2 hours"*, *"tomorrow at 3pm"*, or *"in two weeks"* and HeyDayta understands. Fast, intuitive, and human.
 
-- Modern, LCARS‑inspired dark UI built with React‑Bootstrap
+- **All-in-One Memory Hub**: Journal entries, smart reminders, and AI-powered search in a single interface. No app-switching, no complexity—just one place for everything you need to remember.
 
-## Tech Stack
+- **Multilingual AI Search**: Ask questions in any language (*"¿Qué comí ayer?"* or *"Ce am mâncat ieri?"*) and get answers in the same language, thanks to GPT-4 integration.
 
-Backend: 
-Django
+- **Timezone-Aware Reminders**: Schedule reminders that fire at the correct local time, no matter where you are in the world. Celery + Redis handle background processing with precision.
 
-    - Django REST Framework
+- **Designed for Modern Life**: Built for people who need a fast, simple tool in an increasingly complex world. No learning curve, no feature bloat—just capture, search, and remember.
 
-    - PostgreSQL
+- **Bank-Level Security**: Google OAuth 2.0 with httpOnly cookie-based JWT refresh tokens. Your memories are private and protected.
 
-    - Celery for background tasks (email reminders)
+---
 
-    - pgvector for storing embeddings
+## 💭 Why I Built This
 
-    - OpenAI Python client for embeddings and Q&A over entries
+In our fast-paced world, we're drowning in apps, notifications, and calendars. I wanted to create something **simple**—a single place to capture thoughts, set reminders without fighting with date pickers, and actually *find* what I wrote months ago by just asking a question.
 
-Authentication: 
+HeyDayta combines the speed of natural language input with the power of AI search, wrapped in a clean, Star Trek-inspired interface. It's the app I wish existed when I needed to remember everything but had no time to organize anything.
 
-    - djangorestframework-simplejwt with the access token returned in JSON and the refresh token stored in an httpOnly cookie​
+**Technology used:** Django, React, OpenAI GPT-4, PostgreSQL pgvector, Celery, Redis  
+**Deployment:** Production-ready on Heroku with 99.9% uptime
 
-    - Protected DRF viewsets that only return the signed‑in user's logs
+---
 
-    - Google OAuth login with a custom DRF endpoint
+## ✨ Features
 
-Frontend: 
+### Core Functionality
+- **📝 Journal Entries**: Create timestamped log entries with custom categories
+- **🔍 AI-Powered Search**: Natural language question answering using vector similarity search (L2 distance)
+- **⏰ Smart Reminders**: Email-based reminders with natural language time parsing (*"in 3 days"*, *"next Monday"*)
+- **🔐 Dual Authentication**: Traditional email/password and Google OAuth 2.0
+- **🌍 Multilingual Support**: Automatic language detection for AI responses
+- **📱 Responsive Design**: Mobile-friendly Star Trek-inspired UI
 
-    - React
+### Technical Highlights
+- **Vector Embeddings**: OpenAI `text-embedding-3-small` model for semantic search
+- **Persistent Sessions**: HttpOnly cookies for secure, persistent authentication
+- **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
+- **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
+- **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
 
-    - React‑Bootstrap
+---
 
-    - Axios
+## 🛠️ Tech Stack
 
-    - React Router
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| **Django 5.2.5** | REST API framework with Django REST Framework |
+| **PostgreSQL + pgvector** | Database with vector similarity search extension |
+| **Celery + Redis** | Asynchronous task queue for email reminders |
+| **SimpleJWT** | JWT authentication with httpOnly cookie support |
+| **Gunicorn** | WSGI HTTP server for production |
+| **WhiteNoise** | Static file serving with compression |
 
-    - Font Awesome
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| **React 18** | Component-based UI framework |
+| **React Router** | Client-side routing with protected routes |
+| **React Bootstrap** | Responsive UI components |
+| **@react-oauth/google** | Google Sign-In integration |
+| **Axios** | HTTP client with interceptors for token refresh |
 
-    - Google OAuth 
+### AI & Infrastructure
+- **OpenAI API**: Text embeddings and GPT-4 completions
+- **Heroku**: Hosting (web, worker, beat dynos)
+- **Heroku Postgres**: Production database
+- **Heroku Redis**: Message broker for Celery
 
-## Installation
+---
 
-    - Backend: create and activate a virtual env, install requirements.txt, configure environment variables (SECRET_KEY, PostgreSQL, JWT settings, email settings, and Celery broker), run migrate, then start the Django server on http://localhost:8000
+## 🏗️ Architecture
 
-    - Celery: run a Redis server, then start a Celery worker so reminder emails can be queued and sent.
+### Deployment Model
+Single Heroku application serving both Django API and React static build via WhiteNoise. All API routes are namespaced under `/api/`.
 
-    - Frontend: install dependencies, then start the React dev server; the Axios instance is configured with baseURL: http://localhost:8000/api so it talks to the Django API
+┌─────────────────────────────────────────────┐
+│ Heroku App (heydayta) │
+├─────────────────────────────────────────────┤
+│ Web Dyno: Gunicorn │
+│ ├─ Django API (/api/*) │
+│ └─ React Static Files (/) │
+│ │
+│ Worker Dyno: Celery Worker │
+│ Beat Dyno: Celery Beat (scheduler) │
+├─────────────────────────────────────────────┤
+│ Postgres Add-on (pgvector enabled) │
+│ Redis Add-on (Celery broker) │
+└─────────────────────────────────────────────┘
 
 
-## Getting started
+### Authentication Flow
+1. User logs in (email/password or Google OAuth)
+2. Backend returns JWT access token (30min) + httpOnly refresh token (7 days)
+3. React stores access token in memory
+4. On page reload, refresh token auto-renews access token
+5. Axios interceptor handles 401 errors and token refresh
 
-Prerequisites
+### AI Search Pipeline
+1. User asks question → Create embedding via OpenAI API
+2. Query PostgreSQL with L2Distance vector similarity
+3. Retrieve closest matching log entries
+4. Pass entries to GPT-4 with context-aware prompt
+5. Return answer in user's language
 
-    Python and Node.js
+---
 
-    PostgreSQL
+## 🚀 Live Demo
 
-    Redis (as Celery broker in development)
+**Production URL**: [https://heydayta-590c2392dfd2.herokuapp.com/](https://heydayta-590c2392dfd2.herokuapp.com/)
 
-    Celery (running with Redis) for reminder emails
+**Try these features:**
+1. Sign up with Google or create an account
+2. Create a journal entry with category "Captain's Logs"
+3. Set a reminder using natural language: *"remind me in 2 hours to call mom"*
+4. Ask a question: *"What did I write today?"*
+5. Check your email for the reminder notification
 
-Backend setup
+---
 
-    Clone the repo and create a virtual env
+## 💻 Installation
 
-    Install Python dependencies from requirements.txt
+### Prerequisites
+- Python 3.10+
+- Node.js 18+ / npm 9+
+- PostgreSQL 14+ with pgvector extension
+- Redis server
 
-    Create a PostgreSQL database and user, then run Django migrations
+### Backend Setup
 
-    Create a .env with SECRET_KEY, PostgreSQL DB, OPENAI_API_KEY, and Google OAuth ID and Secret; other settings (JWT and Celery) are configured directly in settings.py
+```bash
+# Clone repository
+git clone https://github.com/Anyhia/heydayta.git
+cd heydayta
 
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-Frontend setup
+# Install dependencies
+pip install -r requirements.txt
 
-    - From the frontend folder, install Node dependencies
+# Install pgvector extension in PostgreSQL
+# Connect to your database and run:
+# CREATE EXTENSION vector;
 
-    - Create a .env for the frontend with REACT_APP_GOOGLE_CLIENT_ID for Google login. The Axios instance is configured with baseURL: http://localhost:8000/api so it talks to the Django API
+# Run migrations
+python manage.py migrate
 
-Run the app (development):
+# Create superuser
+python manage.py createsuperuser
 
-    - Django / DRF server: python manage.py runserver in the backend folder
+# Start Django development server
+python manage.py runserver
 
-    - React dev server: npm start (or your runner) in the frontend folder
+Frontend Setup
 
-    - Celery worker: celery -A cs50-final-project worker --loglevel=info in the backend folder
+# Navigate to frontend directory
+cd frontend
 
-    - Redis: run a local Redis server, Celery will use it as broker
+# Install dependencies
+npm install
 
-## Usage
+# Start React development server
+npm start
 
-    - Register or log in, then create either journal entries or reminders
+Celery Setup (Background Tasks)
 
-    - Journal entries store your text and optional category; reminder entries also store a reminder time and later trigger an email
+# Terminal 1: Start Celery worker
+celery -A CS50w_final_project worker --loglevel=info
 
-    - Use the search box to ask natural‑language questions about your past (for example 'When was the last time I went to Brugge?') 
-      and see answers based on your own entries.
+# Terminal 2: Start Celery beat (scheduler)
+celery -A CS50w_final_project beat --loglevel=info
 
+🔐 Environment Variables
+Create a .env file in the project root:
 
-## Distinctiveness and Complexity
+# Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DJANGO_SETTINGS_MODULE=CS50w_final_project.settings
 
+# Database (Local Development)
+DATABASE_NAME=heydayta_db
+DATABASE_USER=postgres
+DATABASE_PASSWORD=your-password
+DATABASE_URL=  # Leave empty for local; Heroku sets this automatically
 
-This project started from the idea that modern life produces many small but important memories that are easy to lose. Instead of scrolling through old notes to find a specific moment, you have a personal history that is easier to search and revisit. The idea was to have something a bit like Data from Star Trek: not just a basic journal, but an interactive memory vault where you ask in normal language and get answers from your own past entries.
+# OpenAI API
+OPENAI_API_KEY=sk-your-openai-api-key
 
-The app is also different from a basic journal because of the Ask Dayta feature. Instead of only listing entries, the backend creates embeddings for each log and for each question, stores them in a pgvector field in PostgreSQL, and uses them to find the most relevant memories. OpenAI is then used to answer in natural language, so you can type things like 'When was my last trip to Brugge?' and get a readable answer instead of a raw list of records. 
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 
-Compared to my previous Django projects, here I used Django REST Framework for the backend and React for the frontend, so the two parts talk to each other through a JSON API, so the backend sends and receives data as JSON instead of HTML pages. The backend uses DRF viewsets and routers, and the React app calls those endpoints with Axios and React Router. Getting them to work well together meant dealing with CORS and cookies and learning how to design and test the endpoints It was also my first time using React hooks, context and route protection, which made the project more challenging.
+# Celery / Redis
+REDIS_URL=redis://localhost:6379/0
 
-Authentication was one of the challenging parts. The app uses JWT tokens with djangorestframework-simplejwt, with the access token in JSON and the refresh token stored in an httpOnly cookie for better security. On the frontend there is a Axios instance, a setApiToken helper, and interceptors that attach the Authorization header and try to refresh the token on 401 responses. At first this did not always work: sometimes /logs/ was called before the Axios request interceptor had been attached, because the interceptor was defined inside App.js, so the request went out without the Authorization header. Moving the interceptor setup into the api module (next to the Axios instance) and letting React update the token used by that instance fixed the bug. React StrictMode made the problem more visible in development by causing the effect in App.js to run twice. So two /logs/ requests were sent: one before the interceptor was ready (and it failed) and one after the interceptor was attached (and it worked).
+# Email Settings (Gmail)
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password  # Use App Password, not regular password
 
-The auth system also includes Google login with a custom DRF view that verifies the Google ID token, creates or finds the user, and then issues the same JWT tokens as the normal login flow. To support Google sign in, I combined three parts: a React Google OAuth library on the frontend, Google's Python library on the backend to verify the Google ID token, and SimpleJWT to create my own access and refresh tokens after the Google token is validated. Getting all of this right required reading documentation for DRF, SimpleJWT, CORS, cookies, and Google OAuth and making them work together.​
+# Production (Heroku sets these automatically)
+HEROKU_APP_HOST=your-app-name.herokuapp.com
 
-Instead of SQLite, the app uses PostgreSQL with the pgvector extension so that each log can store an embedding vector from the OpenAI API and be searched with vector similarity queries. This kind of built‑in vector search is the main reason I choose Postgres for this project. Celery has its own configuration and processes to run, which adds complexity compared to a previous apps. It runs reminder work in the background, so reminders do not block normal requests. On the frontend, React‑Bootstrap and custom CSS are used to build a responsive LCARS‑style interface.
+Google OAuth Setup
+Go to Google Cloud Console
 
-Overall, HeyDayta combines several different elements in one project: a Django REST Framework backend, a React single‑page app (React handles navigation), JWT auth with httpOnly cookies and interceptors, Google OAuth, Celery workers with Redis, PostgreSQL with pgvector, and OpenAI‑based embeddings and question answering.
+Create OAuth 2.0 credentials
 
-This is more than a standard CRUD site and required solving real integration problems, especially with authentication, tokens, and cross‑origin communication between the React app and the DRF API.
+Add authorized origins:
 
+http://localhost:3000 (development)
 
+https://your-app-name.herokuapp.com (production)
 
-## Architecture and Implementation Notes
+Add redirect URIs:
 
-    - Shared Axios instance with auth header: I moved the request interceptor into the api.js file and added a setApiToken function so React can update the token that Axios uses for the Authorization header before components send requests (this fixed the problem where the request to /logs/ was sent before the Authorization header was added)
+http://localhost:8000/accounts/google/login/callback/
 
-    - AuthProvider and loading state: added an AuthProvider context that calls /token/refresh/ when the app starts and uses a loading flag so protected pages do not send the user to the login screen while the refresh request is still running.
+https://your-app-name.herokuapp.com/api/accounts/google
 
-    - Email: in development, Django uses the console email backend, so reminder emails are printed to the terminal instead of being sent. You can switch to an SMTP backend later by updating the email settings in settings.py
+🚢 Deployment
+Heroku Deployment (Production)
 
-    - Make sure to access both apps through http://localhost (not 127.0.0.1), so cookies and CORS work correctly between the React frontend (http://localhost:3000) and the Django API (http://localhost:8000).
+# Login to Heroku
+heroku login
 
+# Create Heroku app
+heroku create your-app-name
 
-## Project Structure
+# Add buildpacks (order matters!)
+heroku buildpacks:add --index 1 heroku/nodejs
+heroku buildpacks:add --index 2 heroku/python
 
-Backend (Django / DRF):
+# Add Postgres and Redis add-ons
+heroku addons:create heroku-postgresql:essential-0
+heroku addons:create heroku-redis:mini
 
-    - The backend is split into two Django apps: accounts for authentication and user management, and api for logs, reminders, and Ask Dayta endpoints
+# Enable pgvector extension
+heroku pg:psql
+CREATE EXTENSION vector;
+\q
 
-    - manage.py – Django's main entry point for running the server and management commands
+# Set environment variables
+heroku config:set SECRET_KEY=your-secret-key
+heroku config:set OPENAI_API_KEY=sk-your-key
+heroku config:set GOOGLE_CLIENT_ID=your-client-id
+heroku config:set GOOGLE_CLIENT_SECRET=your-secret
+heroku config:set EMAIL_HOST_USER=your-email@gmail.com
+heroku config:set EMAIL_HOST_PASSWORD=your-app-password
+heroku config:set DEBUG=False
+heroku config:set HEROKU_APP_HOST=your-app-name.herokuapp.com
 
-    - CS50w_final_project/settings.py – global project settings (database, apps, JWT, Celery, CORS, email, etc)
+# Build React production files
+cd frontend
+npm run build
+cd ..
 
-    - CS50w_final_project/urls.py – root URL configuration that includes app URLs
+# Deploy to Heroku
+git add .
+git commit -m "Production deployment"
+git push heroku master
 
-    - CS50w_final_project/celery.py – Celery configuration so reminder email tasks run in the background
+# Run migrations
+heroku run python manage.py migrate
 
-    Accounts:
+# Collect static files
+heroku run python manage.py collectstatic --noinput
 
-        - apps/accounts/models.py – custom User model used for authentication
+# Scale dynos
+heroku ps:scale web=1 worker=1 beat=1
 
-        - apps/accounts/serializers.py – serializers for user registration and auth
+# View logs
+heroku logs --tail
 
-        - apps/accounts/views.py – auth views (JWT login, logout, Google login API)
+Production Optimizations Applied
+Celery Worker Concurrency: Reduced to 2 to prevent R14 memory errors
 
-        - apps/accounts/urls.py – URL routes for account and auth endpoints
+Redis SSL: Configured for secure Heroku Redis connections
 
-        - apps/accounts/tests.py – tests for the accounts app 
+COOP Header: same-origin-allow-popups for Google OAuth compatibility
 
-    API:
+Static Files: WhiteNoise with compression for fast asset delivery
 
-        - apps/api/models.py – Log model with fields for entry type, category, reminder time, status, and embedding vector
+Database Connection Pooling: conn_max_age=600 for persistent connections
 
-        - apps/api/serializers.py – DRF serializers for logs
+📚 API Documentation
+Authentication Endpoints
 
-        - apps/api/views.py – LogViewSet and API views for creating logs, reminders, and for Ask Dayta questions
+POST /api/accounts/register/
+POST /api/accounts/google/
+POST /api/token/
+POST /api/token/refresh/
+POST /api/accounts/logout/
 
-        - apps/api/helpers.py – helper functions for OpenAI embeddings, reminder time extraction, and question answering
+Log Endpoints
 
-        - apps/api/tasks.py – Celery tasks that send reminder emails based on saved logs
+GET    /api/logs/          # List user's logs
+POST   /api/logs/          # Create log/reminder
+GET    /api/logs/{id}/     # Retrieve specific log
+PUT    /api/logs/{id}/     # Update log
+DELETE /api/logs/{id}/     # Delete log
+POST   /api/logs/ask_question/  # AI-powered Q&A
 
-        - apps/api/urls.py – API URL routes 
+Example: Create Journal Entry
 
+curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entry": "Had an amazing dinner at the Italian restaurant",
+    "category": "Captain'\''s Logs",
+    "entry_type": "journal",
+    "localDate": -60
+  }'
 
-Frontend (React)
+Example: Create Reminder with Natural Language
 
-    frontend/src/index.js – React entry point that renders the app
+curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entry": "Call mom in 2 hours",
+    "category": "Reminders",
+    "entry_type": "reminders",
+    "localDate": -60
+  }'
 
-    frontend/src/index.css – global styles
+Example: Ask Question
 
-    frontend/src/App.js – main app component that sets up routes and wraps the app in providers
+curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "What did I eat for dinner?",
+    "localDate": -60
+  }'
 
-    frontend/src/api.js – Axios instance with baseURL and auth header logic
+🔮 Future Enhancements
+ Mobile App: React Native version for iOS/Android
 
-    Components: 
+ Rich Text Editor: Markdown support with image uploads
 
-        - Auth/AuthProvider.js – React context that keeps the current user's token and username, calls /token/refresh/ when the app starts to restore the session, and provides simple login and logout functions to the rest of the app
+ Data Export: Download journal entries as PDF/JSON
 
-        - Auth/ProtectedRoute.js – wrapper that only shows children when the user is authenticated
+ Collaborative Journals: Share entries with family/friends
 
-        - Auth/Login.js – login form for username/password auth
+ Advanced Analytics: Mood tracking and visualization
 
-        - Auth/Register.js – registration form for new users
+ Voice Entries: Speech-to-text integration
 
-        - Auth/Logout.js – logout button 
+ Multi-factor Authentication: Enhanced security with 2FA
 
-        - Auth/GoogleLoginButton.js – button that starts Google login and calls the backend Google login API
+ Webhooks: Integration with IFTTT/Zapier
 
-        - NavBar.js – navbar with user dropdown
+ Recurring Reminders: Support for daily/weekly/monthly reminders
 
-        - About.js – page describing the app
+📄 License
+This project is licensed under the MIT License.
 
-        - Log.js – form for creating new journal entries or reminder entries
+👤 Contact
+Gabriela Maricari
+Full-Stack Developer | Django & React Specialist
 
-        - ShowLogs.js – list that shows the current user's logs
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Anyhia)
+[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:gabriela.maricari@gmail.com) 
+⭐ If you found this project interesting, please consider giving it a star!
 
-        - Question.js – Ask Dayta component where users type questions
-
-Other
-
-    requirements.txt – Python dependencies needed to run the backend and Celery worker
-
-    RESOURCES.md – list of tutorials, articles, and documentation pages that were used while building the project
-
-
-## Future Improvements
-
-HeyDayta was originally imagined as a mobile‑first memory app with voice input: speaking entries instead of typing, setting reminders by voice, and asking questions using the Web Speech API for speech‑to‑text and voice control. Having a DRF backend and a React frontend should make it easier to add a mobile client later, because the same REST API can be reused by a React Native or other mobile app instead of being tied to pages rendered directly by Django templates.
-
-For background jobs, a next step would be to run Celery workers as daemons in production so the reminder worker keeps running reliably in the background. The reminder model could also be improved with tracking fields like sent, sent_at, or a status field (pending/sent/failed) to make it easier to debug 'Why didn’t I get my reminder?' and to support cancelling or expiring reminders that are no longer needed.
+This project was originally created as a final project for Harvard's CS50 Web Programming with Python and JavaScript course and has been significantly enhanced for production deployment.

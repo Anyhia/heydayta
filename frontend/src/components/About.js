@@ -23,10 +23,10 @@ function About() {
             <Container className='mascot-container'>
                 <div className='title-and-description'>
                     <div className='title'>
-                        Your Personal <span className='memory-vault'>Memory Vault</span>
+                        Remember Everything, <span className='memory-vault'>Find Anything</span>
                     </div>
                     <div className='description'>
-                        HeyDayta helps you capture life's moments and find them again in seconds. Write journals, set smart reminders, and ask questions about your past, all in one place.
+                        Write journals and search them in plain language. No tags, no folders, no hassle — just ask and find what you need.
                     </div>
                 </div>
                 <img src={Mascot} alt="HeyDayta mascot" className="mascot-image"/>
@@ -43,12 +43,12 @@ function About() {
                 <div className='description-card purple'>
                     <div className='description-card-icon icon-purple'><FontAwesomeIcon icon={faBrain} /></div>
                     <div className='description-card-title'>Smart Search</div>
-                    <div className='description-card-text'>Ask questions in plain language and get instant answers from your past entries.</div>
+                    <div className='description-card-text'>Ask about your past in everyday language. Get instant answers.</div>
                 </div>
                 <div className='description-card orange'>
                     <div className='description-card-icon icon-orange'><FontAwesomeIcon icon={faLock} /></div>
                     <div className='description-card-title'>Private & Secure</div>
-                    <div className='description-card-text'>Your memories are yours alone, completely private and secure.</div>
+                    <div className='description-card-text'>Completely private. Only you can see your journals.</div>
                 </div>
             </Container>
         

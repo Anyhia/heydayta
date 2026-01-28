@@ -21,7 +21,7 @@ def send_email_reminder(reminder_id):
         send_mail(
             subject='You have a reminder from HeyDayta',
             message=log.entry,
-            from_email='gabriela.maricari@gmail.com', 
+            from_email='HeyDayta Reminders <gabriela.maricari@gmail.com>',
             recipient_list=[log.user.email],
         )
         

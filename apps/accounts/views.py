@@ -150,9 +150,14 @@ class CustomTokenRefreshView(TokenRefreshView):
     
 
 class LogoutAPIView(APIView):
+    permission_classes = [AllowAny]  # Allow logout without auth
+    
     def post(self, request):
-        # Create the Response object and delete the refresh token
-        # Add the SimpleJWT blacklist later
-        response = Response({'message':'Logged Out'})
-        response.delete_cookie('refresh_token')
+        response = Response({'message': 'Logged Out'})
+        response.delete_cookie(
+            key='refresh_token',
+            path='/',           # Match the set_cookie path
+            samesite='Lax',     # Match the set_cookie samesite
+            secure=os.getenv('DEBUG', 'False') != 'True'
+        )
         return response

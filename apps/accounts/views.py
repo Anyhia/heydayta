@@ -82,7 +82,7 @@ class GoogleLoginAPIView(APIView):
                 value=str(refresh),
                 max_age=60*60*24*7,  # 7 days
                 httponly=True,
-                secure=not os.getenv('DEBUG', 'False') == 'True',
+                secure=os.getenv('DEBUG', 'False') != 'True',
                 samesite='Lax',
                 path='/'
             )
@@ -115,7 +115,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 value=refresh_token,
                 max_age=60*60*24*7,
                 httponly=True,  # Can't be accessed by JavaScript
-                secure=False,    # Only sent over HTTPS
+                secure=os.getenv('DEBUG', 'False') != 'True',  # True in production, False locally
                 samesite='Lax',
                 path='/'
             )

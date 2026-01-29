@@ -33,7 +33,10 @@ function App() {
       //  If error
       async (error) => {
         if (error.config?.url?.includes('/accounts/google/')) {
-          return Promise.reject(error); // Don't refresh token if Google login fails(creates a loop)
+          return Promise.reject(error);
+        }
+        if (error.config?.url?.includes('/accounts/logout/')) {
+          return Promise.reject(error);
         }
 
         const originalRequest = error.config;

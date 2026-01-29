@@ -5,7 +5,7 @@ from .models import User
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,6 +23,18 @@ User = get_user_model()
 # Create your views here.
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer
+
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """Return the current authenticated user's info"""
+        return Response({
+            'username': request.user.username,
+            'email': request.user.email,
+            'id': request.user.id
+        })
 
 
 class GoogleLoginAPIView(APIView):
@@ -123,6 +135,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             # Remove refresh token from response body to return only the access token
             del response.data['refresh']
             
+            # ADD USERNAME TO RESPONSE (like Google login does)
+            response.data['username'] = request.user.username
+
         return response
 
 # CUSTOM SERIALIZER: Reads refresh token from cookie instead of request body
@@ -158,6 +173,5 @@ class LogoutAPIView(APIView):
             key='refresh_token',
             path='/',           # Match the set_cookie path
             samesite='Lax',     # Match the set_cookie samesite
-            secure=os.getenv('DEBUG', 'False') != 'True'
         )
         return response

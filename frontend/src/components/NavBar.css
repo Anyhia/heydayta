@@ -42,6 +42,24 @@
     letter-spacing: 0.5px;
 }
 
+/* Wrapper to keep captain label and username together */
+.captain-wrapper {
+    display: inline;
+    white-space: nowrap; /* Prevents wrapping between CAPTAIN: and username */
+}
+
+.captain-label {
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
+.captain-username {
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
 .user-icon {
   padding: 0.15rem;
   font-size: 1rem;
@@ -120,11 +138,12 @@
 
 .user-dropdown .user-menu {
     padding-block: 1rem;
-    background-color: var(--grey-bg-deep);
+    background-color: var(--grey-bg-card);
     border-radius: 0.4rem;
     border-bottom-left-radius: 0.9rem;
     border-bottom-right-radius: 0.9rem;
-    border: 1px solid var(--clr-lcars-blue);
+    border: 1px solid rgba(102, 153, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .user-menu .user-item {
@@ -136,4 +155,43 @@
 .user-menu .user-item:hover {
     background-color: var(--clr-lcars-blue-hover);
     color: var(--clr-light);
+}
+
+/* Username in dropdown header - styling */
+.user-dropdown .user-menu .user-header {
+    color: var(--clr-light);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--clr-gold);
+    margin-bottom: 0.25rem;
+}
+
+/* Very small screens (<576px) - hide username from navbar */
+@media (max-width: 575px) {
+    .separator,
+    .captain-wrapper {
+        display: none; /* Username only in dropdown */
+    }
+}
+
+/* Medium screens (576px - 991px) - show username only, hide "CAPTAIN:" label */
+@media (min-width: 576px) and (max-width: 991px) {
+    .captain-label {
+        display: none; /* Hide "CAPTAIN:" label */
+    }
+    
+    .separator,
+    .captain-username {
+        display: inline; /* Show separator and username */
+    }
+}
+
+/* Large screens (992px+) - show full "CAPTAIN: Username" */
+@media (min-width: 992px) {
+    .captain-label,
+    .captain-username,
+    .separator {
+        display: inline; /* Show everything */
+    }
 }

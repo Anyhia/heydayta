@@ -1,13 +1,14 @@
 import { useState, useEffect, createContext, useContext, useCallback } from 'react';
 import api from '../../api';
 
+
 //  Create context for token
 const AuthContext = createContext();
 // Create a custom hook to make it easier to use the context data in the components
 // Instead of writing useContext(AuthContext), I use useAuth
 export const useAuth = () => useContext(AuthContext);
 function AuthProvider({ children }) {
-    const [username, setUsername] = useState(null);
+
     const [token, setToken] = useState(null);
     // Authentication check is async, but routing happens synchronously. 
     // When the page loads, token is initially null while the refresh request is still pending, 
@@ -42,9 +43,7 @@ function AuthProvider({ children }) {
     const login = async (userData) => {
         try {
             const response = await api.post('/token/', userData);
-
             setToken(response.data.access);
-            setUsername(response.data.user);
         } catch (error) {
             throw error;
         }
@@ -56,13 +55,12 @@ function AuthProvider({ children }) {
             console.error('Logout failed:', error);
         } finally {
             setToken(null);
-            setUsername(null);
         }
     }, []);
     
     return (
     // AuthContext.Provider delivers the values to the rest of the app
-    <AuthContext.Provider value={{ token, setToken, login, logout, username, setUsername, loading }}>
+    <AuthContext.Provider value={{ token, setToken, login, logout, loading }}>
         {children}
     </AuthContext.Provider>
     );

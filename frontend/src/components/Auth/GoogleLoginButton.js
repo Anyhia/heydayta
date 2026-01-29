@@ -6,7 +6,7 @@ import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 function GoogleLoginButton() {
-    const { setUsername, setToken } = useAuth();
+    const { setToken } = useAuth();
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     
@@ -27,13 +27,10 @@ function GoogleLoginButton() {
                         setToken(response.data.access);
                         // Update Axios authorization header
                         setApiToken(response.data.access);
-                        // Set username
-                        setUsername(response.data.username);
                         
                         navigate('/createlog');
                         setError(null);
                     } catch(error) {
-                        setToken(null);
                         setError(error.response?.data?.error || 'Login failed. Please try again.');
                     }
                 }}

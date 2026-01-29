@@ -5,11 +5,35 @@ import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import './NavBar.css';
+import api from '../api';
 
 function NavBar() {
     const [now, setNow] = useState(new Date());
-    const { username } = useAuth();
 
+        const [username, setUsername] = useState(null);  // ← Add local state for username
+    const { token } = useAuth();  // ← Get token from context
+
+    // Fetch username when component mounts (if user is logged in)
+    useEffect(() => {
+        const fetchUsername = async () => {
+            if (!token) {
+                setUsername(null);  // No token = not logged in
+                return;
+            }
+            
+            try {
+                const response = await api.get('/accounts/me/');
+                setUsername(response.data.username);
+            } catch (error) {
+                console.error('Failed to fetch username:', error);
+                setUsername(null);
+            }
+        };
+
+        fetchUsername();
+    }, [token]);  // Re-fetch when token changes (login/logout)
+
+    // Clock timer
     useEffect(() =>{
         const timer = setInterval(() => {
             setNow(new Date()); // updates 'now' with the current time
@@ -37,11 +61,15 @@ function NavBar() {
     return(        
         <Container className="nav-container">
             <div className='heydayta'>HEYDAYTA</div>
-            <div className='bar'>STARDATE: {datetime}
+            <div className='bar'>
+                STARDATE: {datetime}
                 {username && (
                     <>
                         <span className='separator'> | </span>
-                        <span className='captain'>CAPTAIN: {username}</span>
+                        <span className='captain-wrapper'>
+                            <span className='captain-label'>CAPTAIN: </span>
+                            <span className='captain-username'>{username}</span>
+                        </span>
                     </>
                 )}
             </div>
@@ -49,6 +77,11 @@ function NavBar() {
             <Dropdown className='user-dropdown'>
                 <Dropdown.Toggle className='user-toggle'><FontAwesomeIcon icon={faUser} className='user-icon'/></Dropdown.Toggle>
                 <Dropdown.Menu className='user-menu'>
+                    {username && (
+                        <Dropdown.Header className='user-header'>
+                            {username}
+                        </Dropdown.Header>
+                    )}
                     <Dropdown.Item className='user-item' as={Link} to="/login">Login</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/logout">Logout</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/">About</Dropdown.Item>

@@ -171,5 +171,6 @@ class LogoutAPIView(APIView):
             key='refresh_token',
             path='/',           # Match the set_cookie path
             samesite='Lax',     # Match the set_cookie samesite
+            secure=(os.getenv("DEBUG", "False") != "True"),
         )
         return response

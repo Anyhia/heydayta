@@ -29,7 +29,7 @@ class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        """Return the current authenticated user's info"""
+        # Return the current authenticated user's info
         return Response({
             'username': request.user.username,
             'email': request.user.email,
@@ -135,8 +135,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             # Remove refresh token from response body to return only the access token
             del response.data['refresh']
             
-            # ADD USERNAME TO RESPONSE (like Google login does)
-            response.data['username'] = request.user.username
 
         return response
 

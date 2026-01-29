@@ -4,25 +4,29 @@ import {useNavigate} from 'react-router-dom';
 
 
 const Logout = () => {
-    const {logout} = useAuth();
+    const { logout, setToken } = useAuth(); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Call the login function from AuthProvider(authentication context)
         const getLogout = async() => {
+            // Clear token 
+            setToken(null);  
+            
             try {
                 await logout();
-                navigate('/');
             } catch(error) {
                 console.error(error);
+            } finally {
+                // Navigate to login (not home)
+                navigate('/login');  
             }
         }   
         
-        getLogout()
+        getLogout();
         
-    }, [logout])
+    }, [logout, setToken, navigate]);  // ← Add setToken and navigate to dependencies
 
     return null;
 }
 
-export default Logout
+export default Logout;

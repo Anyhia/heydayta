@@ -37,8 +37,14 @@ function NavBar() {
     return(        
         <Container className="nav-container">
             <div className='heydayta'>HEYDAYTA</div>
-            <div className='bar'>STARDATE: {datetime}</div>
-            {username && <div className='username-display'>USER: {username}</div>}
+            <div className='bar'>STARDATE: {datetime}
+                {username && (
+                    <>
+                        <span className='separator'> | </span>
+                        <span className='captain'>CAPTAIN: {username}</span>
+                    </>
+                )}
+            </div>
  
             <Dropdown className='user-dropdown'>
                 <Dropdown.Toggle className='user-toggle'><FontAwesomeIcon icon={faUser} className='user-icon'/></Dropdown.Toggle>

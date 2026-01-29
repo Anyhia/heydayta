@@ -31,12 +31,15 @@
   padding-block: 0.5rem;
 }
 
-.username-display {
-    color: #ffcc00; /* Gold/yellow Star Trek color */
-    font-weight: bold;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+.separator {
+    margin: 0 12px;
+    opacity: 0.6;
+}
+
+.captain {
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
 }
 
 .user-icon {

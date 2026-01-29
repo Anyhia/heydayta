@@ -1,5 +1,6 @@
 import { Dropdown, Container} from 'react-bootstrap';
 import { useEffect, useState } from 'react';
+import {useAuth} from './Auth/AuthProvider';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +8,8 @@ import './NavBar.css';
 
 function NavBar() {
     const [now, setNow] = useState(new Date());
+    const { username } = useAuth();
+
     useEffect(() =>{
         const timer = setInterval(() => {
             setNow(new Date()); // updates 'now' with the current time
@@ -35,6 +38,7 @@ function NavBar() {
         <Container className="nav-container">
             <div className='heydayta'>HEYDAYTA</div>
             <div className='bar'>STARDATE: {datetime}</div>
+            {username && <div className='username-display'>USER: {username}</div>}
  
             <Dropdown className='user-dropdown'>
                 <Dropdown.Toggle className='user-toggle'><FontAwesomeIcon icon={faUser} className='user-icon'/></Dropdown.Toggle>

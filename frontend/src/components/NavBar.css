@@ -31,6 +31,14 @@
   padding-block: 0.5rem;
 }
 
+.username-display {
+    color: #ffcc00; /* Gold/yellow Star Trek color */
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .user-icon {
   padding: 0.15rem;
   font-size: 1rem;

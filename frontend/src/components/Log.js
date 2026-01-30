@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Form, FloatingLabel, Row, Col} from 'react-bootstrap';
+import { Alert, Button, Container, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { ShowLogs } from './ShowLogs';
@@ -28,6 +28,7 @@ function CreateLog() {
     const [logs, setLogs] = useState([]);
 
     const [filter, setFilter] = useState('all')
+    const { isAuthenticated } = useAuth();
 
     function fetchLogs() {
         api.get('/logs/')
@@ -45,13 +46,10 @@ function CreateLog() {
 
 
 
-    const {token} = useAuth();
-
-    useEffect(() =>{
-        if (!token) return;      // do nothing until token exists
-        fetchLogs();             // will use Authorization from interceptor
-
-    }, [token]);
+    useEffect(() => {
+        if (!isAuthenticated) return;  // ← Don't fetch if not authenticated
+        fetchLogs();
+    }, [isAuthenticated]); 
 
 
     const handleSubmit = (e) => {

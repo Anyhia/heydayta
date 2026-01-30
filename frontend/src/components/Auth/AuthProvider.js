@@ -15,6 +15,9 @@ function AuthProvider({ children }) {
     // causing an immediate redirect to login. 
     // Add loading state, so the user is not redirected to login, during the refresh request
     const [loading, setLoading] = useState(true);
+
+    // This is TRUE only when we've confirmed the user has a valid session
+    const isAuthenticated = token !== null && !loading;
     useEffect(() => {
         // Only first time the app loads
         const restoreSession = async () => {
@@ -60,7 +63,7 @@ function AuthProvider({ children }) {
     
     return (
     // AuthContext.Provider delivers the values to the rest of the app
-    <AuthContext.Provider value={{ token, setToken, login, logout, loading }}>
+    <AuthContext.Provider value={{ token, setToken, login, logout, loading, isAuthenticated }}>
         {children}
     </AuthContext.Provider>
     );

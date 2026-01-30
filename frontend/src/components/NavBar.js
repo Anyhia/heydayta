@@ -10,14 +10,19 @@ import api from '../api';
 function NavBar() {
     const [now, setNow] = useState(new Date());
 
-        const [username, setUsername] = useState(null);  // ← Add local state for username
-    const { token } = useAuth();  // ← Get token from context
+    const [username, setUsername] = useState(null);  
+    const { isAuthenticated, loading } = useAuth();  // ← Get token from context
 
     // Fetch username when component mounts (if user is logged in)
     useEffect(() => {
         const fetchUsername = async () => {
-            if (!token) {
-                setUsername(null);  // No token = not logged in
+            // Wait until loading is done
+            if (loading) {
+                return;  // Don't fetch yet
+            }
+            
+            if (!isAuthenticated) {  // ← Check isAuthenticated, not token
+                setUsername(null);
                 return;
             }
             
@@ -31,7 +36,7 @@ function NavBar() {
         };
 
         fetchUsername();
-    }, [token]);  // Re-fetch when token changes (login/logout)
+    }, [isAuthenticated, loading]);
 
     // Clock timer
     useEffect(() =>{

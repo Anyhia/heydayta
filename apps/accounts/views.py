@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework import serializers
 from .serializers import UserSerializer
 from .models import User
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -144,14 +145,18 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     # Tell Django: "Don't expect 'refresh' in the request body"
     refresh = None
     
-    # This method runs when Django checks if the refresh token is valid
     def validate(self, attrs):
-        # attrs = data that will be validated (currently empty because body is empty)
+        # Get the refresh token from the cookie
+        refresh_token = self.context['request'].COOKIES.get('refresh_token')
         
-        # Get the refresh token from the cookie (not from body)
-        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
+        # If no cookie, raise an error immediately
+        if not refresh_token:
+            raise serializers.ValidationError('No refresh token provided')
         
-        # Now check if this token is valid and generate a new access token
+        # Set the token for validation
+        attrs['refresh'] = refresh_token
+        
+        # Validate the token and generate a new access token
         return super().validate(attrs)
 
 
@@ -163,13 +168,22 @@ class CustomTokenRefreshView(TokenRefreshView):
     
 
 class LogoutAPIView(APIView):
-    permission_classes = [AllowAny]  # Allow logout without auth
+    permission_classes = [AllowAny]
     
     def post(self, request):
         response = Response({'message': 'Logged Out'})
-        response.delete_cookie(
+        
+        # Django's delete_cookie() has a known quirk where it doesn't always match
+        # the exact parameters used in set_cookie(). To reliably delete the cookie,
+        # we use set_cookie() with max_age=0 (which expires it immediately) and
+        # match ALL parameters exactly as they were set during login.
+        response.set_cookie(
             key='refresh_token',
-            path='/',           # Match the set_cookie path
-            samesite='Lax',     # Match the set_cookie samesite
+            value='',  # Empty value
+            max_age=0,  # Expires immediately - deletes the cookie
+            httponly=True,  # Must match the set_cookie parameters
+            secure=os.getenv('DEBUG', 'False') != 'True',  # Must match
+            samesite='Lax',  # Must match
+            path='/'  # Must match
         )
         return response

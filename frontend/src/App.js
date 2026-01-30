@@ -38,6 +38,12 @@ function App() {
         if (error.config?.url?.includes('/accounts/logout/')) {
           return Promise.reject(error);
         }
+        if (error.config?.url?.includes('/token/refresh/')) {
+          // If refresh endpoint fails, don't try to refresh again
+          setToken(null);
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
 
         const originalRequest = error.config;
 

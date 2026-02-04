@@ -29,23 +29,29 @@ class LogViewSet(viewsets.ModelViewSet):
             # request.data is often a QueryDict, which is designed to be immutable for safety. 
             # Make a copy to work with a mutable object instead, and modify request.data without errors.
             data = request.data.copy()
+            # Store all reminder times but only save ONE log
+            reminder_times = []
+        
             if(data.get('entry_type') == 'reminders'):
-                timezone_offset_minutes = int(data.get('localDate', 0))  # e.g., -60 for CET
+                timezone_offset_minutes = int(data.get('localDate', 0))
                 UTC = timezone.now()
                 user_local_datetime = UTC - timedelta(minutes=timezone_offset_minutes)
                 
-                # Pass both the local datetime and the offset
-                result = get_reminder_time(
+                # Get list of reminder times
+                reminder_times = get_reminder_time(
                     data.get('entry'), 
                     user_local_datetime,
                     timezone_offset_minutes
                 )
                 
-                if result is None:
+                if not reminder_times:
                     return Response({'error': 'Could not find a valid time to set your reminder. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
                 
-                data['reminder_time'] = result  # result is already in UTC
+                # Store only the FIRST reminder time in the log
+                # (We'll schedule all of them, but database only stores one)
+                data['reminder_time'] = reminder_times[0]
                 data['entry_type'] = 'reminders'
+        
             try:
                 #  Create the vector by passing the log text to the embedding function
                 embedding_vector = create_embedding(data.get('entry'))
@@ -61,15 +67,15 @@ class LogViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             # Get the saved log instance, to access the id and the reminder_time  
             log=serializer.save(user=request.user)
-            if log.entry_type == 'reminders' and log.reminder_time and log.status != 'sent':
-                try: 
-                    reminder_id = log.id
-                    reminder_time = log.reminder_time
-                    # Schedule the task only if status is NOT 'sent'
-                    send_email_reminder.apply_async(
-                        args=[reminder_id],
-                        eta=reminder_time
-                    )
+            # Schedule Celery tasks for ALL reminder times (if reminder)
+            if log.entry_type == 'reminders' and log.status != 'sent':
+                try:
+                    # Schedule a task for EACH time in the list
+                    for reminder_time in reminder_times:
+                        send_email_reminder.apply_async(
+                            args=[log.id],
+                            eta=reminder_time
+                        )
                 except Exception as e:
                     return Response({'error': f'Failed to schedule reminder: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(LogSerializer(log).data, status=status.HTTP_201_CREATED)

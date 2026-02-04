@@ -30,8 +30,7 @@ urlpatterns = [
     path('logo512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'logo512.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
 
-    # Serve React app for all other routes (catch-all for React Router)
-    re_path(r'^.*$', TemplateView.as_view(
+    re_path(r'^(?!admin|api).*$', TemplateView.as_view(
         template_name='index.html',
         extra_context={'STATIC_URL': settings.STATIC_URL}
     )),

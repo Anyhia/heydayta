@@ -37,6 +37,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'  # False on Heroku, True locally
 
+
 # Security settings for production
 SECURE_SSL_REDIRECT = not DEBUG  # Force HTTPS in production
 SESSION_COOKIE_SECURE = not DEBUG  # Secure session cookies
@@ -237,16 +238,24 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-# SSL config for Heroku Redis
-CELERY_BROKER_USE_SSL = {
-    'ssl_cert_reqs': None  # Heroku Redis uses self-signed certs
-}
+# SSL config ONLY for Heroku Redis (production)
+if os.getenv('ENVIRONMENT') != 'development':
+    CELERY_BROKER_USE_SSL = {
+        'ssl_cert_reqs': None
+    }
 
-# Django EMAIL settings (production-ready)
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+
+# Django EMAIL settings
+# Development: print emails to console (instant!)
+# Production: use Gmail SMTP (real emails)
+if os.getenv('ENVIRONMENT') == 'development':
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Django EMAIL settings (production-ready)
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)

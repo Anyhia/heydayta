@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 from celery import shared_task
 from django.core.mail import send_mail
 from .models import Log
@@ -12,6 +10,11 @@ def send_email_reminder(reminder_id):
     try:
         log = Log.objects.get(id=reminder_id)
         
+        # Prevent duplicate sends
+        if log.status == 'sent':
+            print(f"✅ Reminder {reminder_id} already sent, skipping")
+            return
+        
         print(f"Sending email to {log.user.email}")
         send_mail(
             subject='You have a reminder from HeyDayta',
@@ -20,12 +23,9 @@ def send_email_reminder(reminder_id):
             recipient_list=[log.user.email],
         )
         
-        # Mark as sent only after FIRST email
-        if log.status == 'unsent':
-            log.status = 'sent'
-            log.save()
-        
-        print(f"Reminder {reminder_id} sent")
+        log.status = 'sent'
+        log.save()
+        print(f"Reminder {reminder_id} sent and marked as sent")
         
     except Log.DoesNotExist:
         print(f"Reminder {reminder_id} not found in database")

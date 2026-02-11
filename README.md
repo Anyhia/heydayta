@@ -112,19 +112,13 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 ### Deployment Model
 Single Heroku application serving both Django API and React static build via WhiteNoise. All API routes are namespaced under `/api/`.
 
-┌─────────────────────────────────────────────┐
-│ Heroku App (heydayta) │
-├─────────────────────────────────────────────┤
-│ Web Dyno: Gunicorn │
-│ ├─ Django API (/api/*) │
-│ └─ React Static Files (/) │
-│ │
-│ Worker Dyno: Celery Worker │
-│ Beat Dyno: Celery Beat (scheduler) │
-├─────────────────────────────────────────────┤
-│ Postgres Add-on (pgvector enabled) │
-│ Redis Add-on (Celery broker) │
-└─────────────────────────────────────────────┘
+- One Heroku app (`heydayta`) running:
+  - Web dyno: Gunicorn serving the Django API under `/api/` and the React static files at `/`.
+  - Worker dyno: Celery worker for background tasks (reminders, emails).
+  - Beat dyno: Celery Beat scheduler for periodic jobs.
+- Add-ons:
+  - Heroku Postgres (with pgvector extension enabled).
+  - Heroku Redis (as the Celery message broker).
 
 
 ### Authentication Flow
@@ -190,9 +184,11 @@ python manage.py createsuperuser
 
 # Start Django development server
 python manage.py runserver
+```
 
-Frontend Setup
+### Frontend Setup
 
+```bash
 # Navigate to frontend directory
 cd frontend
 
@@ -201,47 +197,73 @@ npm install
 
 # Start React development server
 npm start
+```
 
-Celery Setup (Background Tasks)
+### Celery Setup (Background Tasks)
 
-# Terminal 1: Start Celery worker
+Terminal 1: Start Celery worker
+```bash
 celery -A CS50w_final_project worker --loglevel=info
+```
 
-# Terminal 2: Start Celery beat (scheduler)
+Terminal 2: Start Celery beat (scheduler)
+```bash
 celery -A CS50w_final_project beat --loglevel=info
+```
 
-🔐 Environment Variables
-Create a .env file in the project root:
+### 🔐 Environment Variables
+Create a .env file in the project root
 
-# Django Settings
+### Django Settings
+
+```bash
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 DJANGO_SETTINGS_MODULE=CS50w_final_project.settings
+```
 
-# Database (Local Development)
+### Database (Local Development)
+
+```bash
 DATABASE_NAME=heydayta_db
 DATABASE_USER=postgres
 DATABASE_PASSWORD=your-password
 DATABASE_URL=  # Leave empty for local; Heroku sets this automatically
+```
 
-# OpenAI API
+### OpenAI API
+
+```bash
 OPENAI_API_KEY=sk-your-openai-api-key
+```
 
-# Google OAuth
+### Google OAuth
+
+```bash
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
+```
 
-# Celery / Redis
+### Redis
+
+```bash
 REDIS_URL=redis://localhost:6379/0
+```
 
-# Email Settings (Gmail)
+### Email Settings (Gmail)
+
+```bash
 EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password  # Use App Password, not regular password
+```
 
-# Production (Heroku sets these automatically)
+### Production (Heroku sets these automatically)
+
+```bash
 HEROKU_APP_HOST=your-app-name.herokuapp.com
+```
 
-Google OAuth Setup
+### Google OAuth Setup
 Go to Google Cloud Console
 
 Create OAuth 2.0 credentials
@@ -258,29 +280,40 @@ http://localhost:8000/accounts/google/login/callback/
 
 https://your-app-name.herokuapp.com/api/accounts/google
 
-🚢 Deployment
+### 🚢 Deployment
 Heroku Deployment (Production)
 
-# Login to Heroku
+#### Login to Heroku
+```bash
 heroku login
+```
 
-# Create Heroku app
+#### Create Heroku app
+```bash
 heroku create your-app-name
+```
 
-# Add buildpacks (order matters!)
+#### Add buildpacks (order matters!)
+```bash
 heroku buildpacks:add --index 1 heroku/nodejs
 heroku buildpacks:add --index 2 heroku/python
+```
 
-# Add Postgres and Redis add-ons
+#### Add Postgres and Redis add-ons
+```bash
 heroku addons:create heroku-postgresql:essential-0
 heroku addons:create heroku-redis:mini
+```
 
-# Enable pgvector extension
+#### Enable pgvector extension
+```bash
 heroku pg:psql
 CREATE EXTENSION vector;
 \q
+```
 
-# Set environment variables
+#### Set environment variables
+```bash
 heroku config:set SECRET_KEY=your-secret-key
 heroku config:set OPENAI_API_KEY=sk-your-key
 heroku config:set GOOGLE_CLIENT_ID=your-client-id
@@ -289,31 +322,45 @@ heroku config:set EMAIL_HOST_USER=your-email@gmail.com
 heroku config:set EMAIL_HOST_PASSWORD=your-app-password
 heroku config:set DEBUG=False
 heroku config:set HEROKU_APP_HOST=your-app-name.herokuapp.com
+```
 
-# Build React production files
+#### Build React production files
+```bash
 cd frontend
 npm run build
 cd ..
+```
 
-# Deploy to Heroku
+#### Deploy to Heroku
+```bash
 git add .
 git commit -m "Production deployment"
 git push heroku master
+```
 
-# Run migrations
+#### Run migrations
+```bash
 heroku run python manage.py migrate
+```
 
-# Collect static files
+#### Collect static files
+```bash
 heroku run python manage.py collectstatic --noinput
+```
 
-# Scale dynos
+#### Scale dynos
+```bash
 heroku ps:scale web=1 worker=1 beat=1
+```
 
-# View logs
+#### View logs
+```bash
 heroku logs --tail
+```
 
-Production Optimizations Applied
-Celery Worker Concurrency: Reduced to 2 to prevent R14 memory errors
+### Production Optimizations Applied
+
+Celery Worker Concurrency: Reduced to 1 to prevent R14 memory errors
 
 Redis SSL: Configured for secure Heroku Redis connections
 
@@ -323,26 +370,31 @@ Static Files: WhiteNoise with compression for fast asset delivery
 
 Database Connection Pooling: conn_max_age=600 for persistent connections
 
-📚 API Documentation
+### 📚 API Documentation
 Authentication Endpoints
 
+```bash
 POST /api/accounts/register/
 POST /api/accounts/google/
 POST /api/token/
 POST /api/token/refresh/
 POST /api/accounts/logout/
+```
 
-Log Endpoints
+### Log Endpoints
 
+```bash
 GET    /api/logs/          # List user's logs
 POST   /api/logs/          # Create log/reminder
 GET    /api/logs/{id}/     # Retrieve specific log
 PUT    /api/logs/{id}/     # Update log
 DELETE /api/logs/{id}/     # Delete log
 POST   /api/logs/ask_question/  # AI-powered Q&A
+```
 
-Example: Create Journal Entry
+### Example: Create Journal Entry
 
+```bash
 curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -352,9 +404,11 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
     "entry_type": "journal",
     "localDate": -60
   }'
+```
 
-Example: Create Reminder with Natural Language
+### Example: Create Reminder with Natural Language
 
+```bash
 curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -364,9 +418,11 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
     "entry_type": "reminders",
     "localDate": -60
   }'
+```
 
-Example: Ask Question
+### Example: Ask Question
 
+```bash
 curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -374,8 +430,10 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ 
     "question": "What did I eat for dinner?",
     "localDate": -60
   }'
+```
 
-🔮 Future Enhancements
+## 🔮 Future Enhancements
+
  Mobile App: React Native version for iOS/Android
 
  Rich Text Editor: Markdown support with image uploads
@@ -394,12 +452,12 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ 
 
  Recurring Reminders: Support for daily/weekly/monthly reminders
 
-📄 License
+## 📄 License
 This project is licensed under the MIT License.
 
-👤 Contact
-Gabriela Maricari
-Full-Stack Developer | Django & React Specialist
+## 👤 Contact
+### Gabriela Maricari
+### Full-Stack Developer | Django & React Specialist
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Anyhia)

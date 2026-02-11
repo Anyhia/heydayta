@@ -87,9 +87,14 @@ function NavBar() {
                             {username}
                         </Dropdown.Header>
                     )}
+                    {username && (
+                        <Dropdown.Item className='user-item' as={Link} to="/createlog">
+                            Home
+                        </Dropdown.Item>
+                    )}
                     <Dropdown.Item className='user-item' as={Link} to="/login">Login</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/logout">Logout</Dropdown.Item>
-                    <Dropdown.Item className='user-item' as={Link} to="/">About</Dropdown.Item>
+                    <Dropdown.Item className='user-item' as={Link} to="/about">About</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </Container>

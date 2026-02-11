@@ -4,7 +4,7 @@ import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import CreateLog from './components/Log';
-import About from './components/About';
+import { About, AboutPage } from './components/About';
 import NavBar from './components/NavBar';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
@@ -81,7 +81,8 @@ function App() {
     <Router>
       <NavBar/>
       <Routes>
-        <Route path='/' element={<About/>} />
+        <Route path='/' element={<AboutPage/>} />
+        <Route path='/about' element={<About/>} /> 
         <Route path='/logout' element={<Logout/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />

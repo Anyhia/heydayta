@@ -7,17 +7,26 @@ import './About.css';
 import { useAuth } from './Auth/AuthProvider'; 
 import { useEffect } from 'react'; 
 
-function About() {
-    const { token, loading } = useAuth(); // Get token and loading state
+// with redirect
+function AboutPage() {
+    const { token, loading } = useAuth();
     const navigate = useNavigate();
 
-    // Redirect to createlog if user is already logged in
     useEffect(() => {
         if (!loading && token) {
             navigate('/createlog');
         }
     }, [token, loading, navigate]);
-    
+
+    return <AboutContent />;
+}
+
+// without redirect
+function About() {
+    return <AboutContent />;
+}
+
+function AboutContent() {
     return (
         <Container className='about-container'>
             <Container className='mascot-container'>
@@ -56,4 +65,4 @@ function About() {
     )
 }
 
-export default About
+export { About, AboutPage };

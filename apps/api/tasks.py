@@ -9,7 +9,11 @@ def send_email_reminder(reminder_id):
     
     try:
         log = Log.objects.get(id=reminder_id)
-        
+    except Log.DoesNotExist:
+        print(f"Reminder {reminder_id} not found in database")
+        return  # ← Exit early if deleted
+
+    try: 
         # Prevent duplicate sends
         if log.status == 'sent':
             print(f"✅ Reminder {reminder_id} already sent, skipping")
@@ -27,8 +31,6 @@ def send_email_reminder(reminder_id):
         log.save()
         print(f"Reminder {reminder_id} sent and marked as sent")
         
-    except Log.DoesNotExist:
-        print(f"Reminder {reminder_id} not found in database")
     except Exception as e:
         print(f"Error sending reminder {reminder_id}: {e}")
         raise

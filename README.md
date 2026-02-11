@@ -21,6 +21,8 @@
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
+- [Monitoring & Maintenance](#monitoring--maintenance)
+- [Security Features](#security-features)
 - [API Documentation](#api-documentation)
 - [Future Enhancements](#future-enhancements)
 - [License](#license)
@@ -104,6 +106,11 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Heroku**: Hosting (web, worker, beat dynos)
 - **Heroku Postgres**: Production database
 - **Heroku Redis**: Message broker for Celery
+
+### Monitoring & Operations
+- **Sentry**: Real-time error tracking and exception monitoring
+- **UptimeRobot**: Uptime monitoring with email alerts (5-minute intervals)
+- **Papertrail**: Centralized log aggregation and search (Heroku add-on)
 
 ---
 
@@ -214,7 +221,7 @@ celery -A CS50w_final_project beat --loglevel=info
 ### 🔐 Environment Variables
 Create a .env file in the project root
 
-### Django Settings
+#### Django Settings
 
 ```bash
 SECRET_KEY=your-secret-key-here
@@ -222,7 +229,7 @@ DEBUG=True
 DJANGO_SETTINGS_MODULE=CS50w_final_project.settings
 ```
 
-### Database (Local Development)
+#### Database (Local Development)
 
 ```bash
 DATABASE_NAME=heydayta_db
@@ -231,36 +238,50 @@ DATABASE_PASSWORD=your-password
 DATABASE_URL=  # Leave empty for local; Heroku sets this automatically
 ```
 
-### OpenAI API
+#### OpenAI API
 
 ```bash
 OPENAI_API_KEY=sk-your-openai-api-key
 ```
 
-### Google OAuth
+#### Google OAuth
 
 ```bash
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
-### Redis
+#### Redis
 
 ```bash
 REDIS_URL=redis://localhost:6379/0
 ```
 
-### Email Settings (Gmail)
+#### Email Settings (Gmail)
 
 ```bash
 EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password  # Use App Password, not regular password
 ```
 
-### Production (Heroku sets these automatically)
+#### Production (Heroku sets these automatically)
 
 ```bash
 HEROKU_APP_HOST=your-app-name.herokuapp.com
+DATABASE_URL=  # Set by Heroku Postgres add-on
+REDIS_URL=  # Set by Heroku Redis add-on
+```
+
+#### Monitoring
+
+```bash
+SENTRY_DSN=https://...@sentry.io/...
+```
+
+#### Admin Security (Production)
+
+```bash
+DJANGO_ADMIN_URL=your-secret-admin-path/
 ```
 
 ### Google OAuth Setup
@@ -303,6 +324,7 @@ heroku buildpacks:add --index 2 heroku/python
 ```bash
 heroku addons:create heroku-postgresql:essential-0
 heroku addons:create heroku-redis:mini
+heroku addons:create papertrail:choklad
 ```
 
 #### Enable pgvector extension
@@ -322,6 +344,8 @@ heroku config:set EMAIL_HOST_USER=your-email@gmail.com
 heroku config:set EMAIL_HOST_PASSWORD=your-app-password
 heroku config:set DEBUG=False
 heroku config:set HEROKU_APP_HOST=your-app-name.herokuapp.com
+heroku config:set DJANGO_ADMIN_URL=your-secret-admin-path/
+heroku config:set SENTRY_DSN=your-sentry-dsn
 ```
 
 #### Build React production files
@@ -351,11 +375,47 @@ heroku run python manage.py collectstatic --noinput
 #### Scale dynos
 ```bash
 heroku ps:scale web=1 worker=1 beat=1
+heroku pg:backups:schedule DATABASE_URL --at '02:00 Europe/Brussels'
 ```
 
 #### View logs
 ```bash
 heroku logs --tail
+```
+
+## **📊 Monitoring & Maintenance**
+
+### **Error Monitoring (Sentry)**
+- Sign up at https://sentry.io
+- Create a Django project
+- Copy DSN and add to Heroku config
+- Automatically captures all Python exceptions
+
+### **Uptime Monitoring (UptimeRobot)**
+- Sign up at https://uptimerobot.com
+- Add your Heroku URL as a monitor
+- Set check interval to 5 minutes
+- Receive email alerts if app goes down
+
+### **View Logs**
+```bash
+# View live logs
+heroku logs --tail
+
+# Open Papertrail dashboard
+heroku addons:open papertrail
+```
+### Check Backups
+
+```bash
+# View backup schedule and history
+heroku pg:backups
+
+# Create manual backup
+heroku pg:backups:capture
+
+# Restore from backup
+heroku pg:backups:restore
 ```
 
 ### Production Optimizations Applied
@@ -369,6 +429,19 @@ COOP Header: same-origin-allow-popups for Google OAuth compatibility
 Static Files: WhiteNoise with compression for fast asset delivery
 
 Database Connection Pooling: conn_max_age=600 for persistent connections
+
+## 🔐 Security Features
+
+- **JWT Authentication** with httpOnly refresh tokens (7-day expiration)
+- **Google OAuth 2.0** integration with PKCE flow
+- **Anonymized admin URL** (configurable via environment variable)
+- **HTTPS enforced** in production via Heroku
+- **CORS configured** for secure cross-origin API access
+- **Environment-based secrets** (no hardcoded credentials)
+- **Daily database backups** (scheduled at 2 AM Europe/Brussels)
+- **Real-time error monitoring** (Sentry)
+- **Uptime monitoring** (UptimeRobot with 5-minute checks)
+- **Cross-Origin Isolation** headers for OAuth popup compatibility
 
 ### 📚 API Documentation
 Authentication Endpoints

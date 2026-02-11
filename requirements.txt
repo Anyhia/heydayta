@@ -18,4 +18,4 @@ dj-database-url
 gunicorn
 whitenoise==6.11.0
 redis>=5.0.0
-sentry-sdk==2.x.x
+sentry-sdk==2.18.0

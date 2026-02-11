@@ -16,7 +16,7 @@ from django.views.static import serve
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(os.environ.get('DJANGO_ADMIN_URL', 'admin/'), admin.site.urls),
     path('api/', include('apps.api.urls', namespace='api')),
     path('api/accounts/', include('apps.accounts.urls', namespace='accounts')),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('logo512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'logo512.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
 
-    re_path(r'^(?!admin|api).*$', TemplateView.as_view(
+    re_path(r'^(?!captain-bridge-desk|api).*$', TemplateView.as_view(
         template_name='index.html',
         extra_context={'STATIC_URL': settings.STATIC_URL}
     )),

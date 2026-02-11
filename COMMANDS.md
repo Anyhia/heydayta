@@ -30,3 +30,6 @@ redis-server
 
 cd your-project-root
 tree
+
+<!-- Heroku - you can view your logs anytime with:  -->
+heroku addons:open papertrail --app heydayta

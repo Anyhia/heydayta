@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from datetime import timedelta
+import sentry_sdk
 
 import dj_database_url
 
@@ -258,3 +259,9 @@ else:
     EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
     EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
     DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    environment="production" if not DEBUG else "development",
+)

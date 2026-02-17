@@ -19,16 +19,6 @@ export const ShowLogs = ({logs, refreshLogs}) => {
 }
 
 export const LogCard = ({log, refreshLogs}) => {
-    // Show label on the card, not the values.
-    const CATEGORY_LABELS = {
-        logs: "Captain's Logs",
-        travel: "Travel",
-        work: "Work",
-        health: "Health",
-        family: "Family",
-        ideas: "Ideas",
-        education: "Education",
-    };
 
     // state for edit
     const [editing, setEditing] = useState(false);
@@ -60,12 +50,11 @@ export const LogCard = ({log, refreshLogs}) => {
     let tag;
     let logClass;
     if(log.entry_type==='journal') {
-        const labelCategory = CATEGORY_LABELS[log.category];
         logClass = 'log-card-journal';
-        tag = labelCategory || "Captain's Log";
+        tag = 'Journal';
     } else {
-        logClass = 'log-card-reminder'
-        tag = 'Reminders'
+        logClass = 'log-card-reminder';
+        tag = 'Reminder';
     }
 
     return (

@@ -6,7 +6,7 @@ class LogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Log
-        fields = ('id', 'user', 'entry_type', 'entry', 'category', 'created_at', 'reminder_time', 'status', 'embedding')
+        fields = ('id', 'user', 'entry_type', 'entry', 'created_at', 'reminder_time', 'status', 'embedding')
         extra_kwargs = {
             'entry':{'required': True},
             'user': {'read_only': True},

@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Log
 from .serializers import LogSerializer
-from .helpers import create_embedding, get_reminder_time, get_answer
+from .helpers import create_embedding, get_reminder_time, get_answer, transcribe_audio
 from .tasks import send_email_reminder
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -140,3 +140,28 @@ class LogViewSet(viewsets.ModelViewSet):
 
 
 
+    @action(detail=False, methods=['post'])
+    def transcribe(self, request):
+        # Get the audio file from the request
+        audio_file = request.FILES.get('audio')
+        
+        if not audio_file:
+            return Response(
+                {"error": "No audio file provided."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Call the helper function to transcribe
+        transcribed_text = transcribe_audio(audio_file)
+        
+        if transcribed_text is None:
+            return Response(
+                {"error": "Transcription failed. Please try again."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        # Return the transcribed text to React
+        return Response(
+            {"text": transcribed_text},
+            status=status.HTTP_200_OK
+        )

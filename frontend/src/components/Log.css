@@ -1,5 +1,4 @@
-/* small screens */
-
+/* Container */
 .container.create-log-container {
     padding: 0;
     margin: 0.5rem auto;
@@ -9,46 +8,177 @@
 .create-log-form-container {
     background-color: var(--grey-bg-card);
     border: 0.5px solid var(--grey-bg-card);
-    border-left: 4px solid var(--clr-tactical);
+    border-left: 3px solid var(--clr-tactical); /* Softer: 4px → 3px */
     border-bottom-right-radius: 1rem;
     border-top-right-radius: 1rem;
 }
 
 .create-log-form {
-    padding-block: 0.5rem;
+    padding-block: 0.75rem;
     display: flex;
     flex-direction: column;
-    
+    gap: 0.75rem;
 }
 
-.new-entry-text {
-    width: auto;
-    align-self: flex-start;
-    background-color: var(--clr-tactical);
-    font-size: var(--fs-mobilesmall);
-    font-weight: var(--fw-700);
-    border: 0.5px solid var(--clr-tactical);
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    padding: 0.3rem;
-    color: var(--grey-bg-deep);
-}
+/* ========================================
+   TOP ROW: TABS
+   ======================================== */
 
-.create-log-form-select {
+.form-controls-row {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-    padding-block: 0.5rem;
     justify-content: space-between;
     align-items: center;
 }
 
-.select-log-type {
-    flex: 1 1 0;
-    min-width: 0;
+.entry-type-toggle {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--grey-border);
+    flex: 1;
 }
 
+/* Shared button reset */
+.type-toggle-btn.btn.btn-primary,
+.create-log-form-button.btn.btn-primary,
+.logs-buttons.btn.btn-primary {
+    box-shadow: none;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Tab buttons - subtle grey text */
+.type-toggle-btn.btn.btn-primary {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: var(--grey-text-muted);
+    padding: 0.6rem 1.5rem;
+    font-weight: var(--fw-500);
+    font-size: var(--fs-small);
+}
+
+.type-toggle-btn.btn.btn-primary:hover:not(.type-toggle-active) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    color: var(--grey-text-light); /* Lighter grey on hover */
+}
+
+.type-toggle-btn.btn.btn-primary:active:not(.type-toggle-active),
+.type-toggle-btn.btn.btn-primary:focus:not(.type-toggle-active) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    color: var(--grey-text-muted);
+    box-shadow: none;
+}
+
+/* Active tab - lighter grey text with colored underline */
+.type-toggle-btn.type-toggle-active.btn.btn-primary,
+.type-toggle-btn.type-toggle-active.btn.btn-primary:focus,
+.type-toggle-btn.type-toggle-active.btn.btn-primary:active,
+.type-toggle-btn.type-toggle-active.btn.btn-primary:active:focus {
+    background-color: transparent;
+    border-bottom-color: var(--clr-lcars-purple);
+    color: var(--grey-text-light); /* Lighter grey, not purple */
+    font-weight: var(--fw-600);
+}
+
+.type-toggle-btn.type-toggle-active.btn.btn-primary:hover {
+    background-color: transparent;
+    border-bottom-color: var(--clr-lcars-purple-hover);
+    color: var(--grey-text-light);
+}
+
+/* ========================================
+   TEXTAREA WITH MIC
+   ======================================== */
+
+.textarea-wrapper {
+    position: relative;
+}
+
+.textarea-wrapper .create-log-form-control {
+    width: 100%;
+    padding-right: 3rem;
+    min-height: auto;
+    max-height: 20rem;
+    overflow-y: auto;
+    resize: none;
+}
+
+/* Subtle dark scrollbar */
+.textarea-wrapper .create-log-form-control::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.textarea-wrapper .create-log-form-control::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.textarea-wrapper .create-log-form-control::-webkit-scrollbar-thumb {
+    background-color: var(--grey-border);
+    border-radius: 0.25rem;
+}
+
+.textarea-wrapper .create-log-form-control::-webkit-scrollbar-thumb:hover {
+    background-color: var(--grey-text-muted);
+}
+
+/* Voice button inside textarea - GHOST STYLE */
+.voice-mic-btn.btn.btn-primary,
+.voice-mic-btn.btn.btn-primary:focus,
+.voice-mic-btn.btn.btn-primary:active,
+.voice-mic-btn.btn.btn-primary:active:focus {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: var(--grey-text-muted); /* Grey ghost */
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    box-shadow: none;
+    outline: none;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.voice-mic-btn.btn.btn-primary:hover {
+    color: var(--grey-text-light); /* Lighter grey on hover */
+    transform: translateY(-50%) scale(1.1);
+}
+
+.voice-recording-btn.btn.btn-primary,
+.voice-recording-btn.btn.btn-primary:focus,
+.voice-recording-btn.btn.btn-primary:active,
+.voice-recording-btn.btn.btn-primary:active:focus {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: var(--clr-command); /* Red when recording */
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    box-shadow: none;
+    outline: none;
+    animation: pulse 1.5s infinite;
+    z-index: 10;
+}
+
+.voice-recording-btn.btn.btn-primary:hover {
+    color: var(--clr-alert);
+    transform: translateY(-50%) scale(1.05);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Textarea styles */
 textarea.create-log-form-control::placeholder {
     color: var(--grey-text-muted);
     opacity: 1;
@@ -67,74 +197,66 @@ textarea.create-log-form-control::placeholder {
     color: var(--grey-text-muted);
 }
 
-.create-log-form-select .select-log-type:focus {
-    border-color: var(--grey-border);
-    box-shadow: 0 0 0 0.15rem rgba(31, 41, 51, 0.7);
-    outline: none;
+/* ========================================
+   LOG IT BUTTON (Outlined)
+   ======================================== */
+
+.save-button-container {
+    display: flex;
+    justify-content: flex-end;
 }
 
-/* Save button */
-.create-log-form-button.btn-primary,
-.create-log-form-button.btn-primary:active {
-    width: auto;
-    align-self: flex-start;
+.create-log-form-button.btn.btn-primary,
+.create-log-form-button.btn.btn-primary:is(:focus, :active, :active:focus) {
+    background-color: transparent;
+    border: 1px solid var(--clr-tactical);
+    border-radius: 0.375rem;
+    color: var(--clr-tactical);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-600);
+     padding: 0.4rem 0.45rem;
+    transition: all 0.2s ease;
+    box-shadow: none;
+}
+
+.create-log-form-button.btn.btn-primary:hover {
     background-color: var(--clr-tactical);
-    border: 0.5px solid var(--clr-tactical);
-    border-radius: 0.5rem;
+    border-color: var(--clr-tactical);
     color: var(--grey-bg-deep);
-    font-size: var(--fs-mobilesmall);
-    font-weight: var(--fw-700);
-    padding: 0.3rem 0.9rem;
-    text-align: center;
 }
 
-.create-log-form-button.btn-primary:hover,
-.create-log-form-button.btn-primary:focus {
-    width: auto;
-    align-self: flex-start;
-    background-color: var(--clr-tactical-hover);
-    border: 0.5px solid var(--clr-tactical-hover);
-    border-radius: 0.5rem;
-    color: var(--grey-bg-deep);
-    font-size: var(--fs-mobilesmall);
-    font-weight: var(--fw-700);
-    padding: 0.3rem 0.9rem;
-    text-align: center;
-}
+/* ========================================
+   FILTER BUTTONS (Minimal color, thinner borders)
+   ======================================== */
 
-/* Logs filter buttons */
 .container.show-logs {
     padding: 0;
 }
 
-.logs-buttons.btn-primary {
-    background-color: var(--grey-bg-inner);
-    border: 0.5px solid var(--grey-bg-inner);
+.logs-buttons.btn.btn-primary {
+    background-color: transparent;
+    border: 1px solid var(--grey-border);
     color: var(--grey-text-muted);
+    border-radius: 0.375rem;
+    padding: 0.35rem 0.85rem;
     font-size: var(--fs-mobilesmall);
-    font-weight: var(--fw-700);
-    border-radius: 1rem;
+    font-weight: var(--fw-500);
+    text-transform: capitalize;
 }
 
-.logs-buttons-active.btn-primary {
-    background-color: var(--clr-lcars-purple);
-    color: var(--grey-bg-deep);
-    border: 0.5px solid var(--clr-lcars-purple);
+.logs-buttons.btn.btn-primary:not(.logs-buttons-active):hover {
+    border-color: var(--clr-lcars-purple);
+    color: var(--clr-lcars-purple);
 }
 
-.btn.logs-buttons.btn-primary:active,
-.btn.logs-buttons.btn-primary:hover {
-    border: 0.5px solid var(--clr-lcars-purple-hover);
-    background-color: var(--clr-lcars-purple-hover);
-    color: var(--grey-bg-deep);
-}
-.btn.logs-buttons-active.btn-primary:hover,
-.btn.logs-buttons-active.btn-primary:active {
-    background-color: var(--clr-lcars-purple-hover);
-    color: var(--grey-bg-deep);
-    border: 0.5px solid var(--clr-lcars-purple-hover);
+.logs-buttons-active.btn.btn-primary,
+.logs-buttons-active.btn.btn-primary:is(:hover, :active, :focus) {
+    background-color: transparent;
+    border-color: var(--clr-lcars-purple);
+    color: var(--clr-lcars-purple);
 }
 
+/* Empty logs message */
 .empty-logs-message {
     text-align: center;
     margin-top: 3rem;
@@ -150,58 +272,136 @@ textarea.create-log-form-control::placeholder {
     font-size: 0.9rem;
 }
 
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Small tablets and up */
 @media (min-width: 576px) {
     .create-log-form {
-        padding: 1.25rem 1.5rem;
+        padding: 1.25rem;
+        gap: 1rem;
     }
-    .new-entry-text {
-        font-size: var(--fs-small);
-        margin-bottom: 1rem;
+    
+    .type-toggle-btn.btn.btn-primary {
+        font-size: var(--fs-normal);
+        padding: 0.7rem 1.8rem;
     }
-    .create-log-form-button.btn-primary {
-        font-size: var(--fs-small);
-        margin-top: 0.3rem;
-        padding: 0.3rem;
-        padding-inline: 0.9rem;
+
+    .create-log-form-button.btn.btn-primary {
+        
+        padding: 0.4rem 0.45rem;
     }
-    .create-log-form-button.btn-primary:hover,
-    .create-log-form-button.btn-primary:focus {
-        background-color: var(--clr-tactical-hover);
-        border: 0.5px solid var(--clr-tactical-hover);
-        font-size: var(--fs-small);
-        margin-top: 0.3rem;
-        padding: 0.3rem;
-        padding-inline: 0.9rem;
-    }
+    
     .container.show-logs {
         margin-top: 1.5rem;
     }
-    .logs-buttons.btn-primary {
-        padding: 0.5rem;
-        padding-inline: 0.7rem;
-        font-size: var(--fs-mobilesmall);
-        font-weight: var(--fw-700);
+    
+    .logs-buttons.btn.btn-primary {
+        padding: 0.45rem 1rem;
+        font-size: var(--fs-small);
     }
 }
 
+/* Medium tablets */
 @media (min-width: 768px) {
     .create-log-form {
-        padding-inline: 1.5rem;
-        padding-block: 1rem;
+        padding: 1.5rem;
     }
 }
 
-/* Large screens*/
+/* Desktop */
 @media (min-width: 992px) {
     .container.create-log-container {
         max-width: 55%;
         margin: 0 auto;
     }
-    .new-entry-text {
-        font-size: var(--fs-small);
+    
+    .type-toggle-btn.btn.btn-primary,
+    .create-log-form-button.btn.btn-primary {
         font-weight: var(--fw-600);
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
-        padding: 0.3rem;
     }
 }
+
+
+/* ========================================
+   FILTER BUTTONS - OPTION 1: Less Rounded (Match other buttons)
+   ======================================== */
+
+/* .logs-buttons-option1.btn.btn-primary {
+    background-color: transparent;
+    border: 2px solid var(--clr-lcars-purple);
+    color: var(--clr-lcars-purple);
+    border-radius: 0.375rem; 
+    padding: 0.4rem 1rem;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-500);
+    text-transform: capitalize;
+    min-height: 2.25rem;
+}
+
+.logs-buttons-option1.btn.btn-primary:hover {
+    background-color: var(--clr-lcars-purple);
+    border-color: var(--clr-lcars-purple);
+    color: var(--grey-bg-deep);
+}
+
+.logs-buttons-option1-active.btn.btn-primary {
+    background-color: var(--clr-lcars-purple);
+    border-color: var(--clr-lcars-purple);
+    color: var(--grey-bg-deep);
+} */
+
+/* ========================================
+   FILTER BUTTONS - OPTION 2: Filled Pills (Original style)
+   ======================================== */
+
+/* .logs-buttons-option2.btn.btn-primary {
+    background-color: var(--grey-bg-inner);
+    border: 1px solid var(--grey-bg-inner);
+    color: var(--grey-text-muted);
+    border-radius: 1.5rem; 
+    padding: 0.4rem 1rem;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-500);
+    text-transform: capitalize;
+    min-height: 2.25rem;
+}
+
+.logs-buttons-option2.btn.btn-primary:hover {
+    background-color: var(--clr-lcars-purple);
+    border-color: var(--clr-lcars-purple);
+    color: var(--grey-bg-deep);
+}
+
+.logs-buttons-option2-active.btn.btn-primary {
+    background-color: var(--clr-lcars-purple);
+    border-color: var(--clr-lcars-purple);
+    color: var(--grey-bg-deep);
+} */
+
+/* ========================================
+   FILTER BUTTONS - OPTION 3: Tabs (Like Journal/Reminder)
+   ======================================== */
+
+/* .logs-buttons-option3.btn.btn-primary {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: var(--grey-text-muted);
+    padding: 0.5rem 1rem;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-500);
+    text-transform: capitalize;
+}
+
+.logs-buttons-option3.btn.btn-primary:hover {
+    color: var(--clr-lcars-purple);
+}
+
+.logs-buttons-option3-active.btn.btn-primary {
+    border-bottom-color: var(--clr-lcars-purple);
+    color: var(--clr-lcars-purple);
+    font-weight: var(--fw-700);
+} */

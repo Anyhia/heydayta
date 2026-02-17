@@ -1,20 +1,15 @@
 import { Alert, Button, Container, Form } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState, useRef } from 'react';
 import api from '../api';
 import { ShowLogs } from './ShowLogs';
+import { useVoiceRecording } from './useVoiceRecording';
 import {useAuth} from './Auth/AuthProvider';
 import Question from './Question';
 import './Log.css';
 
-const CATEGORY = [
-    {value:'logs', label:'Captains Logs'},
-    {value:'travel', label:'Travel'},
-    {value:'work', label:'Work'},
-    {value:'health', label:'Health'},
-    {value:'family', label:'Family'},
-    {value:'ideas', label:'Ideas'},
-    {value:'education', label:'Education'},
-]
+
 // CreateLog
 function CreateLog() {
     // Get the correct date and time (for the reminders)
@@ -24,11 +19,23 @@ function CreateLog() {
     const [entry, setEntry] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const [category, setCategory] = useState('logs');
     const [logs, setLogs] = useState([]);
 
-    const [filter, setFilter] = useState('all')
+    const [filter, setFilter] = useState('all');
+    const textareaRef = useRef(null);
+
     const { isAuthenticated } = useAuth();
+
+    // Auto-expand textarea function
+    const handleTextareaChange = (e) => {
+        setEntry(e.target.value);
+        
+        // Auto-expand textarea
+        const textarea = e.target;
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set to scroll height
+    };
+
 
     function fetchLogs() {
         api.get('/logs/')
@@ -45,6 +52,26 @@ function CreateLog() {
     );
 
 
+const { isRecording, startRecording, stopRecording } = useVoiceRecording(
+    (transcribedText) => {
+        setEntry(prev => {
+            const newEntry = prev + (prev ? ' ' : '') + transcribedText;
+            // Trigger auto-expand after voice input
+            setTimeout(() => {
+                if (textareaRef.current) {
+                    textareaRef.current.style.height = 'auto';
+                    textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+                }
+            }, 0);
+            return newEntry;
+        });
+        setError(null);  
+    },
+    (errorMessage) => {
+        setError(errorMessage);
+    }
+);
+
 
     useEffect(() => {
         if (!isAuthenticated) return;  // ← Don't fetch if not authenticated
@@ -57,13 +84,16 @@ function CreateLog() {
         const logData = {
             entry_type:entryType,
             entry: entry,
-            category: category,
             localDate: localDate,
         }
         api.post('/logs/', logData)
         .then((response) => {
             setSuccess('Entry Log Created');
             setEntry('');
+           // Reset textarea height after clearing
+            if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+            }
 
             setLogs((prevlogs) => [response.data,...prevlogs])
 
@@ -79,81 +109,92 @@ function CreateLog() {
             }
         })
     }
+
+
+
     return (
         <Container className='create-log-container'>
             <Container className='create-log-form-container'>
                 <Form onSubmit={handleSubmit} className='create-log-form'>
                     <div>
-                        {/* If error has a value, show the Alert */}
                         {success && <Alert variant="success">{success}</Alert>}
                         {error && <Alert variant='danger'>{error}</Alert>}
                     </div>
-                    <div className='new-entry-text'>
-                        NEW ENTRY
+
+                    {/* Top row: Just tabs */}
+                    <div className='form-controls-row'>
+                        <div className='entry-type-toggle'>
+                            <Button
+                                type="button"
+                                className={`type-toggle-btn ${entryType === 'journal' ? 'type-toggle-active' : ''}`}
+                                onClick={() => setEntryType('journal')}
+                            >
+                                Journal
+                            </Button>
+                            <Button
+                                type="button"
+                                className={`type-toggle-btn ${entryType === 'reminders' ? 'type-toggle-active' : ''}`}
+                                onClick={() => setEntryType('reminders')}
+                            >
+                                Reminder
+                            </Button>
+                        </div>
                     </div>
-                    <Form.Control
-                        id='captainsLog'
-                        as="textarea"
-                        placeholder="Captain's Log..."
-                        aria-label="Captain's log entry"
-                        value={entry}
-                        onChange={(e) => setEntry(e.target.value)}
-                        className='create-log-form-control bg-grey-inner'
-                    />
-                    <div className='create-log-form-select'>
-                        <Form.Select
-                            id='select-type'
-                            value={entryType}
-                            onChange={(e) => setEntryType(e.target.value)}
-                            className='select-log-type bg-grey-inner text-color-grey '
+
+                    {/* Textarea with mic button inside */}
+                    <div className='textarea-wrapper'>
+                        <Form.Control
+                            ref={textareaRef}
+                            id='captainsLog'
+                            as="textarea"
+                            rows={1}
+                            placeholder={entryType === 'journal' ? "What's on your mind?" : "Set reminder for..."}
+                            aria-label="Entry text"
+                            value={entry}
+                            onChange={handleTextareaChange}
+                            className='create-log-form-control bg-grey-inner'
+                        />
+                        
+                        {/* Mic icon positioned inside textarea */}
+                        <Button
+                            type="button"
+                            className={isRecording ? "voice-recording-btn" : "voice-mic-btn"}
+                            onClick={isRecording ? stopRecording : startRecording}
                         >
-                            <option value="journal">Journal</option>
-                            <option value="reminders">Reminder</option>
-                        </Form.Select>
-                        <Form.Select
-                            id='select-category'
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className='select-log-type bg-grey-inner text-color-grey '
-                        >
-                            {CATEGORY.map(item =>
-                                <option
-                                    value={item.value}
-                                    label={item.label}
-                                    key={item.value}
-            
-                                />
-                            )}
-                        </Form.Select>
+                            <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
+                        </Button>
                     </div>
-            
-                    <Button type="submit" className='create-log-form-button'>SAVE</Button>
+
+                    {/* Save button - right aligned */}
+                    <div className='save-button-container'>
+                        <Button type="submit" className='create-log-form-button'>Log it</Button>
+                    </div>
                 </Form>
             </Container>
             <Question />
 
             
             <Container className='show-logs'>
-                <div className='d-flex gap-2 mb-4'>
+                <div className='d-flex gap-2 mb-3'>
                     {/* If the button is active, add logs-buttons-active class */}
                     {/* On click, filter the logs depending on type */}
                     <Button 
                         className={`logs-buttons ${filter==='all'? 'logs-buttons-active':''}`} 
                         onClick={() => setFilter('all')}
                     >
-                        ALL
+                        All
                     </Button>
                     <Button 
                         className={`logs-buttons ${filter==='journal'? 'logs-buttons-active':''}`} 
                         onClick={() => setFilter('journal')}
                     >
-                        JOURNAL
+                        Journal
                     </Button>
                     <Button 
                         className={`logs-buttons ${filter==='reminders'? 'logs-buttons-active':''}`} 
                         onClick={() => setFilter('reminders')}
                     >
-                        REMINDERS
+                        Reminders
                     </Button>
                 </div>
                 {/* Pass the fetchLogs function, so everytime a log gets edited or deleted, refresh the logs */}

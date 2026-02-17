@@ -108,3 +108,32 @@ def get_answer(context):
     if not result:
         return None
     return result
+
+
+def transcribe_audio(audio_file):
+    """
+    Transcribes audio file using OpenAI Whisper API.
+    
+    Args:
+        audio_file: A file object (from request.FILES) containing audio data
+        
+    Returns:
+        str: The transcribed text, or None if transcription fails
+    """
+    try:
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        
+        # OpenAI expects a tuple: (filename, file_content, content_type)
+        # Django's InMemoryUploadedFile needs to be converted
+        audio_file.seek(0)  # Reset file pointer to beginning
+        
+        transcript = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=(audio_file.name, audio_file.read(), audio_file.content_type)
+        )
+        
+        return transcript.text
+        
+    except Exception as e:
+        print(f"Transcription error: {str(e)}")
+        return None

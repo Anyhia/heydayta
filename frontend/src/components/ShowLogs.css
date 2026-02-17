@@ -30,7 +30,7 @@ textarea.form-control.create-log-form-control:focus {
 }
 
 .container.show-logs {
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 .container.show-logs-container, ul {
@@ -49,11 +49,11 @@ textarea.form-control.create-log-form-control:focus {
 }
 
 .log-card-journal{
-    border-left: 4px solid var(--clr-gold);
+    border-left: 3px solid var(--clr-gold);
 }
 
 .log-card-reminder {
-    border-left: 4px solid var(--clr-lcars-purple);
+    border-left: 3px solid var(--clr-lcars-purple);
 }
 
 .date-buttons-container {

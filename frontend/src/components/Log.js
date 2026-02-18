@@ -97,6 +97,7 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
         api.post('/logs/', logData)
         .then((response) => {
             setSuccess('Entry Log Created');
+            setError(null);
             setEntry('');
            // Reset textarea height after clearing
             if (textareaRef.current) {

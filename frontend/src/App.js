@@ -11,6 +11,8 @@ import api, { setApiToken } from './api';
 import {useEffect} from 'react';
 import { useAuth } from './components/Auth/AuthProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NotFound from './components/NotFound';
+import ServerError from './components/ServerError';
 
 
 
@@ -90,6 +92,8 @@ function App() {
         {/* next Route will be wrapped in ProtectedRoute */}
         <Route  path="/createlog" element={ <ProtectedRoute> <CreateLog /> </ProtectedRoute> } />
         {/* <Route path="/question" element={ <ProtectedRoute> <Question /> </ProtectedRoute> } /> */}
+        <Route path="/500" element={<ServerError />} />
+        <Route path="*" element={<NotFound />} /> 
       </Routes>
       <Footer />
     </Router>

@@ -1,0 +1,138 @@
+.error-page-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--grey-bg-deep);
+}
+
+/* Scanline effect for Star Trek feel */
+.error-scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.015) 2px,
+        rgba(255,255,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.error-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.error-code-label {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-600);
+    letter-spacing: 0.3em;
+    color: var(--clr-tactical);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.error-label-red {
+    color: #e05c5c;
+    animation: blink 1.2s step-start infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: var(--fw-700);
+    color: var(--clr-tactical);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(var(--clr-tactical-rgb, 100,140,255), 0.4);
+    margin-bottom: 0.5rem;
+}
+
+.error-code-red {
+    color: #e05c5c;
+    text-shadow: 0 0 40px rgba(224, 92, 92, 0.4);
+}
+
+.error-divider {
+    width: 4rem;
+    height: 3px;
+    background: var(--clr-tactical);
+    margin: 1rem auto;
+    border-radius: 2px;
+}
+
+.error-divider-red {
+    background: #e05c5c;
+}
+
+.error-title {
+    color: var(--grey-text-light);
+    font-size: var(--fs-large);
+    font-weight: var(--fw-700);
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    color: var(--grey-text-muted);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-300);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-btn-primary {
+    padding: 0.6rem 2rem;
+    background: var(--clr-gold);
+    color: var(--grey-bg-deep);
+    border: none;
+    border-radius: 0.375rem;
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-600);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.error-btn-primary:hover {
+    background: var(--clr-gold-hover);
+}
+
+.error-btn-secondary {
+    padding: 0.6rem 2rem;
+    background: transparent;
+    color: var(--grey-text-light);
+    border: 1px solid var(--grey-text-muted);
+    border-radius: 0.375rem;
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-400);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.error-btn-secondary:hover {
+    border-color: var(--grey-text-light);
+    color: var(--clr-gold);
+}

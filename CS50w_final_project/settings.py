@@ -49,7 +49,7 @@ SECURE_HSTS_PRELOAD = not DEBUG
 
 
 HEROKU_APP_HOST = os.getenv("HEROKU_APP_HOST")  # e.g. "heydayta-12345e6789ab.herokuapp.com"
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "heydayta.app", "www.heydayta.app"]
 if HEROKU_APP_HOST:
     ALLOWED_HOSTS.append(HEROKU_APP_HOST)
     ALLOWED_HOSTS.append(".herokuapp.com")
@@ -229,7 +229,8 @@ SOCIALACCOUNT_PROVIDERS = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://heydayta-590c2392dfd2.herokuapp.com",
-
+    "https://www.heydayta.app",
+    "https://heydayta.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

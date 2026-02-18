@@ -4,7 +4,12 @@ import {useAuth} from './AuthProvider';
 function ProtectedRoute({children}) {
     const {isAuthenticated, loading} = useAuth();
     if(loading) {
-        return <div>Loading...</div> // Add a spiner
+        return ( 
+            <div className="loading-screen">
+                <div className="spinner" />
+                <p className="loading-text">Initializing your memory vault...</p>
+            </div>
+        )
     }
     if(!isAuthenticated) {  // ← Check isAuthenticated instead of token
         return <Navigate to='/login' replace />; 

@@ -24,6 +24,9 @@ function CreateLog() {
     const [filter, setFilter] = useState('all');
     const textareaRef = useRef(null);
 
+    const [isLoadingLogs, setIsLoadingLogs] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const { isAuthenticated } = useAuth();
 
     // Auto-expand textarea function
@@ -38,12 +41,16 @@ function CreateLog() {
 
 
     function fetchLogs() {
+        setIsLoadingLogs(true);
         api.get('/logs/')
         .then((response) => {
             setLogs(response.data);
         })
         .catch((error) => {
             console.error('Failed to fetch logs:', error);
+        })
+        .finally(() => {
+            setIsLoadingLogs(false);
         });
     }
 
@@ -81,6 +88,7 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         const logData = {
             entry_type:entryType,
             entry: entry,
@@ -107,6 +115,9 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
             } else {
                 setError('Entry Log not created. Please try again.');
             }
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         })
     }
 
@@ -167,7 +178,14 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
 
                     {/* Save button - right aligned */}
                     <div className='save-button-container'>
-                        <Button type="submit" className='create-log-form-button'>Log it</Button>
+                        <Button type="submit" className='create-log-form-button' disabled={isSubmitting}>
+                            {isSubmitting ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    {entryType === 'reminders' ? 'Scheduling...' : 'Saving...'}
+                                </>
+                            ) : 'Log it'}
+                        </Button>
                     </div>
                 </Form>
             </Container>
@@ -197,13 +215,25 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                         Reminders
                     </Button>
                 </div>
-                {/* Pass the fetchLogs function, so everytime a log gets edited or deleted, refresh the logs */}
-                {filteredLogs.length === 0 && (
-                    <div className='empty-logs-message'>
-                        <p className='empty-logs-title'>No logs yet</p>
-                        <p className='empty-logs-subtitle'>Start your journey by creating your first entry above</p>
+                
+                {isLoadingLogs ? (
+                    <div className="d-flex justify-content-center py-4">
+                        <span className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading logs...</span>
+                        </span>
                     </div>
+                ) : (
+                    <>
+                        {filteredLogs.length === 0 && (
+                            <div className='empty-logs-message'>
+                                <p className='empty-logs-title'>No logs yet</p>
+                                <p className='empty-logs-subtitle'>Start your journey by creating your first entry above</p>
+                            </div>
+                        )}
+                        <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
+                    </>
                 )}
+                {/* Pass the fetchLogs function, so everytime a log gets edited or deleted, refresh the logs */}
                 <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
             </Container>
         </Container>

@@ -11,6 +11,7 @@ function Question() {
     const [error, setError] = useState(null);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('')
+    const [isAsking, setIsAsking] = useState(false);
 
     const questionRef = useRef();
 
@@ -51,6 +52,7 @@ function Question() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsAsking(true);
         const localDate = new Date().getTimezoneOffset(); 
         const questionData = {
             localDate: localDate,
@@ -73,6 +75,9 @@ function Question() {
             } else {
                 setError('Question could not be answered. Please try again.')
             }
+        })
+        .finally(() => {
+            setIsAsking(false);
         })
     }
 
@@ -113,8 +118,11 @@ function Question() {
                     </div>
 
                     {/* Search button - outside wrapper */}
-                    <Button type="submit" className='question-form-button'>
-                        <FontAwesomeIcon icon={faSearch} />
+                    <Button type="submit" className='question-form-button' disabled={isAsking}>
+                        {isAsking 
+                            ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            : <FontAwesomeIcon icon={faSearch} />
+                        }
                     </Button>
                 </div>
             </Form>

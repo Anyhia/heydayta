@@ -165,7 +165,7 @@ textarea.question-form-control::placeholder {
     outline: none;
     color: var(--grey-text-light);
     padding: 0.75rem; /* Match input padding */
-    margin-top: 0.75rem;
+    margin: 0.75rem;
     line-height: 1.6;
 }
 

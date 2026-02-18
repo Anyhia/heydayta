@@ -5,6 +5,7 @@ import Logout from './components/Auth/Logout';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import CreateLog from './components/Log';
 import { About, AboutPage } from './components/About';
+import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
@@ -90,6 +91,7 @@ function App() {
         <Route  path="/createlog" element={ <ProtectedRoute> <CreateLog /> </ProtectedRoute> } />
         {/* <Route path="/question" element={ <ProtectedRoute> <Question /> </ProtectedRoute> } /> */}
       </Routes>
+      <Footer />
     </Router>
   );
 }

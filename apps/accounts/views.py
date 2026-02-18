@@ -130,7 +130,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 httponly=True,  # Can't be accessed by JavaScript
                 secure=os.getenv('DEBUG', 'False') != 'True',  # True in production, False locally
                 samesite='Lax',
-                path='/'
+                path='/',
             )
             
             # Remove refresh token from response body to return only the access token

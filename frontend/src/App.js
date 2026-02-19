@@ -8,6 +8,7 @@ import { About, AboutPage } from './components/About';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
 import { useAuth } from './components/Auth/AuthProvider';
@@ -94,6 +95,7 @@ function App() {
         <Route  path="/createlog" element={ <ProtectedRoute> <CreateLog /> </ProtectedRoute> } />
         {/* <Route path="/question" element={ <ProtectedRoute> <Question /> </ProtectedRoute> } /> */}
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/terms-of-service' element={<TermsOfService />} />
         <Route path="/500" element={<ServerError />} />
         <Route path="*" element={<NotFound />} /> 
       </Routes>

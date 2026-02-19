@@ -207,7 +207,14 @@ const Register = () => {
                             setValidCheck(e.target.checked);
                             setShowError(false)
                         }}
-                        label={<>I agree to the <a href='/privacy-policy' target='_blank' className='policy-link'>Privacy Policy</a> and Terms of Service</>}
+                        label={
+                            <>
+                                I agree to the{' '}
+                                <a href='/terms-of-service' target='_blank' className='policy-link'>Terms of Service</a>
+                                {' '}and{' '}
+                                <a href='/privacy-policy' target='_blank' className='policy-link'>Privacy Policy</a>
+                            </>
+                        }
                         feedback='You must agree with terms and conditions'
                         feedbackType="invalid"
                         className='label'

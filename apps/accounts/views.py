@@ -187,3 +187,22 @@ class LogoutAPIView(APIView):
             path='/'  # Must match
         )
         return response
+    
+
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        response = Response({'message': 'Account deleted successfully'}, status=status.HTTP_200_OK)
+        response.set_cookie(
+            key='refresh_token',
+            value='',
+            max_age=0,
+            httponly=True,
+            secure=os.getenv('DEBUG', 'False') != 'True',
+            samesite='Lax',
+            path='/'
+        )
+        return response

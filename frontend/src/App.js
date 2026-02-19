@@ -10,6 +10,7 @@ import NavBar from './components/NavBar';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import CookieBanner from './components/CookieBanner';
+import AccountSettings from './components/AccountSettings';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
 import { useAuth } from './components/Auth/AuthProvider';
@@ -95,6 +96,7 @@ function App() {
         {/* next Route will be wrapped in ProtectedRoute */}
         <Route  path="/createlog" element={ <ProtectedRoute> <CreateLog /> </ProtectedRoute> } />
         {/* <Route path="/question" element={ <ProtectedRoute> <Question /> </ProtectedRoute> } /> */}
+        <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/terms-of-service' element={<TermsOfService />} />
         <Route path="/500" element={<ServerError />} />

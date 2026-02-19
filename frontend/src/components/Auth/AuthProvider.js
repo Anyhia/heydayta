@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
         // Only first time the app loads
         const restoreSession = async () => {
             // Don't restore on public pages (login/register) - prevents loop when cookie is missing
-            const publicPages = ['/login', '/register', '/'];
+            const publicPages = ['/login', '/register', '/privacy-policy', '/terms-of-service', '/'];
             if (publicPages.includes(window.location.pathname)) {
                 setLoading(false); // Stop loading so public pages can render
                 return; // Exit early - don't try to refresh token

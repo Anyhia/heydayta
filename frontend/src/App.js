@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
+import CookieBanner from './components/CookieBanner';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
 import { useAuth } from './components/Auth/AuthProvider';
@@ -100,6 +101,7 @@ function App() {
         <Route path="*" element={<NotFound />} /> 
       </Routes>
       <Footer />
+      <CookieBanner />
     </Router>
   );
 }

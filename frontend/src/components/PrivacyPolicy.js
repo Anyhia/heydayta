@@ -17,10 +17,10 @@ function PrivacyPolicy() {
                     <h2 className='policy-section-title'>01 — Who We Are</h2>
                     <p>
                         HeyDayta (<strong>heydayta.app</strong>) is a personal journaling and reminder application
-                        developed and operated by <strong>Gabriela Maricari</strong>, an individual developer based in Belgium.
+                        developed and operated by <strong>Gabriela Cocos</strong>, an individual developer based in Belgium.
                     </p>
                     <p>
-                        As the data controller, Gabriela Maricari is responsible for the personal data you provide when
+                        As the data controller, Gabriela Cocos is responsible for the personal data you provide when
                         using this application. For any privacy-related questions, contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>.
                     </p>

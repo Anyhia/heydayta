@@ -20,7 +20,7 @@ function TermsOfService() {
                         these Terms of Service. If you do not agree, please do not use the application.
                     </p>
                     <p>
-                        HeyDayta is operated by <strong>Gabriela Maricari</strong>, an individual developer
+                        HeyDayta is operated by <strong>Gabriela Cocos</strong>, an individual developer
                         based in Belgium. For questions, contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>.
                     </p>

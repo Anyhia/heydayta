@@ -26,8 +26,9 @@ urlpatterns = [
     # These must come before the catch-all route to index.html
     path('manifest.json', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'manifest.json'}),
     path('favicon.ico', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'favicon.ico'}),
-    path('logo192.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'logo192.png'}),
-    path('logo512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'logo512.png'}),
+    path('android-chrome-192x192.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-192x192.png'}),
+    path('android-chrome-512x512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-512x512.png'}),
+    path('apple-touch-icon.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'apple-touch-icon.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
 
     re_path(r'^(?!captain-bridge-desk|api).*$', TemplateView.as_view(

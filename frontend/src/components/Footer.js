@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer className="footer-container">
       <p className="footer-text">
-        © {new Date().getFullYear()} HeyDayta · All rights reserved.
+        © 2026 HeyDayta · <a href='/privacy-policy'>Privacy Policy</a> · <a href='/terms-of-service'>Terms</a>
       </p>
     </footer>
   );

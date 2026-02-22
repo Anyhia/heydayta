@@ -2,7 +2,7 @@
 
 > A full-stack web application for capturing life's moments with AI-powered semantic search and intelligent reminders.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://heydayta-590c2392dfd2.herokuapp.com/)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://heydayta.app)
 [![Python](https://img.shields.io/badge/Python-3.10.12-blue)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-5.2.5-green)](https://www.djangoproject.com/)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB)](https://reactjs.org/)
@@ -70,6 +70,8 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **🔐 Dual Authentication**: Traditional email/password and Google OAuth 2.0
 - **🌍 Multilingual Support**: Automatic language detection for AI responses
 - **📱 Responsive Design**: Mobile-friendly Star Trek-inspired UI
+- **⚙️ Account Settings**: Manage your account and permanently delete your data at `/account`
+- **🚨 Custom Error Pages**: Star Trek-themed 404 and 500 error pages
 
 ### Technical Highlights
 - **Vector Embeddings**: OpenAI `text-embedding-3-small` model for semantic search
@@ -77,6 +79,11 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
 - **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
 - **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
+
+### Legal & Compliance
+- **📜 Privacy Policy**: Full GDPR-compliant privacy policy at `/privacy-policy`, linked from the registration form
+- **📋 Terms of Service**: Terms of Service at `/terms-of-service`, required checkbox at registration
+- **🍪 Cookie Notice**: GDPR cookie banner for EU users explaining httpOnly JWT cookie usage
 
 ---
 
@@ -146,7 +153,7 @@ Single Heroku application serving both Django API and React static build via Whi
 
 ## 🚀 Live Demo
 
-**Production URL**: [https://heydayta-590c2392dfd2.herokuapp.com/](https://heydayta-590c2392dfd2.herokuapp.com/)
+**Production URL**: [https://heydayta.app](https://heydayta.app) · [https://heydayta-590c2392dfd2.herokuapp.com/](https://heydayta-590c2392dfd2.herokuapp.com/)
 
 **Try these features:**
 1. Sign up with Google or create an account
@@ -257,11 +264,16 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 REDIS_URL=redis://localhost:6379/0
 ```
 
-#### Email Settings (Gmail)
+#### Email Settings (OVHcloud Zimbra)
 
 ```bash
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password  # Use App Password, not regular password
+EMAIL_HOST=smtp.mail.ovh.net
+EMAIL_PORT=465
+EMAIL_USE_TLS=False
+EMAIL_USE_SSL=True
+EMAIL_HOST_USER=hello@heydayta.app
+EMAIL_HOST_PASSWORD=your-zimbra-password
+DEFAULT_FROM_EMAIL=hello@heydayta.app
 ```
 
 #### Production (Heroku sets these automatically)
@@ -293,13 +305,17 @@ Add authorized origins:
 
 http://localhost:3000 (development)
 
-https://your-app-name.herokuapp.com (production)
+https://heydayta.app (production)
+
+https://www.heydayta.app (production)
 
 Add redirect URIs:
 
 http://localhost:8000/accounts/google/login/callback/
 
-https://your-app-name.herokuapp.com/api/accounts/google
+https://heydayta.app/api/accounts/google
+
+https://www.heydayta.app/api/accounts/google
 
 ### 🚢 Deployment
 Heroku Deployment (Production)
@@ -442,6 +458,7 @@ Database Connection Pooling: conn_max_age=600 for persistent connections
 - **Real-time error monitoring** (Sentry)
 - **Uptime monitoring** (UptimeRobot with 5-minute checks)
 - **Cross-Origin Isolation** headers for OAuth popup compatibility
+- **GDPR-compliant**: Privacy Policy and Terms of Service pages linked at registration; httpOnly JWT cookies with a cookie notice banner for EU users
 
 ### 📚 API Documentation
 Authentication Endpoints
@@ -529,12 +546,12 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ 
 This project is licensed under the MIT License.
 
 ## 👤 Contact
-### Gabriela Maricari
+### Gabriela Cocos
 ### Full-Stack Developer | Django & React Specialist
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Anyhia)
-[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:gabriela.maricari@gmail.com) 
+[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:hello@heydayta.app)
 ⭐ If you found this project interesting, please consider giving it a star!
 
 This project was originally created as a final project for Harvard's CS50 Web Programming with Python and JavaScript course and has been significantly enhanced for production deployment.

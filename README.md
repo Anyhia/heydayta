@@ -137,6 +137,12 @@ Single Heroku application serving both Django API and React static build via Whi
   - Heroku Postgres (with pgvector extension enabled).
   - Heroku Redis (as the Celery message broker).
 
+### Domain & DNS Configuration
+- Domain registered at OVHcloud
+- DNS managed by Cloudflare (free plan) using CNAME flattening to resolve the apex domain (`heydayta.app`) to Heroku without a static IP
+- Both apex and www routes are proxied through Cloudflare with automatic HTTPS
+- OVHcloud nameservers replaced with `mia.ns.cloudflare.com` and `vick.ns.cloudflare.com`
+
 
 ### Authentication Flow
 1. User logs in (email/password or Google OAuth)

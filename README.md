@@ -72,6 +72,8 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **📱 Responsive Design**: Mobile-friendly Star Trek-inspired UI
 - **⚙️ Account Settings**: Manage your account and permanently delete your data at `/account`
 - **🚨 Custom Error Pages**: Star Trek-themed 404 and 500 error pages
+- **⏳ Loading States**: Session-aware loading spinners across protected routes and data-heavy views
+- **🔗 Footer**: Site-wide footer with links to Privacy Policy and Terms of Service
 
 ### Technical Highlights
 - **Vector Embeddings**: OpenAI `text-embedding-3-small` model for semantic search
@@ -79,6 +81,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
 - **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
 - **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
+- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, and standalone display mode
 
 ### Legal & Compliance
 - **📜 Privacy Policy**: Full GDPR-compliant privacy policy at `/privacy-policy`, linked from the registration form

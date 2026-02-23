@@ -234,8 +234,8 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                         <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
                     </>
                 )}
-                {/* Pass the fetchLogs function, so everytime a log gets edited or deleted, refresh the logs */}
-                <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
+                
+                
             </Container>
         </Container>
     )

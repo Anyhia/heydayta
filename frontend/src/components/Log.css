@@ -204,6 +204,8 @@ textarea.create-log-form-control::placeholder {
 .save-button-container {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
 }
 
 .howto-hint { 

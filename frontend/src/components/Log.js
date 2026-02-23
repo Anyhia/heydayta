@@ -177,16 +177,14 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                             <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
                         </Button>
                     </div>
-                    {entryType === 'reminders' && (
-                        <div className='howto-hint'>
-                            <Link to='/how-to-use' className='howto-hint-link' target='_blank'>
-                                ❓ How to write a reminder
-                            </Link>
-                        </div>
-                    )}
 
                     {/* Save button - right aligned */}
                     <div className='save-button-container'>
+                        {entryType === 'reminders' && (
+                            <Link to='/how-to-use' className='howto-hint-link' target='_blank'>
+                                ❓ How to write a reminder
+                            </Link>
+                        )}
                         <Button type="submit" className='create-log-form-button' disabled={isSubmitting}>
                             {isSubmitting ? (
                                 <>

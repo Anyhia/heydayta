@@ -2,6 +2,7 @@ import { Alert, Button, Container, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
 import { ShowLogs } from './ShowLogs';
 import { useVoiceRecording } from './useVoiceRecording';
@@ -176,6 +177,13 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                             <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
                         </Button>
                     </div>
+                    {entryType === 'reminders' && (
+                        <div className='howto-hint'>
+                            <Link to='/how-to-use' className='howto-hint-link' target='_blank'>
+                                ❓ How to write a reminder
+                            </Link>
+                        </div>
+                    )}
 
                     {/* Save button - right aligned */}
                     <div className='save-button-container'>

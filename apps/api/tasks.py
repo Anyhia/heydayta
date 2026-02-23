@@ -1,5 +1,5 @@
 from celery import shared_task
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from .models import Log
 
 
@@ -20,13 +20,14 @@ def send_email_reminder(reminder_id):
             return
         
         print(f"Sending email to {log.user.email}")
-        send_mail(
+        email = EmailMessage(
             subject='You have a reminder from HeyDayta',
-            message=log.entry,
+            body=log.entry,
             from_email='HeyDayta Reminders <hello@heydayta.app>',
-            recipient_list=[log.user.email],
+            to=[log.user.email],
             reply_to=['hello@heydayta.app'],
         )
+        email.send()
         
         log.status = 'sent'
         log.save()

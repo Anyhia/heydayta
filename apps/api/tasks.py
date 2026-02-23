@@ -25,6 +25,7 @@ def send_email_reminder(reminder_id):
             message=log.entry,
             from_email='HeyDayta Reminders <hello@heydayta.app>',
             recipient_list=[log.user.email],
+            reply_to=['hello@heydayta.app'],
         )
         
         log.status = 'sent'

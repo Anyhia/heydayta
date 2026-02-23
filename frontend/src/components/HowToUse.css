@@ -1,0 +1,115 @@
+.howto-examples {
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--clr-tactical);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.howto-example-row {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 0.2rem;
+}
+
+.howto-example-row:last-child {
+    border-bottom: none;
+}
+
+.howto-example-label {
+    color: var(--clr-tactical);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-600);
+    letter-spacing: 0.05em;
+    font-family: monospace;
+    flex-shrink: 0;
+}
+
+.howto-example-text {
+    color: var(--grey-text-light);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-300);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* Tip blocks */
+.howto-tip {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background-color: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+    margin: 0.75rem 0;
+    color: var(--grey-text-light);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-300);
+    line-height: 1.6;
+}
+
+.howto-tip-multilingual {
+    background-color: rgba(168, 85, 247, 0.06);
+    border-color: rgba(168, 85, 247, 0.2);
+}
+
+.howto-tip-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.howto-tip strong {
+    color: var(--grey-text-light);
+    font-weight: var(--fw-600);
+}
+
+/* Steps */
+.howto-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1rem 0;
+}
+
+.howto-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    color: var(--grey-text-light);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-300);
+    line-height: 1.6;
+}
+
+.howto-step-number {
+    background-color: var(--clr-tactical);
+    color: var(--grey-bg-deep);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-700);
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+}
+
+/* Responsive */
+@media (min-width: 576px) {
+    .howto-example-row {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .howto-example-label {
+        min-width: 120px;
+    }
+}

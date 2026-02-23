@@ -10,6 +10,7 @@ import NavBar from './components/NavBar';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import CookieBanner from './components/CookieBanner';
+import HowToUse from './components/HowToUse';
 import AccountSettings from './components/AccountSettings';
 import api, { setApiToken } from './api';
 import {useEffect} from 'react';
@@ -99,6 +100,7 @@ function App() {
         <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/terms-of-service' element={<TermsOfService />} />
+        <Route path='/how-to-use' element={<HowToUse />} />
         <Route path="/500" element={<ServerError />} />
         <Route path="*" element={<NotFound />} /> 
       </Routes>

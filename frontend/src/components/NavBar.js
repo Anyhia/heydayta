@@ -100,6 +100,7 @@ function NavBar() {
                     <Dropdown.Item className='user-item' as={Link} to="/login">Login</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/logout">Logout</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/about">About</Dropdown.Item>
+                    <Dropdown.Item className='user-item' as={Link} to="/how-to-use">How to Use</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </Container>

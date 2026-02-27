@@ -40,7 +40,7 @@ HeyDayta is a personal memory journaling application that helps users capture da
 
 - **All-in-One Memory Hub**: Journal entries, smart reminders, and AI-powered search in a single interface. No app-switching, no complexity—just one place for everything you need to remember.
 
-- **Multilingual AI Search**: Ask questions in any language (*"¿Qué comí ayer?"* or *"Ce am mâncat ieri?"*) and get answers in the same language, thanks to GPT-4 integration.
+- **Multilingual AI Search**: Ask questions in any language (*"¿Qué comí ayer?"* or *"Ce am mâncat ieri?"*) and get answers in the same language, thanks to GPT-3.5-turbo integration.
 
 - **Timezone-Aware Reminders**: Schedule reminders that fire at the correct local time, no matter where you are in the world. Celery + Redis handle background processing with precision.
 
@@ -56,7 +56,7 @@ In our fast-paced world, we're drowning in apps, notifications, and calendars. I
 
 HeyDayta combines the speed of natural language input with the power of AI search, wrapped in a clean, Star Trek-inspired interface. It's the app I wish existed when I needed to remember everything but had no time to organize anything.
 
-**Technology used:** Django, React, OpenAI GPT-4, PostgreSQL pgvector, Celery, Redis  
+**Technology used:** Django, React, OpenAI GPT-3.5-turbo, PostgreSQL pgvector, Celery, Redis  
 **Deployment:** Production-ready on Heroku with 99.9% uptime
 
 ---
@@ -112,8 +112,8 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 | **Axios** | HTTP client with interceptors for token refresh |
 
 ### AI & Infrastructure
-- **OpenAI API**: Text embeddings and GPT-4 completions
-- **Heroku**: Hosting (web, worker, beat dynos)
+- **OpenAI API**: Text embeddings and -GPT-3.5-turbo completions
+- **Heroku**: Hosting (web, worker)
 - **Heroku Postgres**: Production database
 - **Heroku Redis**: Message broker for Celery
 
@@ -132,7 +132,6 @@ Single Heroku application serving both Django API and React static build via Whi
 - One Heroku app (`heydayta`) running:
   - Web dyno: Gunicorn serving the Django API under `/api/` and the React static files at `/`.
   - Worker dyno: Celery worker for background tasks (reminders, emails).
-  - Beat dyno: Celery Beat scheduler for periodic jobs.
 - Add-ons:
   - Heroku Postgres (with pgvector extension enabled).
   - Heroku Redis (as the Celery message broker).
@@ -155,7 +154,7 @@ Single Heroku application serving both Django API and React static build via Whi
 1. User asks question → Create embedding via OpenAI API
 2. Query PostgreSQL with L2Distance vector similarity
 3. Retrieve closest matching log entries
-4. Pass entries to GPT-4 with context-aware prompt
+4. Pass entries to GPT-3.5-turbo with context-aware prompt
 5. Return answer in user's language
 
 ---
@@ -229,10 +228,6 @@ Terminal 1: Start Celery worker
 celery -A CS50w_final_project worker --loglevel=info
 ```
 
-Terminal 2: Start Celery beat (scheduler)
-```bash
-celery -A CS50w_final_project beat --loglevel=info
-```
 
 ### 🔐 Environment Variables
 Create a .env file in the project root
@@ -365,8 +360,13 @@ heroku config:set SECRET_KEY=your-secret-key
 heroku config:set OPENAI_API_KEY=sk-your-key
 heroku config:set GOOGLE_CLIENT_ID=your-client-id
 heroku config:set GOOGLE_CLIENT_SECRET=your-secret
-heroku config:set EMAIL_HOST_USER=your-email@gmail.com
-heroku config:set EMAIL_HOST_PASSWORD=your-app-password
+heroku config:set EMAIL_HOST=smtp.mail.ovh.net
+heroku config:set EMAIL_PORT=465
+heroku config:set EMAIL_USE_TLS=False
+heroku config:set EMAIL_USE_SSL=True
+heroku config:set EMAIL_HOST_USER=hello@heydayta.app
+heroku config:set EMAIL_HOST_PASSWORD=your-zimbra-password
+heroku config:set DEFAULT_FROM_EMAIL=hello@heydayta.app
 heroku config:set DEBUG=False
 heroku config:set HEROKU_APP_HOST=your-app-name.herokuapp.com
 heroku config:set DJANGO_ADMIN_URL=your-secret-admin-path/
@@ -399,7 +399,7 @@ heroku run python manage.py collectstatic --noinput
 
 #### Scale dynos
 ```bash
-heroku ps:scale web=1 worker=1 beat=1
+heroku ps:scale web=1 worker=1 
 heroku pg:backups:schedule DATABASE_URL --at '02:00 Europe/Brussels'
 ```
 
@@ -494,7 +494,7 @@ POST   /api/logs/ask_question/  # AI-powered Q&A
 ### Example: Create Journal Entry
 
 ```bash
-curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
+curl -X POST https://heydayta.app/api/logs/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -508,7 +508,7 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
 ### Example: Create Reminder with Natural Language
 
 ```bash
-curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
+curl -X POST https://heydayta.app/api/logs/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -522,7 +522,7 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ \
 ### Example: Ask Question
 
 ```bash
-curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ \
+curl -X POST https://heydayta.app/api/logs/ask_question/ \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -533,8 +533,6 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ 
 
 ## 🔮 Future Enhancements
 
- Mobile App: React Native version for iOS/Android
-
  Rich Text Editor: Markdown support with image uploads
 
  Data Export: Download journal entries as PDF/JSON
@@ -542,8 +540,6 @@ curl -X POST https://heydayta-590c2392dfd2.herokuapp.com/api/logs/ask_question/ 
  Collaborative Journals: Share entries with family/friends
 
  Advanced Analytics: Mood tracking and visualization
-
- Voice Entries: Speech-to-text integration
 
  Multi-factor Authentication: Enhanced security with 2FA
 

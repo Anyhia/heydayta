@@ -489,6 +489,7 @@ GET    /api/logs/{id}/     # Retrieve specific log
 PUT    /api/logs/{id}/     # Update log
 DELETE /api/logs/{id}/     # Delete log
 POST   /api/logs/ask_question/  # AI-powered Q&A
+POST   /api/logs/transcribe/ # Voice-to-text via OpenAI Whisper
 ```
 
 ### Example: Create Journal Entry
@@ -554,7 +555,7 @@ This project is licensed under the MIT License.
 ### Gabriela Cocos
 ### Full-Stack Developer | Django & React Specialist
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](www.linkedin.com/in/gabriela-cocoș-3a634823b)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Anyhia)
 [![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:hello@heydayta.app)
 ⭐ If you found this project interesting, please consider giving it a star!

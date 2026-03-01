@@ -30,6 +30,7 @@ urlpatterns = [
     path('android-chrome-512x512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-512x512.png'}),
     path('apple-touch-icon.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'apple-touch-icon.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
+    path('service-worker.js', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'service-worker.js'}),
 
     re_path(r'^(?!captain-bridge-desk|api).*$', never_cache(TemplateView.as_view(
         template_name='index.html',

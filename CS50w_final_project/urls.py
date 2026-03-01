@@ -10,7 +10,7 @@ from apps.accounts.views import CustomTokenObtainPairView, CustomTokenRefreshVie
 from django.views.generic import TemplateView
 from django.conf import settings
 import os
-
+from django.views.decorators.cache import never_cache
 from django.views.static import serve
 
 
@@ -31,9 +31,9 @@ urlpatterns = [
     path('apple-touch-icon.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'apple-touch-icon.png'}),
     path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
 
-    re_path(r'^(?!captain-bridge-desk|api).*$', TemplateView.as_view(
+    re_path(r'^(?!captain-bridge-desk|api).*$', never_cache(TemplateView.as_view(
         template_name='index.html',
         extra_context={'STATIC_URL': settings.STATIC_URL}
-    )),
+    ))),
 
 ]

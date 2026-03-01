@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthProvider from './components/Auth/AuthProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { register } from './serviceWorkerRegistration';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -25,3 +26,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+register();

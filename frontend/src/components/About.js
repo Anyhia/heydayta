@@ -35,7 +35,7 @@ function AboutContent() {
                         Remember Everything, <span className='memory-vault'>Find Anything</span>
                     </div>
                     <div className='description'>
-                        Write journals and search them in plain language. No tags, no folders, no hassle — just ask and find what you need.
+                        Your brain has better things to do
                     </div>
                 </div>
                 <img src={Mascot} alt="HeyDayta mascot" className="mascot-image"/>
@@ -46,18 +46,18 @@ function AboutContent() {
             <Container className='show-descriptions'>
                 <div className='description-card blue'>
                     <div className='description-card-icon icon-blue'><FontAwesomeIcon icon={faCalendar} /></div>
-                    <div className='description-card-title'>Journal & Reminders</div>
-                    <div className='description-card-text'>Capture daily moments and never forget important tasks.</div>
+                    <div className='description-card-title'>Write it, say it, forget it</div>
+                    <div className='description-card-text'>No effort, no organizing. HeyDayta holds onto it so you don't have to.</div>
                 </div>
                 <div className='description-card purple'>
                     <div className='description-card-icon icon-purple'><FontAwesomeIcon icon={faBrain} /></div>
-                    <div className='description-card-title'>Smart Search</div>
-                    <div className='description-card-text'>Ask about your past in everyday language. Get instant answers.</div>
+                    <div className='description-card-title'>Reminders that understand you</div>
+                    <div className='description-card-text'>No date pickers, no dropdowns. HeyDayta figures it out.</div>
                 </div>
                 <div className='description-card orange'>
                     <div className='description-card-icon icon-orange'><FontAwesomeIcon icon={faLock} /></div>
-                    <div className='description-card-title'>Private & Secure</div>
-                    <div className='description-card-text'>Completely private. Only you can see your journals.</div>
+                    <div className='description-card-title'>Ask. Don't search.</div>
+                    <div className='description-card-text'>When you need something, just ask. Like talking to someone who remembers everything.</div>
                 </div>
             </Container>
         

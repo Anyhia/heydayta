@@ -18,11 +18,13 @@ import { useAuth } from './components/Auth/AuthProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import ServerError from './components/ServerError';
+import usePushNotifications from './hooks/usePushNotifications';
 
 
 
 function App() {
-  const { token, setToken } = useAuth();
+  const { token, setToken, isAuthenticated } = useAuth();
+  usePushNotifications(isAuthenticated);
 
   // whenever the token changes, call the setApiToken (declared in api.js)
   useEffect(() => {

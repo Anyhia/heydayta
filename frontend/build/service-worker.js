@@ -69,3 +69,48 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+
+// Receive a push from the server and show a notification
+self.addEventListener('push', (event) => {
+  let title = 'HeyDayta';
+  let body = 'You have a reminder.';
+
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      title = data.title || title;
+      body = data.body || body;
+    } catch (e) {
+      // If the payload isn't JSON, use it as plain text
+      body = event.data.text();
+    }
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: body,
+      icon: '/android-chrome-192x192.png',
+      badge: '/android-chrome-192x192.png',
+    })
+  );
+});
+
+// When the user taps the notification, open the app
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // If the app is already open in a tab, focus it
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise open a new tab
+      if (clients.openWindow) {
+        return clients.openWindow('/');
+      }
+    })
+  );
+});

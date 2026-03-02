@@ -1,9 +1,17 @@
-import { useState, useEffect } from 'react';
+
 import { Container, Button, Alert } from 'react-bootstrap';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './Auth/AuthProvider';
 import api from '../api';
 import './AccountSettings.css';
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+}
 
 function AccountSettings() {
     const [userInfo, setUserInfo] = useState(null);
@@ -13,6 +21,70 @@ function AccountSettings() {
     const [isDeleting, setIsDeleting] = useState(false);
     const { logout } = useAuth();
     const navigate = useNavigate();
+    const [notifStatus, setNotifStatus] = useState('loading');
+    // 'loading' | 'unsupported' | 'denied' | 'subscribed' | 'unsubscribed'
+
+    const checkNotifStatus = useCallback(async () => {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+            setNotifStatus('unsupported');
+            return;
+        }
+        if (Notification.permission === 'denied') {
+            setNotifStatus('denied');
+            return;
+        }
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.getSubscription();
+            setNotifStatus(subscription ? 'subscribed' : 'unsubscribed');
+        } catch (e) {
+            setNotifStatus('unsubscribed');
+        }
+    }, []);
+
+    useEffect(() => {
+        checkNotifStatus();
+    }, [checkNotifStatus]);
+
+    const handleEnableNotifications = async () => {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const { data } = await api.get('/push/vapid-public-key/');
+            const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
+            const subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey,
+            });
+            const subscriptionJson = subscription.toJSON();
+            await api.post('/push/subscribe/', {
+                endpoint: subscriptionJson.endpoint,
+                p256dh: subscriptionJson.keys.p256dh,
+                auth: subscriptionJson.keys.auth,
+            });
+            setNotifStatus('subscribed');
+        } catch (e) {
+            if (Notification.permission === 'denied') {
+                setNotifStatus('denied');
+            }
+            console.error('Failed to enable notifications:', e);
+        }
+    };
+
+    const handleDisableNotifications = async () => {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.getSubscription();
+            if (subscription) {
+                await api.delete('/push/subscribe/', {
+                    data: { endpoint: subscription.endpoint }
+                });
+                await subscription.unsubscribe();
+            }
+            setNotifStatus('unsubscribed');
+        } catch (e) {
+            console.error('Failed to disable notifications:', e);
+        }
+    };
 
     useEffect(() => {
         api.get('/accounts/me/')

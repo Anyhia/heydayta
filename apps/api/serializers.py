@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Log
+from .models import Log, PushSubscription
 
 class LogSerializer(serializers.ModelSerializer):
 
@@ -20,3 +20,12 @@ class LogSerializer(serializers.ModelSerializer):
 
 
 
+class PushSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PushSubscription
+        fields = ('id', 'endpoint', 'p256dh', 'auth')
+        extra_kwargs = {
+            'endpoint': {'required': True},
+            'p256dh': {'required': True},
+            'auth': {'required': True},
+        }

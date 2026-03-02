@@ -212,6 +212,29 @@
     background-color: #cc0000 !important;
 }
 
+.settings-notif-btn {
+    background-color: transparent !important;
+    border: 1px solid var(--clr-tactical) !important;
+    color: var(--clr-tactical) !important;
+    font-size: var(--fs-small) !important;
+    font-weight: var(--fw-500) !important;
+    padding: 0.4rem 1.25rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.settings-notif-btn:hover {
+    background-color: rgba(255, 153, 102, 0.1) !important;
+}
+
+.settings-notif-btn--off {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: var(--grey-text-muted) !important;
+}
+
+.settings-notif-btn--off:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
 /* Responsive */
 @media (min-width: 576px) {
     .settings-info-row {

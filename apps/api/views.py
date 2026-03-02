@@ -1,8 +1,10 @@
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Log
-from .serializers import LogSerializer
+from .models import Log, PushSubscription
+from .serializers import LogSerializer, PushSubscriptionSerializer
+from django.conf import settings
+from rest_framework.views import APIView
 from .helpers import create_embedding, get_reminder_time, get_answer, transcribe_audio
 from .tasks import send_email_reminder
 from rest_framework.permissions import IsAuthenticated
@@ -165,3 +167,43 @@ class LogViewSet(viewsets.ModelViewSet):
             {"text": transcribed_text},
             status=status.HTTP_200_OK
         )
+    
+
+
+class VapidPublicKeyView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'vapidPublicKey': settings.VAPID_PUBLIC_KEY})
+
+
+class PushSubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Browser is subscribing — save or update the subscription
+        serializer = PushSubscriptionSerializer(data=request.data)
+        if serializer.is_valid():
+            # Use update_or_create so re-subscribing the same browser
+            # doesn't create a duplicate row
+            PushSubscription.objects.update_or_create(
+                user=request.user,
+                endpoint=serializer.validated_data['endpoint'],
+                defaults={
+                    'p256dh': serializer.validated_data['p256dh'],
+                    'auth': serializer.validated_data['auth'],
+                }
+            )
+            return Response({'status': 'subscribed'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        # Browser is unsubscribing — delete the matching subscription
+        endpoint = request.data.get('endpoint')
+        if not endpoint:
+            return Response({'error': 'endpoint required'}, status=status.HTTP_400_BAD_REQUEST)
+        PushSubscription.objects.filter(
+            user=request.user,
+            endpoint=endpoint
+        ).delete()
+        return Response({'status': 'unsubscribed'}, status=status.HTTP_204_NO_CONTENT)

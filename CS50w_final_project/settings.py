@@ -271,3 +271,7 @@ sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
     environment="production" if not DEBUG else "development",
 )
+
+VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY')
+VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY')
+VAPID_MAILTO = os.getenv('VAPID_MAILTO')

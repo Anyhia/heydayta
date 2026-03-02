@@ -81,7 +81,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
 - **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
 - **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
-- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, and standalone display mode
+- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, and a service worker for offline static asset caching and automatic update detection
 
 ### Legal & Compliance
 - **📜 Privacy Policy**: Full GDPR-compliant privacy policy at `/privacy-policy`, linked from the registration form
@@ -454,6 +454,10 @@ COOP Header: same-origin-allow-popups for Google OAuth compatibility
 Static Files: WhiteNoise with compression for fast asset delivery
 
 Database Connection Pooling: conn_max_age=600 for persistent connections
+
+No-Cache on index.html: `Cache-Control: no-cache` enforced via Django's `never_cache` decorator, ensuring browsers always fetch the latest entry point after a deployment
+
+Service Worker: Cache-first strategy for hashed static assets (JS/CSS), network-first for API calls, and auto-update detection so installed PWA users get new versions without manually refreshing
 
 ## 🔐 Security Features
 

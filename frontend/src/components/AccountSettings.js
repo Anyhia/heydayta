@@ -137,6 +137,45 @@ function AccountSettings() {
                 )}
             </div>
 
+            {/* Notifications */}
+            <div className='settings-section'>
+                <h2 className='settings-section-title'>Notifications</h2>
+                <div className='settings-info-card'>
+                    <div className='settings-info-row'>
+                        <span className='settings-info-label'>Push Notifications</span>
+                        <span className='settings-info-value'>
+                            {notifStatus === 'loading' && 'Checking...'}
+                            {notifStatus === 'unsupported' && 'Not supported in this browser.'}
+                            {notifStatus === 'denied' && (
+                                'You have blocked notifications. To enable them, update your browser or device settings for this site.'
+                            )}
+                            {notifStatus === 'subscribed' && 'Enabled on this device.'}
+                            {notifStatus === 'unsubscribed' && 'Not enabled on this device.'}
+                        </span>
+                    </div>
+                    {(notifStatus === 'unsubscribed') && (
+                        <div className='settings-info-row'>
+                            <Button
+                                className='settings-notif-btn'
+                                onClick={handleEnableNotifications}
+                            >
+                                Enable Notifications
+                            </Button>
+                        </div>
+                    )}
+                    {notifStatus === 'subscribed' && (
+                        <div className='settings-info-row'>
+                            <Button
+                                className='settings-notif-btn settings-notif-btn--off'
+                                onClick={handleDisableNotifications}
+                            >
+                                Disable Notifications
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            </div>
+
             {/* Danger Zone */}
             <div className='settings-section danger-zone'>
                 <h2 className='settings-section-title danger-title'>Danger Zone</h2>

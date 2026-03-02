@@ -66,7 +66,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 ### Core Functionality
 - **📝 Journal Entries**: Create timestamped log entries with custom categories
 - **🔍 AI-Powered Search**: Natural language question answering using vector similarity search (L2 distance)
-- **⏰ Smart Reminders**: Email-based reminders with natural language time parsing (*"in 3 days"*, *"next Monday"*)
+- **⏰ Smart Reminders**: Reminders delivered via email and Web Push notification, set with natural language time parsing (*"in 3 days"*, *"next Monday"*)
 - **🔐 Dual Authentication**: Traditional email/password and Google OAuth 2.0
 - **🌍 Multilingual Support**: Automatic language detection for AI responses
 - **📱 Responsive Design**: Mobile-friendly Star Trek-inspired UI
@@ -74,6 +74,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **🚨 Custom Error Pages**: Star Trek-themed 404 and 500 error pages
 - **⏳ Loading States**: Session-aware loading spinners across protected routes and data-heavy views
 - **🔗 Footer**: Site-wide footer with links to Privacy Policy and Terms of Service
+- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker for offline static asset caching and automatic update detection, and Web Push notifications
 
 ### Technical Highlights
 - **Vector Embeddings**: OpenAI `text-embedding-3-small` model for semantic search
@@ -81,7 +82,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
 - **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
 - **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
-- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, and a service worker for offline static asset caching and automatic update detection
+- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker for offline static asset caching and automatic update detection, and Web Push notifications
 
 ### Legal & Compliance
 - **📜 Privacy Policy**: Full GDPR-compliant privacy policy at `/privacy-policy`, linked from the registration form
@@ -101,6 +102,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 | **SimpleJWT** | JWT authentication with httpOnly cookie support |
 | **Gunicorn** | WSGI HTTP server for production |
 | **WhiteNoise** | Static file serving with compression |
+| **pywebpush** | VAPID-signed Web Push notification delivery |
 
 ### Frontend
 | Technology | Purpose |
@@ -294,6 +296,14 @@ REDIS_URL=  # Set by Heroku Redis add-on
 SENTRY_DSN=https://...@sentry.io/...
 ```
 
+#### VAPID
+
+```bash
+VAPID_PUBLIC_KEY=your-vapid-public-key
+VAPID_PRIVATE_KEY=your-vapid-private-key
+VAPID_MAILTO=mailto:hello@heydayta.app
+```
+
 #### Admin Security (Production)
 
 ```bash
@@ -371,6 +381,9 @@ heroku config:set DEBUG=False
 heroku config:set HEROKU_APP_HOST=your-app-name.herokuapp.com
 heroku config:set DJANGO_ADMIN_URL=your-secret-admin-path/
 heroku config:set SENTRY_DSN=your-sentry-dsn
+heroku config:set VAPID_PUBLIC_KEY=your-vapid-public-key
+heroku config:set VAPID_PRIVATE_KEY=your-vapid-private-key
+heroku config:set VAPID_MAILTO=mailto:hello@heydayta.app
 ```
 
 #### Build React production files
@@ -457,7 +470,8 @@ Database Connection Pooling: conn_max_age=600 for persistent connections
 
 No-Cache on index.html: `Cache-Control: no-cache` enforced via Django's `never_cache` decorator, ensuring browsers always fetch the latest entry point after a deployment
 
-Service Worker: Cache-first strategy for hashed static assets (JS/CSS), network-first for API calls, and auto-update detection so installed PWA users get new versions without manually refreshing
+Service Worker: Cache-first strategy for hashed static assets (JS/CSS), network-first for API calls, auto-update detection, and Web Push notification handling via the `push` and `notificationclick` events
+
 
 ## 🔐 Security Features
 
@@ -494,6 +508,13 @@ PUT    /api/logs/{id}/     # Update log
 DELETE /api/logs/{id}/     # Delete log
 POST   /api/logs/ask_question/  # AI-powered Q&A
 POST   /api/logs/transcribe/ # Voice-to-text via OpenAI Whisper
+```
+
+### Push Endpoints
+```bash
+GET    /api/push/vapid-public-key/   # Retrieve VAPID public key
+POST   /api/push/subscribe/          # Save push subscription
+DELETE /api/push/subscribe/          # Remove push subscription
 ```
 
 ### Example: Create Journal Entry

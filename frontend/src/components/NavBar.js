@@ -97,8 +97,15 @@ function NavBar() {
                             Account Settings
                         </Dropdown.Item>
                     )}
-                    <Dropdown.Item className='user-item' as={Link} to="/login">Login</Dropdown.Item>
-                    <Dropdown.Item className='user-item' as={Link} to="/logout">Logout</Dropdown.Item>
+                        {!username && (
+                        <Dropdown.Item className='user-item' as={Link} to="/login">Login</Dropdown.Item>
+                    )}
+                    {!username && (
+                        <Dropdown.Item className='user-item' as={Link} to="/register">Register</Dropdown.Item>
+                    )}
+                    {username && (
+                        <Dropdown.Item className='user-item' as={Link} to="/logout">Logout</Dropdown.Item>
+                    )}
                     <Dropdown.Item className='user-item' as={Link} to="/about">About</Dropdown.Item>
                     <Dropdown.Item className='user-item' as={Link} to="/how-to-use">How to Use</Dropdown.Item>
                 </Dropdown.Menu>

@@ -2,7 +2,7 @@
 
 .container.about-container {
   text-align: center;
-  padding-top: 1rem;
+  padding-top: 1.3rem;
   padding-bottom: 1rem;
 }
 
@@ -87,16 +87,16 @@ a.get-started-button.btn.btn-primary:hover {
   display: flex;
   flex-direction: column;
   margin-inline: 0;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   padding-inline: 0;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .description-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.85rem 0.75rem 0.85rem 0.75rem;
+  padding: 1.2rem 1rem;
   background-color: var(--grey-bg-card);
   border: 0.5px solid var(--grey-bg-card);
   border-bottom-right-radius: 1rem;
@@ -130,6 +130,12 @@ a.get-started-button.btn.btn-primary:hover {
   font-size: var(--fs-small);
   font-weight: var(--fw-400);
   line-height: 1.5;
+}
+
+@media (max-width: 420px) {
+    .title {
+        font-size: 1.2rem;
+    }
 }
 
 /* ===== 576px ===== */

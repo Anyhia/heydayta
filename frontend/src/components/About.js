@@ -32,7 +32,8 @@ function AboutContent() {
             <Container className='mascot-container'>
                 <div className='title-and-description'>
                     <div className='title'>
-                        Remember Everything, <span className='memory-vault'>Find Anything</span>
+                        You say it. <span className='memory-vault'>HeyDayta remembers.</span><br/>
+                        You ask it. <span className='memory-vault'>HeyDayta answers.</span>
                     </div>
                     <div className='description'>
                         Your brain has better things to do

@@ -54,6 +54,7 @@
   background-color: var(--clr-tactical);
   font-size: var(--fs-normal);
   font-weight: var(--fw-400);
+  width: auto;
 }
 
 a.get-started-button.btn.btn-primary:after,
@@ -158,6 +159,7 @@ a.get-started-button.btn.btn-primary:hover {
     padding-block: 0.6rem;
     font-size: var(--fs-large);
     font-weight: var(--fw-500);
+    width: auto;
   }
 
   .container.show-descriptions {

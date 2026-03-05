@@ -7,7 +7,7 @@ function TermsOfService() {
             <div className='policy-header'>
                 <div className='policy-stardate'>STARDATE: {new Date().toLocaleDateString()}</div>
                 <h1 className='policy-title'>Terms of Service</h1>
-                <p className='policy-subtitle'>HeyDayta — Personal Memory Vault</p>
+                <p className='policy-subtitle'>Effective from February 2026</p>
                 <div className='policy-divider' />
             </div>
 
@@ -64,6 +64,7 @@ function TermsOfService() {
                     <p>You agree <strong>not</strong> to use HeyDayta to:</p>
                     <ul className='policy-list'>
                         <li>Store or transmit any unlawful, harmful, or offensive content</li>
+                        <li>Store passwords, PINs, credit card numbers, or other sensitive credentials</li>
                         <li>Attempt to gain unauthorised access to other users' data or our systems</li>
                         <li>Reverse engineer, decompile, or attempt to extract the source code</li>
                         <li>Use the service in a way that could damage, disable, or impair it</li>

@@ -27,6 +27,7 @@ function CreateLog() {
 
     const [isLoadingLogs, setIsLoadingLogs] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [clearQuestion, setClearQuestion] = useState(0);
 
     const { isAuthenticated } = useAuth();
 
@@ -60,31 +61,32 @@ function CreateLog() {
     );
 
 
-const { isRecording, startRecording, stopRecording } = useVoiceRecording(
-    (transcribedText) => {
-        setEntry(prev => {
-            const newEntry = prev + (prev ? ' ' : '') + transcribedText;
-            // Trigger auto-expand after voice input
-            setTimeout(() => {
-                if (textareaRef.current) {
-                    textareaRef.current.style.height = 'auto';
-                    textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-                }
-            }, 0);
-            return newEntry;
-        });
-        setError(null);  
-    },
-    (errorMessage) => {
-        setError(errorMessage);
-    }
-);
+    const { isRecording, startRecording, stopRecording } = useVoiceRecording(
+        (transcribedText) => {
+            setEntry(prev => {
+                const newEntry = prev + (prev ? ' ' : '') + transcribedText;
+                // Trigger auto-expand after voice input
+                setTimeout(() => {
+                    if (textareaRef.current) {
+                        textareaRef.current.style.height = 'auto';
+                        textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+                    }
+                }, 0);
+                return newEntry;
+            });
+            setError(null);  
+        },
+        (errorMessage) => {
+            setError(errorMessage);
+        }
+    );
 
 
     useEffect(() => {
         if (!isAuthenticated) return;  // ← Don't fetch if not authenticated
         fetchLogs();
     }, [isAuthenticated]); 
+    
 
 
     const handleSubmit = (e) => {
@@ -140,14 +142,14 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                             <Button
                                 type="button"
                                 className={`type-toggle-btn ${entryType === 'journal' ? 'type-toggle-active' : ''}`}
-                                onClick={() => setEntryType('journal')}
+                                onClick={() => { setEntryType('journal'); setClearQuestion(c => c + 1); }}
                             >
                                 Journal
                             </Button>
                             <Button
                                 type="button"
                                 className={`type-toggle-btn ${entryType === 'reminders' ? 'type-toggle-active' : ''}`}
-                                onClick={() => setEntryType('reminders')}
+                                onClick={() => { setEntryType('reminders'); setClearQuestion(c => c + 1); }}
                             >
                                 Reminder
                             </Button>
@@ -165,6 +167,7 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                             aria-label="Entry text"
                             value={entry}
                             onChange={handleTextareaChange}
+                            onFocus={() => setClearQuestion(c => c + 1)}
                             className='create-log-form-control bg-grey-inner'
                         />
                         
@@ -196,7 +199,7 @@ const { isRecording, startRecording, stopRecording } = useVoiceRecording(
                     </div>
                 </Form>
             </Container>
-            <Question />
+            <Question clearSignal={clearQuestion}/>
 
             
             <Container className='show-logs'>

@@ -7,13 +7,18 @@ import api from '../api';
 import './Question.css';
 import { useVoiceRecording } from './useVoiceRecording';
 
-function Question() {
+function Question({ clearSignal }) {
     const [error, setError] = useState(null);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('')
     const [isAsking, setIsAsking] = useState(false);
 
     const questionRef = useRef();
+
+    useEffect(() => {
+        setAnswer('');
+        setError(null);
+    }, [clearSignal]);
 
     useEffect(() => {
         questionRef.current.focus();

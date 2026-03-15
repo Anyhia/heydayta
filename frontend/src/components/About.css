@@ -196,12 +196,12 @@ a.get-started-button.btn.btn-primary:hover {
     gap: 1.5rem;
   }
 
-  .mascot-image {
-    display: block;
-    max-width: 160px;
-    max-height: 160px;
-    flex-shrink: 0;
-  }
+.demo-video {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 1rem;
+    margin-block: 1rem;
+}
 
   .title-and-description {
     flex: 1;

@@ -100,14 +100,14 @@ class LogViewSet(viewsets.ModelViewSet):
             question_date = timezone.make_aware(question_date, timezone.utc)
 
         # Compare the question embedding with the embeddings from the user
-        closest_matches = Log.objects.filter(
+        closest_matches = list(Log.objects.filter(
             user=request.user
         ).order_by(
             L2Distance('embedding', question_embedding)
-        )
+        )[:10])
         
         print("Closest matches", closest_matches)
-        if not closest_matches.exists():
+        if not closest_matches:
             return Response(
                 {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
                 status=status.HTTP_400_BAD_REQUEST)

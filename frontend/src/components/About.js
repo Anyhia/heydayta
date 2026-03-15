@@ -6,6 +6,7 @@ import Mascot from '../media/images/Mascot.png';
 import './About.css';
 import { useAuth } from './Auth/AuthProvider'; 
 import { useEffect } from 'react'; 
+import HeyVideo from '../media/images/HeyVideo.mp4';
 
 // with redirect
 function AboutPage() {
@@ -39,7 +40,14 @@ function AboutContent() {
                         Your brain has better things to do
                     </div>
                 </div>
-                <img src={Mascot} alt="HeyDayta mascot" className="mascot-image"/>
+                <video 
+                    src={HeyVideo} 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    className="demo-video"
+                />
 
             </Container>
             <Button className='get-started-button' as={Link} to="/login">Get started<span><FontAwesomeIcon className='ms-3' icon={faArrowRight} /></span></Button>

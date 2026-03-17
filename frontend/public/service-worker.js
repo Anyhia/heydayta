@@ -40,6 +40,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+    // Never cache video files - they use range requests (206) which Cache API doesn't support
+  if (url.pathname.match(/\.(mp4|webm|ogg)$/)) {
+      event.respondWith(fetch(event.request));
+      return;
+  }
   // For hashed static assets (JS/CSS), use cache-first
   // They have unique filenames per build, so stale cache is not a risk
   if (url.pathname.startsWith('/static/')) {

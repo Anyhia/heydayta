@@ -2,6 +2,7 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './PrivacyPolicy.css';
 import './HowToUse.css';
+import HeyVideo from '../media/images/HeyInfo-vs10.mp4';
 
 function HowToUse() {
     return (
@@ -15,40 +16,52 @@ function HowToUse() {
 
             <div className='policy-content'>
 
-                {/* SECTION 1 — Journal */}
-                <section className='policy-section'>
-                    <h2 className='policy-section-title'>01 — Journal Entries</h2>
-                    <p>
-                        Switch to the <strong>Journal</strong> tab and write anything on your mind —
-                        a thought, a meal, a conversation, a decision. No formatting required.
-                    </p>
-                    <div className='howto-examples'>
-                        <div className='howto-example-row'>
-                            <span className='howto-example-label'>✍️ Example</span>
-                            <span className='howto-example-text'>"Had a great meeting with the team. We agreed on pushing the deadline to Friday."</span>
-                        </div>
-                        <div className='howto-example-row'>
-                            <span className='howto-example-label'>✍️ Example</span>
-                            <span className='howto-example-text'>"Tried the new Italian place near the office. The pasta was excellent, would go back."</span>
-                        </div>
-                        <div className='howto-example-row'>
-                            <span className='howto-example-label'>✍️ En français</span>
-                            <span className='howto-example-text'>"Réunion productive avec l'équipe ce matin. On a décidé de reporter la livraison."</span>
-                        </div>
-                        <div className='howto-example-row'>
-                            <span className='howto-example-label'>✍️ En español</span>
-                            <span className='howto-example-text'>"Hoy comí en el restaurante italiano cerca del trabajo. La pasta estaba deliciosa."</span>
-                        </div>
+                {/* SECTION 1 — Journal + Video side by side */}
+                <div className='howto-split-section'>
+                    <div className='howto-split-video'>
+                        <video
+                            src={HeyVideo}
+                            controls
+                            playsInline
+                            className="howto-video"
+                        />
                     </div>
-                    <div className='howto-tip'>
-                        <span className='howto-tip-icon'>💡</span>
-                        <span>
-                            <strong>Write more than you think you need to.</strong> You might not know today that you'll need
-                            a detail in three months — but if you wrote it down, Ask Dayta will find it for you.
-                            The more you write, the more powerful your search becomes.
-                        </span>
+                    <div className='howto-split-content'>
+                        <section className='policy-section'>
+                            <h2 className='policy-section-title'>01 — Journal Entries</h2>
+                            <p>
+                                Switch to the <strong>Journal</strong> tab and write anything on your mind —
+                                a thought, a meal, a conversation, a decision. No formatting required.
+                            </p>
+                            <div className='howto-examples'>
+                                <div className='howto-example-row'>
+                                    <span className='howto-example-label'>✍️ Example</span>
+                                    <span className='howto-example-text'>"Had a great meeting with the team. We agreed on pushing the deadline to Friday."</span>
+                                </div>
+                                <div className='howto-example-row'>
+                                    <span className='howto-example-label'>✍️ Example</span>
+                                    <span className='howto-example-text'>"Tried the new Italian place near the office. The pasta was excellent, would go back."</span>
+                                </div>
+                                <div className='howto-example-row'>
+                                    <span className='howto-example-label'>✍️ En français</span>
+                                    <span className='howto-example-text'>"Réunion productive avec l'équipe ce matin. On a décidé de reporter la livraison."</span>
+                                </div>
+                                <div className='howto-example-row'>
+                                    <span className='howto-example-label'>✍️ En español</span>
+                                    <span className='howto-example-text'>"Hoy comí en el restaurante italiano cerca del trabajo. La pasta estaba deliciosa."</span>
+                                </div>
+                            </div>
+                            <div className='howto-tip'>
+                                <span className='howto-tip-icon'>💡</span>
+                                <span>
+                                    <strong>Write more than you think you need to.</strong> You might not know today that you'll need
+                                    a detail in three months — but if you wrote it down, Ask Dayta will find it for you.
+                                    The more you write, the more powerful your search becomes.
+                                </span>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
 
                 {/* SECTION 2 — Reminders */}
                 <section className='policy-section'>
@@ -58,7 +71,6 @@ function HowToUse() {
                         including <em>when</em> — all in one natural sentence. No date pickers, no dropdowns.
                     </p>
                     <p>You can express time in many ways:</p>
-
                     <div className='howto-examples'>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>⏱ Relative</span>
@@ -93,7 +105,6 @@ function HowToUse() {
                             <span className='howto-example-text'>"Recuérdame en 2 horas llamar al médico"</span>
                         </div>
                     </div>
-
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>💡</span>
                         <span>
@@ -101,7 +112,6 @@ function HowToUse() {
                             "Remind me tomorrow at 10am to call mom" will.
                         </span>
                     </div>
-
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>📬</span>
                         <span>
@@ -110,7 +120,6 @@ function HowToUse() {
                             it will arrive exactly at the time you specified.
                         </span>
                     </div>
-
                     <div className='howto-tip howto-tip-multilingual'>
                         <span className='howto-tip-icon'>🌍</span>
                         <span>
@@ -127,7 +136,6 @@ function HowToUse() {
                         The <strong>Ask Dayta</strong> field lets you search your journal using natural language questions.
                         You don't need to remember exact words — just ask what you want to know.
                     </p>
-
                     <div className='howto-examples'>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🔍 Example</span>
@@ -150,7 +158,6 @@ function HowToUse() {
                             <span className='howto-example-text'>"¿Qué escribí sobre el trabajo esta semana?"</span>
                         </div>
                     </div>
-
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>🌍</span>
                         <span>
@@ -158,7 +165,6 @@ function HowToUse() {
                             even if your journal entries are in a different language.
                         </span>
                     </div>
-
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>⚠️</span>
                         <span>
@@ -199,9 +205,7 @@ function HowToUse() {
                     </div>
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>💡</span>
-                        <span>
-                            Voice input works in any language — speak naturally.
-                        </span>
+                        <span>Voice input works in any language — speak naturally.</span>
                     </div>
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>⚠️</span>

@@ -1,4 +1,4 @@
-.policy-page-container {
+.container.policy-page-container {
     padding-inline: 0;
     padding-bottom: 3rem;
     max-width: 100%;
@@ -191,14 +191,14 @@
 }
 
 @media (min-width: 768px) {
-    .policy-page-container {
+    .container.policy-page-container {
         max-width: 80%;
         margin: 0 auto;
     }
 }
 
 @media (min-width: 992px) {
-    .policy-page-container {
+    .container.policy-page-container {
         max-width: 70%;
     }
 

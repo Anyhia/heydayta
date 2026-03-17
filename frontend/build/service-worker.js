@@ -40,9 +40,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+
   // For hashed static assets (JS/CSS), use cache-first
   // They have unique filenames per build, so stale cache is not a risk
   if (url.pathname.startsWith('/static/')) {
+        // Skip caching for video files - range requests (206) not supported by Cache API
+    if (url.pathname.match(/\.(mp4|webm|ogg)$/)) {
+        event.respondWith(fetch(event.request));
+        return;
+    }
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) {

@@ -326,7 +326,7 @@ textarea.create-log-form-control::placeholder {
 /* Desktop */
 @media (min-width: 992px) {
     .container.create-log-container {
-        max-width: 70%;
+        max-width: 55%;
         margin: 0 auto;
     }
     

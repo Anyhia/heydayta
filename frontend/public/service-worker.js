@@ -96,7 +96,6 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(title, {
       body: body,
-      icon: 'https://heydayta.app/android-chrome-192x192.png',
       badge: 'https://heydayta.app/android-chrome-192x192.png',
     })
   );

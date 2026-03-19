@@ -24,13 +24,14 @@ urlpatterns = [
 
     # Serve React root files (manifest, favicon, logos) directly from build folder
     # These must come before the catch-all route to index.html
-    path('manifest.json', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'manifest.json'}),
-    path('favicon.ico', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'favicon.ico'}),
-    path('android-chrome-192x192.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-192x192.png'}),
-    path('android-chrome-512x512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-512x512.png'}),
-    path('apple-touch-icon.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'apple-touch-icon.png'}),
-    path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
-    path('service-worker.js', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'service-worker.js'}),
+    # path('manifest.json', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'manifest.json'}),
+    # path('favicon.ico', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'favicon.ico'}),
+    # path('android-chrome-192x192.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-192x192.png'}),
+    # path('android-chrome-512x512.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'android-chrome-512x512.png'}),
+    # path('badge-96x96.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'badge-96x96.png'}),
+    # path('apple-touch-icon.png', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'apple-touch-icon.png'}),
+    # path('robots.txt', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'robots.txt'}),
+    # path('service-worker.js', serve, {'document_root': settings.BASE_DIR / 'frontend/build', 'path': 'service-worker.js'}),
 
     re_path(r'^(?!captain-bridge-desk|api).*$', never_cache(TemplateView.as_view(
         template_name='index.html',

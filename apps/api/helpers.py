@@ -34,13 +34,16 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
     
     # Format the local datetime nicely for OpenAI
-    local_time_str = user_local_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    local_time_str = user_local_datetime.strftime('%A, %Y-%m-%d %H:%M:%S')
     
     prompt = (
         f"The current date and time is {local_time_str} (user's local time). "
         "Read the following text and extract the reminder date and time. "
         "Interpret any relative time (e.g., 'in two minutes', '4 hours before', 'one day before') "
         "relative to the current time or the main event. "
+        "If no specific time is given, use these defaults: "
+        "morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. "
+        "If no time of day is mentioned at all, default to 09:00. "
         "Return ONLY a datetime string in ISO 8601 format: YYYY-MM-DDTHH:MM:SS "
         f"Text: '{log}'"
     )

@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.heydayta",
+    "sha256_cert_fingerprints": [
+      "46:51:51:93:E7:E9:E7:CE:F0:A2:23:82:35:21:EE:AC:BC:69:A2:6A:3D:C4:7C:DB:B6:D8:96:E7:60:39:69:4F"
+    ]
+  }
+}]

@@ -1,0 +1,4 @@
+#Sun Mar 22 11:04:23 CET 2026
+base.0=/home/anyhia/cs50-final-project/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

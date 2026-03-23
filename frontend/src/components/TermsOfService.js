@@ -7,7 +7,7 @@ function TermsOfService() {
             <div className='policy-header'>
                 <div className='policy-stardate'>STARDATE: {new Date().toLocaleDateString()}</div>
                 <h1 className='policy-title'>Terms of Service</h1>
-                <p className='policy-subtitle'>Effective from February 2026</p>
+                <p className='policy-subtitle'>Effective from March 2026</p>
                 <div className='policy-divider' />
             </div>
 
@@ -34,8 +34,8 @@ function TermsOfService() {
                     <ul className='policy-list'>
                         <li>Create and manage private journal entries and reminders</li>
                         <li>Search your entries using AI-powered natural language queries</li>
-                        <li>Receive email reminders at your requested times</li>
-                        <li>Access your entries from any device via a web browser</li>
+                        <li>Receive push notifications and email reminders at your requested times</li>
+                        <li>Access your entries from any device via web browser or mobile app</li>
                     </ul>
                     <p>
                         The service is provided "as is". We reserve the right to modify, suspend, or
@@ -44,14 +44,13 @@ function TermsOfService() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>03 — Your Account</h2>
+                    <h2 className='policy-section-title'>03 — Your Account & Security</h2>
                     <p>
                         You are responsible for maintaining the confidentiality of your account credentials.
-                        You must be at least 16 years old to use HeyDayta.
+                        You must be at least 13 years old to use HeyDayta (or 16 where required by local law).
                     </p>
                     <p>
-                        You agree to provide accurate information when registering and to keep it up to date.
-                        You are responsible for all activity that occurs under your account.
+                        You may log in using Google OAuth 2.0. We only request basic profile information (name and email) required to create your account. We do not have access to your Google password or other Google services.
                     </p>
                     <p>
                         If you suspect unauthorised access to your account, contact us immediately at{' '}
@@ -64,11 +63,10 @@ function TermsOfService() {
                     <p>You agree <strong>not</strong> to use HeyDayta to:</p>
                     <ul className='policy-list'>
                         <li>Store or transmit any unlawful, harmful, or offensive content</li>
-                        <li>Store passwords, PINs, credit card numbers, or other sensitive credentials</li>
+                        <li>Store highly sensitive information (e.g., passwords, SSNs, credit card numbers) as entries are not encrypted at rest</li>
                         <li>Attempt to gain unauthorised access to other users' data or our systems</li>
                         <li>Reverse engineer, decompile, or attempt to extract the source code</li>
                         <li>Use the service in a way that could damage, disable, or impair it</li>
-                        <li>Violate any applicable laws or regulations</li>
                     </ul>
                     <p>
                         We reserve the right to suspend or terminate accounts that violate these terms.
@@ -76,7 +74,7 @@ function TermsOfService() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>05 — Your Content</h2>
+                    <h2 className='policy-section-title'>05 — Your Content & Data Privacy</h2>
                     <p>
                         You retain full ownership of the content you create in HeyDayta — your journal
                         entries and reminders are yours.
@@ -84,31 +82,29 @@ function TermsOfService() {
                     <p>
                         By using the service, you grant us a limited licence to store and process your
                         content solely for the purpose of providing the service to you. This includes
-                        sending your journal text to OpenAI's API to enable the AI search feature.
+                        sending your journal text to OpenAI's API to enable the AI search and transcription features.
                     </p>
                     <p>
-                        We do not claim ownership of your content and will never use it for advertising,
-                        training AI models on our behalf, or any purpose beyond operating the service.
+                        While we use industry-standard security practices (such as JWT tokens and secure connections), <strong>your journal entries are stored in plain text in our database, not encrypted at rest.</strong> Please do not use HeyDayta to store critical financial or medical data.
+                    </p>
+                    <p>
+                        We do not claim ownership of your content and will never sell it, use it for advertising,
+                        or allow OpenAI to use it to train their models.
                     </p>
                 </section>
 
                 <section className='policy-section'>
                     <h2 className='policy-section-title'>06 — AI-Powered Features</h2>
                     <p>
-                        HeyDayta uses OpenAI's API to power the "Ask Dayta" search feature and reminder
+                        HeyDayta uses OpenAI's API to power the search feature, voice transcription, and reminder
                         time parsing. By using these features, you acknowledge that:
                     </p>
                     <ul className='policy-list'>
-                        <li>Your journal content is sent to OpenAI for processing</li>
+                        <li>Your specific queries or audio inputs are sent securely to OpenAI for processing</li>
+                        <li>OpenAI does not use data submitted via API to train their models</li>
                         <li>AI responses may occasionally be inaccurate or incomplete</li>
                         <li>You should not rely on AI responses for critical decisions</li>
                     </ul>
-                    <p>
-                        OpenAI's use of data submitted via API is governed by their{' '}
-                        <a href='https://openai.com/privacy' target='_blank' rel='noreferrer' className='policy-link'>
-                            Privacy Policy
-                        </a>.
-                    </p>
                 </section>
 
                 <section className='policy-section'>
@@ -119,8 +115,7 @@ function TermsOfService() {
                         are not liable for any data loss.
                     </p>
                     <p>
-                        We strongly recommend you keep copies of any important information you store
-                        in the application.
+                        We strongly recommend you keep offline copies of any highly important information.
                     </p>
                 </section>
 
@@ -132,7 +127,7 @@ function TermsOfService() {
                         arising from your use of the service.
                     </p>
                     <p>
-                        HeyDayta is a personal project provided free of charge. Our total liability
+                        HeyDayta is currently provided free of charge. Our total liability
                         to you for any claim shall not exceed €0 (zero euros).
                     </p>
                 </section>
@@ -141,11 +136,7 @@ function TermsOfService() {
                     <h2 className='policy-section-title'>09 — Termination</h2>
                     <p>
                         You may delete your account at any time from within the application. Upon deletion,
-                        all your data will be permanently removed from our systems.
-                    </p>
-                    <p>
-                        We reserve the right to terminate or suspend your account at any time if you
-                        violate these Terms of Service.
+                        all your data (entries, reminders, and profile) will be permanently removed from our active systems.
                     </p>
                 </section>
 
@@ -172,7 +163,7 @@ function TermsOfService() {
 
                 <div className='policy-footer'>
                     <div className='policy-divider' />
-                    <p className='policy-last-updated'>Last updated: February 2026</p>
+                    <p className='policy-last-updated'>Last updated: March 2026</p>
                     <p className='policy-contact'>
                         Questions? Contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>

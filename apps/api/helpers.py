@@ -38,14 +38,14 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     
     prompt = (
         f"The current date and time is {local_time_str} (user's local time). "
-        "Read the following text and extract the reminder date and time. "
-        "Interpret any relative time (e.g., 'in two minutes', '4 hours before', 'one day before') "
-        "relative to the current time or the main event. "
-        "If no specific time is given, use these defaults: "
-        "morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. "
-        "If no time of day is mentioned at all, default to 09:00. "
-        "Return ONLY a datetime string in ISO 8601 format: YYYY-MM-DDTHH:MM:SS "
-        f"Text: '{log}'"
+        "Extract the intended reminder date and time from the text provided at the bottom.\n\n"
+        "Rules:\n"
+        "1. If the text contains absolutely NO date, time, or temporal reference, return exactly the word: None\n"
+        "2. Interpret any relative time (e.g., 'in two minutes', 'tomorrow', 'next Tuesday') relative to the user's current local time.\n"
+        "3. If a date or day is mentioned but no specific time of day is provided, apply these defaults: morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. If no part of the day is implied, default to 09:00.\n"
+        "4. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
+        "5. Do not include any other words, explanations, or punctuation.\n\n"
+        f"Text to analyze: '{log}'"
     )
     
     completion = client.chat.completions.create(
@@ -59,7 +59,7 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     )
 
     result = completion.choices[0].message.content.strip()
-    if not result:
+    if not result or result == "None":
         return None
     
     try:
@@ -86,16 +86,19 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
 def get_answer(context):
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
     prompt = (
-        # Instructions (# Prompt was improved with an AI assistant for clarity)
-        f"Here is the current date and time: {context['question_date']}. "
-        f"Please read the following question: '{context['question']}' "
-        f"Answer it using only the information in these entry logs: '\n{context['closest_matches']}\n' "
-        "Use the current date only to interpret time-related references (like 'today' or 'last week') in the question and logs. "
-        "When you answer, do not mention the current date explicitly; instead, answer using the dates from the logs themselves. "
-        "If you mention dates or times in your answer, rewrite them in a user friendly way (for example: 'on 2025‑12‑11 at 12:53') and never show timezone offsets or microseconds like '+00:00' or '.464844'."
-        "Do not make any assumptions or use outside knowledge, usie only the information in the logs. "
-        "Your answer should be friendly, concise, and only include information that directly answers the question. "
-        "Answer in the same language as the question."
+        f"Today's date is: {context['question_date']}.\n\n"
+        "You are an assistant answering a user's question based ONLY on the provided journal logs.\n\n"
+        "Guidelines:\n"
+        "1. Be friendly, direct, and concise. Do not add conversational filler.\n"
+        "2. Resolving time: Use today's date only to understand the user's question (e.g., if they ask 'what did I do last week?'). When reading the logs, rely strictly on the log's own timestamp to know when an event happened.\n"
+        "3. Only mention the date or time of an entry if the user asks 'when' something happened, or if the timing is necessary to fully answer the question.\n"
+        "4. Date formatting: When you DO mention a date, state the exact calendar date from the log (e.g., 'on December 11, 2025') instead of saying 'today' or 'last year'. Never use raw database timestamps, timezone offsets, or microseconds.\n"
+        "5. Never make assumptions or use outside knowledge. If the answer is not in the logs, say so.\n"
+        "6. Answer in the same language as the question.\n\n"
+        "=== LOGS ===\n"
+        f"{context['closest_matches']}\n"
+        "=== END LOGS ===\n\n"
+        f"User Question: '{context['question']}'"
     )
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo", # Cheaper and good for extracting date

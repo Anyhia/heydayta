@@ -19,6 +19,10 @@ function Question({ clearSignal }) {
         setQuestion('');
         setAnswer('');
         setError(null);
+        // Reset textarea height after clearing
+        if (questionRef.current) {
+            questionRef.current.style.height = 'auto';
+        }
     }, [clearSignal]);
 
     useEffect(() => {
@@ -68,11 +72,6 @@ function Question({ clearSignal }) {
         .then((response) => {
             setError('')
             setAnswer(response.data.answer)
-            
-            // Reset textarea height after clearing
-            if (questionRef.current) {
-                questionRef.current.style.height = 'auto';
-            }
         })
         .catch((error) => {
             if (error.response?.data?.error) {

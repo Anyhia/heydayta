@@ -80,6 +80,7 @@
     background-color: var(--clr-gold-hover);
 }
 
+
 @media (min-width: 576px) {
     .cookie-banner {
         padding: 1rem 1.5rem;
@@ -87,5 +88,17 @@
 
     .cookie-banner-content {
         flex-wrap: nowrap;
+    }
+}
+
+@media (min-width: 992px) {
+    .cookie-banner {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        max-width: 70%;
+        border-radius: 0.5rem 0.5rem 0 0;
+        border-left: 1px solid var(--clr-tactical);
+        border-right: 1px solid var(--clr-tactical);
     }
 }

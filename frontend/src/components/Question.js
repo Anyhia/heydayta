@@ -16,6 +16,7 @@ function Question({ clearSignal }) {
     const questionRef = useRef();
 
     useEffect(() => {
+        setQuestion('');
         setAnswer('');
         setError(null);
     }, [clearSignal]);
@@ -66,7 +67,6 @@ function Question({ clearSignal }) {
         api.post('/logs/ask_question/', questionData)
         .then((response) => {
             setError('')
-            setQuestion('');
             setAnswer(response.data.answer)
             
             // Reset textarea height after clearing

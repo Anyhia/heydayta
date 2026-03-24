@@ -65,8 +65,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+
   // Everything else: network first, fall back to cache if offline
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+  event.respondWith(
+    fetch(event.request).catch(() =>
+        caches.match(event.request).then(cached => cached || new Response('Offline', { status: 503 }))
+    )
+  );
 });
 
 // When the app sends a SKIP_WAITING message, activate the new service worker immediately

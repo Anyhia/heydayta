@@ -219,6 +219,7 @@ SIMPLE_JWT = {
 }
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

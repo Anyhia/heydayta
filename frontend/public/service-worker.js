@@ -30,6 +30,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Don't intercept cross-origin requests
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   // Never cache index.html or API calls - always go to network
   if (
     url.pathname === '/' ||

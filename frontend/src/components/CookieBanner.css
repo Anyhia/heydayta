@@ -91,14 +91,20 @@
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .cookie-banner {
         left: 50%;
         right: auto;
         transform: translateX(-50%);
-        max-width: 70%;
+        width: 720px;
         border-radius: 0.5rem 0.5rem 0 0;
         border-left: 1px solid var(--clr-tactical);
         border-right: 1px solid var(--clr-tactical);
+    }
+}
+
+@media (min-width: 992px) {
+    .cookie-banner {
+        width: 70%;
     }
 }

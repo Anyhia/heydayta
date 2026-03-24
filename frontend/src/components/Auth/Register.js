@@ -47,22 +47,18 @@ const Register = () => {
     useEffect(() => {
         const result = USERNAME_REGEX.test(username);
         setValidUsername(result);
-        console.log(result);
     }, [username])
 
     useEffect (() => {
         const result = EMAIL_REGEX.test(email);
         setValidEmail(result);
-        console.log(result);
     }, [email])
 
     useEffect (() => {
         const result = PASSWORD_REGEX.test(password);
         setValidPassword(result);
-        console.log(result);
         const matchResult = password !== '' && password === passwordMatch;
         setValidPasswordMatch(matchResult);
-        console.log(matchResult);
     }, [password, passwordMatch])
 
     useEffect (() => {

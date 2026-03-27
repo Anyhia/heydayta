@@ -11,15 +11,18 @@ import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-  {/* StrictMode makes React mount components twice in dev to help catch bugs. 
-  That’s why your effect runs twice and you see two GET calls. */}
-    <AuthProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </AuthProvider>
-  </GoogleOAuthProvider>
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+    {/* StrictMode makes React mount components twice in dev to help catch bugs. 
+    That’s why your effect runs twice and you see two GET calls. */}
+      <AuthProvider>
+        
+          <App />
+
+      </AuthProvider>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

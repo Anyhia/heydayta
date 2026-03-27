@@ -66,6 +66,7 @@ function App() {
             // Get a new token, and set the new value of the access token
             const newToken = await api.post('/token/refresh/');
             setToken(newToken.data.access);
+            setApiToken(newToken.data.access);  
             // Add the token to the authorization header
             originalRequest.headers.Authorization = `Bearer ${newToken.data.access}`;
             // Retry to send the request with the new value

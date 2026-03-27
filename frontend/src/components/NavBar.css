@@ -48,11 +48,6 @@
     white-space: nowrap; /* Prevents wrapping between CAPTAIN: and username */
 }
 
-.captain-label {
-    font-weight: 500;
-    opacity: 0.9;
-    letter-spacing: 0.5px;
-}
 
 .captain-username {
     font-weight: 500;
@@ -176,11 +171,7 @@
 }
 
 /* Medium screens (576px - 991px) - show username only, hide "CAPTAIN:" label */
-@media (min-width: 576px) and (max-width: 991px) {
-    .captain-label {
-        display: none; /* Hide "CAPTAIN:" label */
-    }
-    
+@media (min-width: 576px) and (max-width: 991px) {   
     .separator,
     .captain-username {
         display: inline; /* Show separator and username */
@@ -189,7 +180,6 @@
 
 /* Large screens (992px+) - show full "CAPTAIN: Username" */
 @media (min-width: 992px) {
-    .captain-label,
     .captain-username,
     .separator {
         display: inline; /* Show everything */

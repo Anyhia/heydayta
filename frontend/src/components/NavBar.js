@@ -67,12 +67,11 @@ function NavBar() {
         <Container className="nav-container">
             <div className='heydayta'>HEYDAYTA</div>
             <div className='bar'>
-                STARDATE: {datetime}
+                {datetime}
                 {username && (
                     <>
                         <span className='separator'> | </span>
                         <span className='captain-wrapper'>
-                            <span className='captain-label'>CAPTAIN: </span>
                             <span className='captain-username'>{username}</span>
                         </span>
                     </>

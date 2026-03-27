@@ -12,3 +12,12 @@
   color: #9ca3af;
   letter-spacing: 0.05em;
 }
+
+/* Large screens - Match the 70% width of the Navbar */
+@media (min-width: 992px) {
+    .footer-container {
+        max-width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

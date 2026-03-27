@@ -1,12 +1,5 @@
 /* small screens */
 
-.mascot-image-login {
-  max-width: 7rem;
-  max-height: 7rem;
-  clip-path: circle(50% at 50% 50%);
-  margin-bottom: 1.5rem;
-}
-
 .login-page-container {
     /* margin-top: 1rem; */
     padding-inline: 0;
@@ -130,12 +123,6 @@
   margin-left: 0.5rem;
 }
 
-/* Don't show the mascot on smaller screens */
-@media (max-width: 575.99px) {
-  .mascot-image-login {
-    display: none;
-  } 
-}
 
 /* Larger phones, tablets */
 @media (min-width: 576px) {

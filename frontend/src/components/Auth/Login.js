@@ -6,7 +6,6 @@ import {useEffect, useRef, useState} from 'react';
 import {useAuth} from './AuthProvider';
 import {useNavigate} from 'react-router-dom';
 import GoogleLoginButton from './GoogleLoginButton';
-import Mascot from '../../media/images/Mascot.png';
 import './Login.css'
 
 
@@ -38,7 +37,6 @@ const Login = () => {
 
     return (
         <Container className='login-page-container'>
-            <img src={Mascot} alt="HeyDayta mascot" className="mascot-image-login"/>
             <div className="login-container">
                 <div className='welcome-back'>
                     <div className='welcome-text'>Welcome Back</div>

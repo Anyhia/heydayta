@@ -1,4 +1,3 @@
-import './register.css';import Mascot from '../../media/images/Mascot.png';
 import {Container, Button, Form, InputGroup, Alert} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser, faAt, faLock, faArrowRight} from '@fortawesome/free-solid-svg-icons';
@@ -102,7 +101,6 @@ const Register = () => {
 
     return (
         <Container className='login-page-container'>
-            <img src={Mascot} alt="HeyDayta mascot" className="mascot-image-login"/>
             <div className='login-container'>
                 <div className='welcome-back'>
                     <div className='welcome-text'>Create Account</div>

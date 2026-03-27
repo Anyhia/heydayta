@@ -30,6 +30,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Don't intercept cross-origin requests
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   // Never cache index.html or API calls - always go to network
   if (
     url.pathname === '/' ||
@@ -65,8 +70,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+
   // Everything else: network first, fall back to cache if offline
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+  event.respondWith(
+    fetch(event.request).catch(() =>
+        caches.match(event.request).then(cached => cached || new Response('Offline', { status: 503 }))
+    )
+  );
 });
 
 // When the app sends a SKIP_WAITING message, activate the new service worker immediately

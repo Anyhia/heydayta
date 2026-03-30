@@ -102,9 +102,10 @@
     padding-right: 3rem;
     min-height: auto;
     max-height: 20rem;
-    overflow-y: auto;
+    overflow-y: hidden;
     resize: none;
 }
+
 
 /* Subtle dark scrollbar */
 .textarea-wrapper .create-log-form-control::-webkit-scrollbar {

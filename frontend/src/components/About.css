@@ -1,5 +1,4 @@
 /* ===== BASE (mobile first) ===== */
-
 .container.about-container {
   text-align: center;
   padding-top: 1.3rem;
@@ -83,7 +82,6 @@ a.get-started-button.btn.btn-primary:hover {
 }
 
 /* ===== CARDS — stacked on mobile ===== */
-
 .container.show-descriptions {
   display: flex;
   flex-direction: column;
@@ -135,12 +133,11 @@ a.get-started-button.btn.btn-primary:hover {
 
 @media (max-width: 420px) {
   .title {
-      font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 }
 
 /* ===== 576px ===== */
-
 @media (min-width: 576px) {
   .description-card-title {
     font-size: var(--fs-normal);
@@ -151,8 +148,7 @@ a.get-started-button.btn.btn-primary:hover {
   }
 }
 
-/* ===== 768px — cards go horizontal ===== */
-
+/* ===== 768px — TABLET FIXES ===== */
 @media (min-width: 768px) {
   .get-started-button.btn-primary {
     padding-inline: 2rem;
@@ -162,14 +158,23 @@ a.get-started-button.btn.btn-primary:hover {
     width: auto;
   }
 
+  .mascot-image {
+    display: block;
+    max-width: 140px;
+    max-height: 140px;
+    margin-bottom: 1rem;
+  }
+
   .container.show-descriptions {
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: stretch;
     gap: 1rem;
   }
 
   .description-card {
-    flex: 1;
+    flex: 0 0 calc(50% - 0.5rem);
     padding: 1rem 0.75rem;
   }
 
@@ -182,12 +187,39 @@ a.get-started-button.btn.btn-primary:hover {
   }
 }
 
-/* ===== 992px — mascot appears ===== */
+/* ===== 768px–991px ===== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+  }
 
+  .container.show-descriptions {
+    margin-top: 0;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .description {
+    font-size: var(--fs-normal);
+  }
+}
+
+/* ===== 992px — DESKTOP ===== */
 @media (min-width: 992px) {
   .container.about-container {
     max-width: 70%;
     margin-inline: auto;
+    display: block;
+    padding-top: 1.3rem;
   }
 
   .container.mascot-container {
@@ -200,6 +232,7 @@ a.get-started-button.btn.btn-primary:hover {
     display: block;
     max-width: 250px;
     max-height: 250px;
+    margin-bottom: 0;
   }
 
   .title-and-description {
@@ -214,10 +247,17 @@ a.get-started-button.btn.btn-primary:hover {
   .description {
     font-size: var(--fs-normal);
   }
+
+  .container.show-descriptions {
+    flex-wrap: nowrap;
+  }
+
+  .description-card {
+    flex: 1;
+  }
 }
 
 /* ===== 1200px ===== */
-
 @media (min-width: 1200px) {
   .title {
     font-size: var(--fs-brand);

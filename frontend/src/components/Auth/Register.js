@@ -122,7 +122,7 @@ const Register = () => {
                                 ref={userRef}
                                 required
                                 type="text"
-                                placeholder="Ex: BoldlyGoose101"
+                                placeholder="Ex: DixonHill101"
                                 className='input-login'
                                 
                             />
@@ -143,7 +143,7 @@ const Register = () => {
                                 value={email}
                                 required
                                 type="text"
-                                placeholder="Ex: jeanlucpicard@email.com"
+                                placeholder="Ex: dixon.hill@email.com"
                                 className='input-login'
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>

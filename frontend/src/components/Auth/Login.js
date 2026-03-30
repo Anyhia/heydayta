@@ -56,7 +56,7 @@ const Login = () => {
                                 value={username}
                                 required
                                 type="text"
-                                placeholder="Ex: BoldlyGoose101"
+                                placeholder="Ex: DixonHill101"
                                 className='input-login'
                             />
                             <Form.Control.Feedback type='invalid'>This username is invalid</Form.Control.Feedback>

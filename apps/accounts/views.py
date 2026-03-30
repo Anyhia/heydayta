@@ -24,6 +24,8 @@ User = get_user_model()
 # Create your views here.
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
 
 
 class CurrentUserView(APIView):

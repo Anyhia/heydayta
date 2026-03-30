@@ -69,12 +69,15 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **⏰ Smart Reminders**: Reminders delivered via email and Web Push notification, set with natural language time parsing (*"in 3 days"*, *"next Monday"*)
 - **🔐 Dual Authentication**: Traditional email/password and Google OAuth 2.0
 - **🌍 Multilingual Support**: Automatic language detection for AI responses
+- **🎙️ Voice Input**: Record a voice note and have it transcribed automatically via OpenAI Whisper — hands-free journaling in any language
 - **📱 Responsive Design**: Mobile-friendly Star Trek-inspired UI
 - **⚙️ Account Settings**: Manage your account and permanently delete your data at `/account`
 - **🚨 Custom Error Pages**: Star Trek-themed 404 and 500 error pages
 - **⏳ Loading States**: Session-aware loading spinners across protected routes and data-heavy views
 - **🔗 Footer**: Site-wide footer with links to Privacy Policy and Terms of Service
+- **📖 How To Use**: Guided walkthrough page at `/how-to-use` with examples for journaling, reminders, voice input, and AI search — includes a demo video
 - **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker for offline static asset caching and automatic update detection, and Web Push notifications
+- **🤖 Android App (Google Play)**: Packaged as a Trusted Web Activity (TWA) using Bubblewrap and submitted to Google Play — installable as a native Android app with full PWA functionality
 
 ### Technical Highlights
 - **Vector Embeddings**: OpenAI `text-embedding-3-small` model for semantic search
@@ -82,7 +85,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **Auto-Refresh Tokens**: Seamless token renewal without re-authentication
 - **Cross-Origin Isolation**: COOP headers configured for OAuth popup flows
 - **Production-Ready Deployment**: Single Heroku dyno serving both API and static frontend
-- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker for offline static asset caching and automatic update detection, and Web Push notifications
+
 
 ### Legal & Compliance
 - **📜 Privacy Policy**: Full GDPR-compliant privacy policy at `/privacy-policy`, linked from the registration form
@@ -112,9 +115,10 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 | **React Bootstrap** | Responsive UI components |
 | **@react-oauth/google** | Google Sign-In integration |
 | **Axios** | HTTP client with interceptors for token refresh |
+| **Bubblewrap** | TWA packaging tool for Google Play distribution |
 
 ### AI & Infrastructure
-- **OpenAI API**: Text embeddings and -GPT-3.5-turbo completions
+- **OpenAI API**: Text embeddings (`text-embedding-3-small`), GPT-3.5-turbo completions, and Whisper speech-to-text transcription
 - **Heroku**: Hosting (web, worker)
 - **Heroku Postgres**: Production database
 - **Heroku Redis**: Message broker for Celery
@@ -144,6 +148,11 @@ Single Heroku application serving both Django API and React static build via Whi
 - Both apex and www routes are proxied through Cloudflare with automatic HTTPS
 - OVHcloud nameservers replaced with `mia.ns.cloudflare.com` and `vick.ns.cloudflare.com`
 
+### Android Distribution (TWA)
+- App packaged as a Trusted Web Activity using Bubblewrap, wrapping the PWA in a native Android shell
+- Digital Asset Links file deployed at `/.well-known/assetlinks.json` to verify domain ownership and enable the TWA to run without the browser toolbar
+- Signed AAB and APK generated from the Bubblewrap project
+- Submitted to Google Play closed testing (177 countries)
 
 ### Authentication Flow
 1. User logs in (email/password or Google OAuth)
@@ -171,6 +180,7 @@ Single Heroku application serving both Django API and React static build via Whi
 3. Set a reminder using natural language: *"remind me in 2 hours to call mom"*
 4. Ask a question: *"What did I write today?"*
 5. Check your email for the reminder notification
+6. Visit `/how-to-use` for a guided walkthrough with examples and a demo video
 
 ---
 

@@ -40,7 +40,6 @@ const Login = () => {
             <div className="login-container">
                 <div className='welcome-back'>
                     <div className='welcome-text'>Welcome Back</div>
-                    <div className='login-text'>Log in to access your memory vault</div>
                 </div>
                 <Form noValidate onSubmit={handleSubmit} id='login-form'>
                     {/* If error has a value, show the Alert */}

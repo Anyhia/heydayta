@@ -9,7 +9,7 @@ import GoogleLoginButton from './GoogleLoginButton';
 import './Login.css'
 
 // https://dev.to/fromwentzitcame/username-and-password-validation-using-regex-2175
-const USERNAME_REGEX = /^[0-9A-Za-z]{6,16}$/; 
+const USERNAME_REGEX = /^[0-9A-Za-z_-]{6,16}$/; 
 const PASSWORD_REGEX = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,25}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -104,7 +104,6 @@ const Register = () => {
             <div className='login-container'>
                 <div className='welcome-back'>
                     <div className='welcome-text'>Create Account</div>
-                    <div className='login-text'>Start capturing your memories today</div>
                 </div>
                 <Form noValidate onSubmit={handleSubmit} id='register-form'>
                     {/* If error has a value, show the Alert */}
@@ -128,7 +127,7 @@ const Register = () => {
                                 
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                            <Form.Control.Feedback type='invalid'>Username must be 6-16 characters (letters and numbers only)</Form.Control.Feedback>
+                            <Form.Control.Feedback type='invalid'>Username must be 6-16 characters (letters, numbers, _ or -)</Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
                     <Form.Group controlId="registerEmail" className='mb-3'>

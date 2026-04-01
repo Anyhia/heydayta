@@ -132,9 +132,9 @@ function Question({ clearSignal }) {
             </Form>
 
             {answer && (
-                <Container className='answer-box'>
+                <div className='answer-box'>
                     {answer}
-                </Container>
+                </div>
             )}
         </Container>
     )

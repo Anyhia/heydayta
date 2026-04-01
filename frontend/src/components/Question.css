@@ -164,8 +164,8 @@ textarea.question-form-control::placeholder {
     border-radius: 0.375rem;
     outline: none;
     color: var(--grey-text-light);
-    padding: 0.75rem; /* Match input padding */
-    margin: 0.75rem;
+    padding: 0.75rem;
+    margin: 0 0.75rem 0.75rem;
     line-height: 1.6;
 }
 
@@ -177,11 +177,9 @@ textarea.question-form-control::placeholder {
     .question-form {
         padding: 1.25rem;
     }
-
-    /* .question-form-button.btn-primary {
-        min-width: 3.25rem;
-        min-height: 3.25rem;
-    } */
+    .answer-box {
+        margin: 0 1.25rem 1.25rem;
+    }
 }
 
 @media (min-width: 768px) {

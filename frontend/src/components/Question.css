@@ -36,7 +36,7 @@
     min-height: auto;
     max-height: 15rem;
     padding-right: 2.5rem;
-    overflow-y: auto;
+    overflow-y: hidden;
     resize: none;
 }
 
@@ -165,7 +165,7 @@ textarea.question-form-control::placeholder {
     outline: none;
     color: var(--grey-text-light);
     padding: 0.75rem;
-    margin: 0 0.75rem 0.75rem;
+    margin: 0 0 0.75rem;
     line-height: 1.6;
 }
 

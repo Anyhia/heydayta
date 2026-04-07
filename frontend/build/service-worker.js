@@ -75,9 +75,8 @@ self.addEventListener('fetch', (event) => {
   }
 
 
-  // Navigation requests: bypass SW entirely, same behaviour as hard refresh
+  // Navigation requests: let the browser handle them natively
   if (event.request.mode === 'navigate') {
-    event.respondWith(fetch(event.request));
     return;
   }
 

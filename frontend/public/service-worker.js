@@ -1,8 +1,9 @@
-const CACHE_NAME = 'heydayta-v1';
+const CACHE_NAME = 'heydayta-v2';
 
-// Cache only the app shell - index.html is intentionally excluded
-// so the browser always fetches the latest from the server
+// Cache the app shell so the app loads when offline
 const STATIC_ASSETS = [
+  '/',
+  '/index.html',
   '/manifest.json',
 ];
 
@@ -39,12 +40,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Never cache index.html or API calls - always go to network
-  if (
-    url.pathname === '/' ||
-    url.pathname === '/index.html' ||
-    url.pathname.startsWith('/api/')
-  ) {
+  // Never cache API calls - always go to network
+  if (url.pathname.startsWith('/api/')) {
     event.respondWith(fetch(event.request));
     return;
   }
@@ -75,8 +72,13 @@ self.addEventListener('fetch', (event) => {
   }
 
 
-  // Navigation requests: let the browser handle them natively
-  if (event.request.mode === 'navigate') {
+  // Navigation requests and app routes - network first, fallback to cached index.html if offline
+  if (event.request.mode === 'navigate' || !url.pathname.includes('.')) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match('/index.html');
+      })
+    );
     return;
   }
 

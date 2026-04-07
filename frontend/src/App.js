@@ -13,7 +13,7 @@ import CookieBanner from './components/CookieBanner';
 import HowToUse from './components/HowToUse';
 import AccountSettings from './components/AccountSettings';
 import api, { setApiToken } from './api';
-import {useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { useAuth } from './components/Auth/AuthProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
@@ -24,7 +24,19 @@ import usePushNotifications from './hooks/usePushNotifications';
 
 function App() {
   const { token, setToken, isAuthenticated } = useAuth();
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
   usePushNotifications(isAuthenticated);
+
+  useEffect(() => {
+    const goOffline = () => setIsOffline(true);
+    const goOnline = () => setIsOffline(false);
+    window.addEventListener('offline', goOffline);
+    window.addEventListener('online', goOnline);
+    return () => {
+      window.removeEventListener('offline', goOffline);
+      window.removeEventListener('online', goOnline);
+    };
+  }, []);
 
   // whenever the token changes, call the setApiToken (declared in api.js)
   useEffect(() => {
@@ -91,6 +103,11 @@ function App() {
   return (
     <Router>
       <NavBar/>
+      {isOffline && (
+        <div className="offline-banner">
+          Your past memories are safely stored, but you need an internet connection to reach them. Please check your network.
+        </div>
+      )}
       <Routes>
         <Route path='/' element={<AboutPage/>} />
         <Route path='/about' element={<About/>} /> 

@@ -45,3 +45,13 @@ li, ul[role="list"] {
 a {
   text-decoration: none;
 }
+
+.offline-banner {
+  background-color: var(--clr-alert);
+  color: var(--clr-light);
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-500);
+  width: 100%;
+}

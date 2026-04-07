@@ -49,7 +49,12 @@ function CreateLog() {
             setLogs(response.data);
         })
         .catch((error) => {
-            console.error('Failed to fetch logs:', error);
+            if (!navigator.onLine || !error.response) {
+                // Network error - app is offline, fail silently, banner handles UX
+                setLogs([]);
+            } else {
+                console.error('Failed to fetch logs:', error);
+            }
         })
         .finally(() => {
             setIsLoadingLogs(false);

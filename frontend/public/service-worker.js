@@ -71,10 +71,16 @@ self.addEventListener('fetch', (event) => {
   }
 
 
+  // Navigation requests: bypass SW entirely, same behaviour as hard refresh
+  if (event.request.mode === 'navigate') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   // Everything else: network first, fall back to cache if offline
   event.respondWith(
     fetch(event.request).catch(() =>
-        caches.match(event.request).then(cached => cached || new Response('Offline', { status: 503 }))
+      caches.match(event.request).then(cached => cached || new Response('Offline', { status: 503 }))
     )
   );
 });

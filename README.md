@@ -76,7 +76,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 - **⏳ Loading States**: Session-aware loading spinners across protected routes and data-heavy views
 - **🔗 Footer**: Site-wide footer with links to Privacy Policy and Terms of Service
 - **📖 How To Use**: Guided walkthrough page at `/how-to-use` with examples for journaling, reminders, voice input, and AI search — includes a demo video
-- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker for offline static asset caching and automatic update detection, and Web Push notifications
+- **📱 PWA Support**: Installable on Android and iOS via "Add to Home Screen" — includes manifest.json, custom icons, standalone display mode, a service worker with offline support (app shell cached, graceful offline banner when network is unavailable), automatic update detection, and Web Push notifications
 - **🤖 Android App (Google Play)**: Packaged as a Trusted Web Activity (TWA) using Bubblewrap and submitted to Google Play — installable as a native Android app with full PWA functionality
 
 ### Technical Highlights
@@ -480,7 +480,7 @@ Database Connection Pooling: conn_max_age=600 for persistent connections
 
 No-Cache on index.html: `Cache-Control: no-cache` enforced via Django's `never_cache` decorator, ensuring browsers always fetch the latest entry point after a deployment
 
-Service Worker: Cache-first strategy for hashed static assets (JS/CSS), network-first for API calls, auto-update detection, and Web Push notification handling via the `push` and `notificationclick` events
+Service Worker: Minimum viable offline support: app shell (index.html) cached on install, network-first navigation with cached fallback for offline use, cache-first for hashed static assets (JS/CSS), Chrome only-if-cached bug fix, auto-update detection, and Web Push notification handling
 
 
 ## 🔐 Security Features

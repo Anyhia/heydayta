@@ -28,6 +28,10 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // Workaround for Chrome bug: only-if-cached requires same-origin mode
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+    return;
+  }
   const url = new URL(event.request.url);
 
   // Don't intercept cross-origin requests

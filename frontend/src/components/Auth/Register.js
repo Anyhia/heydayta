@@ -32,6 +32,8 @@ const Register = () => {
 
     const [validCheck, setValidCheck] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [validAiCheck, setValidAiCheck] = useState(false);
+    const [showAiError, setShowAiError] = useState(false);
 
     const [error, setError] = useState(null);
 
@@ -61,19 +63,20 @@ const Register = () => {
     }, [password, passwordMatch])
 
     useEffect (() => {
-        if (validEmail && validUsername && validPassword && validPasswordMatch && validCheck) {
+        if (validEmail && validUsername && validPassword && validPasswordMatch && validCheck && validAiCheck) {
             setValidRegistration(true)
         }
         else {
             setValidRegistration(false)
         }
-    },[validUsername,validEmail,validPassword,validPasswordMatch, validCheck])
+    },[validUsername,validEmail,validPassword,validPasswordMatch, validCheck, validAiCheck])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // e.stopPropagation(); prevents the event from bubbling up to parent elements. This stops parent click handlers from firing.
         if (!validRegistration) {
-            setShowError(true)
+            if (!validCheck) setShowError(true);
+            if (!validAiCheck) setShowAiError(true);
         }
         else {
             const userData={
@@ -212,11 +215,37 @@ const Register = () => {
                         feedbackType="invalid"
                         className='label'
                     />
+                    <Form.Check
+                        type="checkbox"
+                        required
+                        isInvalid={showAiError}
+                        onChange={(e) => {
+                            setValidAiCheck(e.target.checked);
+                            setShowAiError(false);
+                        }}
+                        label={
+                            <>
+                                I consent to my journal entries being securely processed by{' '}
+                                <a href='https://openai.com/policies/privacy-policy' target='_blank' rel='noreferrer' className='policy-link'>OpenAI</a>
+                                {' '}to enable AI search features
+                            </>
+                        }
+                        feedback='You must consent to AI processing to use HeyDayta'
+                        feedbackType="invalid"
+                        className='label mt-2'
+                    />
                     <Button type="submit" className='login-button'>Register<FontAwesomeIcon className='ms-3' icon={faArrowRight} /></Button>
                 </Form>
                 <div className='google-option'>
                     <div className='google-option-text'>Or continue with Google</div>
                     <GoogleLoginButton />
+                    <p className='google-consent-note'>
+                        By signing in, you agree to our{' '}
+                        <a href='/terms-of-service' target='_blank' className='policy-link'>Terms</a>
+                        {' '}&amp;{' '}
+                        <a href='/privacy-policy' target='_blank' className='policy-link'>Privacy Policy</a>
+                        , and consent to your entries being processed by OpenAI for AI search.
+                    </p>
                 </div>
                 <div className='sign-up-option'>
                     <Link className="sign-up" to="/login">

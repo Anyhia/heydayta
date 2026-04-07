@@ -123,6 +123,15 @@
   margin-left: 0.5rem;
 }
 
+.google-consent-note {
+    color: var(--grey-text-muted);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-300);
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
 
 /* Larger phones, tablets */
 @media (min-width: 576px) {

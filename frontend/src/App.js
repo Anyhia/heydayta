@@ -60,6 +60,9 @@ function App() {
         if (error.config?.url?.includes('/accounts/logout/')) {
           return Promise.reject(error);
         }
+        if (error.config?.url?.includes('/token/') && !error.config?.url?.includes('refresh')) {
+          return Promise.reject(error);
+        }
         if (error.config?.url?.includes('/token/refresh/')) {
           // If refresh endpoint fails, don't try to refresh again
           setToken(null);

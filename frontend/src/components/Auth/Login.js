@@ -50,7 +50,8 @@ const Login = () => {
                             <InputGroup.Text className='input-icon' id='inputUsername'><FontAwesomeIcon icon={faUser}/></InputGroup.Text>
                             <Form.Control
                                 onChange={(e) => {
-                                    setUsername(e.target.value)
+                                    setUsername(e.target.value);
+                                    setError(null);
                                 }}
                                 ref={userRef}
                                 value={username}
@@ -69,7 +70,8 @@ const Login = () => {
                             <InputGroup.Text className='input-icon'><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
                             <Form.Control
                                 onChange={(e) => {
-                                    setPassword(e.target.value)
+                                    setPassword(e.target.value);
+                                    setError(null);
                                 }}
                                 value={password}
                                 required

@@ -117,7 +117,8 @@ const Register = () => {
                             <InputGroup.Text className='input-icon' id='inputUsername'><FontAwesomeIcon icon={faUser}/></InputGroup.Text>
                             <Form.Control
                                 onChange={(e) => {
-                                    setUsername(e.target.value)
+                                    setUsername(e.target.value);
+                                    setError(null);
                                 }}
                                 isInvalid={!validUsername && username!==''}
                                 isValid={validUsername && username!==''}
@@ -139,7 +140,8 @@ const Register = () => {
                             <InputGroup.Text className='input-icon'><FontAwesomeIcon icon={faAt}/></InputGroup.Text>
                             <Form.Control
                                 onChange={(e) => {
-                                    setEmail(e.target.value)
+                                    setEmail(e.target.value);
+                                    setError(null);
                                 }}
                                 isValid={validEmail && email !== ''}
                                 isInvalid={!validEmail && email !== ''}

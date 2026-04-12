@@ -38,6 +38,8 @@ function Question({ clearSignal }) {
         const textarea = e.target;
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
+        const maxH = parseInt(getComputedStyle(textarea).maxHeight);
+        textarea.style.overflowY = textarea.scrollHeight > maxH ? 'auto' : 'hidden';
     };
     
     const { isRecording, startRecording, stopRecording } = useVoiceRecording(
@@ -47,8 +49,11 @@ function Question({ clearSignal }) {
                 // Trigger auto-expand after voice input
                 setTimeout(() => {
                     if (questionRef.current) {
-                        questionRef.current.style.height = 'auto';
-                        questionRef.current.style.height = questionRef.current.scrollHeight + 'px';
+                        const el = questionRef.current;
+                        el.style.height = 'auto';
+                        el.style.height = el.scrollHeight + 'px';
+                        const maxH = parseInt(getComputedStyle(el).maxHeight);
+                        el.style.overflowY = el.scrollHeight > maxH ? 'auto' : 'hidden';
                     }
                 }, 0);
                 return newQuestion;

@@ -99,7 +99,7 @@ function Question({ clearSignal }) {
                     <div className='question-input-wrapper'>
                         <Form.Control
                             as="textarea"
-                            rows={1}
+                            rows={2}
                             placeholder="Ask Dayta..."
                             aria-label="Ask Dayta a question"
                             ref={questionRef}

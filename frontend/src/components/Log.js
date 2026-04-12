@@ -172,7 +172,7 @@ function CreateLog() {
                             ref={textareaRef}
                             id='captainsLog'
                             as="textarea"
-                            rows={1}
+                            rows={2}
                             placeholder={entryType === 'journal' ? "What's on your mind?" : "Set reminder for..."}
                             aria-label="Entry text"
                             value={entry}

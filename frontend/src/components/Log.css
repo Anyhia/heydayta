@@ -132,8 +132,8 @@
 .voice-mic-btn.btn.btn-primary:active:focus {
     position: absolute;
     right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0.5rem;
+    transform: none;
     background-color: transparent;
     border: none;
     color: var(--grey-text-muted); /* Grey ghost */
@@ -147,7 +147,7 @@
 
 .voice-mic-btn.btn.btn-primary:hover {
     color: var(--grey-text-light); /* Lighter grey on hover */
-    transform: translateY(-50%) scale(1.1);
+    transform: scale(1.1);
 }
 
 .voice-recording-btn.btn.btn-primary,
@@ -156,8 +156,8 @@
 .voice-recording-btn.btn.btn-primary:active:focus {
     position: absolute;
     right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0.5rem;
+    transform: none;
     background-color: transparent;
     border: none;
     color: var(--clr-command); /* Red when recording */
@@ -171,7 +171,7 @@
 
 .voice-recording-btn.btn.btn-primary:hover {
     color: var(--clr-alert);
-    transform: translateY(-50%) scale(1.05);
+    transform: scale(1.05);
 }
 
 @keyframes pulse {

@@ -37,8 +37,10 @@ function CreateLog() {
         
         // Auto-expand textarea
         const textarea = e.target;
-        textarea.style.height = 'auto'; // Reset height
-        textarea.style.height = textarea.scrollHeight + 'px'; // Set to scroll height
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+        const maxH = parseInt(getComputedStyle(textarea).maxHeight);
+        textarea.style.overflowY = textarea.scrollHeight > maxH ? 'auto' : 'hidden';
     };
 
 
@@ -73,8 +75,11 @@ function CreateLog() {
                 // Trigger auto-expand after voice input
                 setTimeout(() => {
                     if (textareaRef.current) {
-                        textareaRef.current.style.height = 'auto';
-                        textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+                        const el = textareaRef.current;
+                        el.style.height = 'auto';
+                        el.style.height = el.scrollHeight + 'px';
+                        const maxH = parseInt(getComputedStyle(el).maxHeight);
+                        el.style.overflowY = el.scrollHeight > maxH ? 'auto' : 'hidden';
                     }
                 }, 0);
                 return newEntry;

@@ -36,19 +36,19 @@ function HowToUse() {
                             <div className='howto-examples'>
                                 <div className='howto-example-row'>
                                     <span className='howto-example-label'>✍️ Example</span>
-                                    <span className='howto-example-text'>"Had a great meeting with the team. We agreed on pushing the deadline to Friday."</span>
+                                    <span className='howto-example-text'>"The Wi-Fi password for the Airbnb is SummerBreeze2025! and the front gate code is 4392."</span>
                                 </div>
                                 <div className='howto-example-row'>
                                     <span className='howto-example-label'>✍️ Example</span>
-                                    <span className='howto-example-text'>"Tried the new Italian place near the office. The pasta was excellent, would go back."</span>
+                                    <span className='howto-example-text'>"Mom mentioned she really wants that stainless steel gardening trowel. Do NOT buy her another scarf for her birthday."</span>
                                 </div>
                                 <div className='howto-example-row'>
                                     <span className='howto-example-label'>✍️ En français</span>
-                                    <span className='howto-example-text'>"Réunion productive avec l'équipe ce matin. On a décidé de reporter la livraison."</span>
+                                    <span className='howto-example-text'>"J'ai caché la clé de secours dans le faux rocher à côté du grand chêne. Ne pas oublier !"</span>
                                 </div>
                                 <div className='howto-example-row'>
                                     <span className='howto-example-label'>✍️ En español</span>
-                                    <span className='howto-example-text'>"Hoy comí en el restaurante italiano cerca del trabajo. La pasta estaba deliciosa."</span>
+                                    <span className='howto-example-text'>"La doctora dijo que debo tomar magnesio por las noches y volver en tres meses para otra revisión."</span>
                                 </div>
                             </div>
                             <div className='howto-tip'>
@@ -74,35 +74,35 @@ function HowToUse() {
                     <div className='howto-examples'>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>⏱ Relative</span>
-                            <span className='howto-example-text'>"Remind me in 2 hours to call the doctor"</span>
+                            <span className='howto-example-text'>"Remind me in 2 hours to text Sarah back so she doesn't think I am ignoring her."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>⏱ Relative</span>
-                            <span className='howto-example-text'>"Remind me in 3 days to follow up with Marc"</span>
+                            <span className='howto-example-text'>"Remind me in 3 days to take the trash bins out."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>📅 Specific day</span>
-                            <span className='howto-example-text'>"Remind me next Monday to submit the report"</span>
+                            <span className='howto-example-text'>"Remind me next Monday morning to cancel my free streaming trial."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>📅 Specific day</span>
-                            <span className='howto-example-text'>"Remind me tomorrow at 9am to take my medication"</span>
+                            <span className='howto-example-text'>"Remind me tomorrow at 5 PM to take the chicken out of the freezer."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>📆 Far future</span>
-                            <span className='howto-example-text'>"Remind me in 2 weeks to renew my subscription"</span>
+                            <span className='howto-example-text'>"Remind me in 3 weeks to double-check my passport expiration date."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>📆 Far future</span>
-                            <span className='howto-example-text'>"Remind me in a month to check my savings account"</span>
+                            <span className='howto-example-text'>"Remind me on October 15th to buy anniversary gifts before it's too late."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🇫🇷 En français</span>
-                            <span className='howto-example-text'>"Rappelle-moi demain d'appeler le médecin"</span>
+                            <span className='howto-example-text'>"Rappelle-moi demain matin de sortir les poubelles."</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🇪🇸 En español</span>
-                            <span className='howto-example-text'>"Recuérdame en 2 horas llamar al médico"</span>
+                            <span className='howto-example-text'>"Recuérdame el próximo viernes cancelar la suscripción del gimnasio."</span>
                         </div>
                     </div>
                     <div className='howto-tip'>
@@ -116,7 +116,8 @@ function HowToUse() {
                         <span className='howto-tip-icon'>📬</span>
                         <span>
                             <strong>How reminders are delivered:</strong> When the scheduled time arrives, you'll receive
-                            an email at your registered address. The email won't arrive immediately after you set the reminder —
+                            an email at your registered address and, if you've allowed notifications, a push notification
+                            on your device. The reminder won't arrive immediately after you set it —
                             it will arrive exactly at the time you specified.
                         </span>
                     </div>
@@ -139,11 +140,11 @@ function HowToUse() {
                     <div className='howto-examples'>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🔍 Example</span>
-                            <span className='howto-example-text'>"What did I eat last Tuesday?"</span>
+                            <span className='howto-example-text'>"What is the Wi-Fi password and gate code for the Airbnb?"</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🔍 Example</span>
-                            <span className='howto-example-text'>"What have I written about work this week?"</span>
+                            <span className='howto-example-text'>"What did Mom say she wanted for her birthday?"</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🔍 Example</span>
@@ -151,11 +152,11 @@ function HowToUse() {
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🇫🇷 En français</span>
-                            <span className='howto-example-text'>"Qu'est-ce que j'ai mangé mardi dernier?"</span>
+                            <span className='howto-example-text'>"Où est-ce que j'ai caché la clé de secours ?"</span>
                         </div>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🇪🇸 En español</span>
-                            <span className='howto-example-text'>"¿Qué escribí sobre el trabajo esta semana?"</span>
+                            <span className='howto-example-text'>"¿Cuál era el código de la puerta de la nueva oficina?"</span>
                         </div>
                     </div>
                     <div className='howto-tip'>

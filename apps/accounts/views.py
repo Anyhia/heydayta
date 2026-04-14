@@ -171,6 +171,7 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 class LogoutAPIView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
     
     def post(self, request):
         response = Response({'message': 'Logged Out'})

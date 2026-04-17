@@ -25,6 +25,11 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'message': err.messages})
         return value
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError('This username is already taken.')
+        return value
+
     def create(self, validated_data):
         # create_user to hash password correctly
         user = User.objects.create_user(

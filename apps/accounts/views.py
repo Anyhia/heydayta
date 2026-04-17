@@ -14,6 +14,9 @@ from rest_framework import status
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.contrib.auth import get_user_model
+import re
+import uuid
+from django.db import IntegrityError
 
 
 import os
@@ -65,15 +68,28 @@ class GoogleLoginAPIView(APIView):
                 created = False # If the user exists, give a welcome back message or something
                 print(f"✅ Existing user found: {user.username}") 
             except User.DoesNotExist:
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password=None, # Unusable value
-                )
-                user.set_unusable_password() # For Google authentication, nobody can log in with a password (only with Google).
-                user.save()
-                created = True
-                print(f"✅ New user created: {user.username}")
+                # Sanitise Google display name to fit username rules
+                base_username = re.sub(r'[^0-9A-Za-z_-]', '', username)[:16]
+                if len(base_username) < 6:
+                    base_username = base_username + uuid.uuid4().hex[:6]
+                final_username = base_username
+                if User.objects.filter(username=final_username).exists():
+                    final_username = (base_username[:10] + uuid.uuid4().hex[:6])
+                try:
+                    user = User.objects.create_user(
+                        username=final_username,
+                        email=email,
+                        password=None,
+                    )
+                    user.set_unusable_password()
+                    user.save()
+                    created = True
+                    print(f"✅ New user created: {user.username}")
+                except IntegrityError:
+                    return Response(
+                        {'error': 'Account creation failed. Please try again.'},
+                        status=status.HTTP_409_CONFLICT
+                    )
 
             # Prepare data for frontend
             serializer = UserSerializer(user)

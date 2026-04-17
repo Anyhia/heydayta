@@ -36,6 +36,7 @@ const Register = () => {
     const [showAiError, setShowAiError] = useState(false);
 
     const [error, setError] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
 
     // Set focus on username input
     const userRef= useRef()
@@ -79,6 +80,7 @@ const Register = () => {
             if (!validAiCheck) setShowAiError(true);
         }
         else {
+            setSubmitting(true);
             const userData={
                 username:username,
                 email:email,
@@ -88,6 +90,7 @@ const Register = () => {
             api.post('/accounts/register/', userData)
             .then(() => navigate('/login'))
             .catch((error) => {
+                setSubmitting(false);
                 // Check for errors from the servers and display the right message
                 if(error.response?.data?.username) {
                     setError(error.response.data.username[0]);
@@ -100,6 +103,7 @@ const Register = () => {
                 }
             })
         }
+        
     };
 
     return (
@@ -236,7 +240,7 @@ const Register = () => {
                         feedbackType="invalid"
                         className='label mt-2'
                     />
-                    <Button type="submit" className='login-button'>Register<FontAwesomeIcon className='ms-3' icon={faArrowRight} /></Button>
+                    <Button type="submit" className='login-button' disabled={submitting}>{submitting ? 'Registering...' : 'Register'}<FontAwesomeIcon className='ms-3' icon={faArrowRight} /></Button>
                 </Form>
                 <div className='google-option'>
                     <div className='google-option-text'>Or continue with Google</div>

@@ -101,3 +101,9 @@ button.btn.delete.btn-primary:hover {
     margin: 0px;
     padding: 0px;
 }
+
+.edit-error {
+    color: var(--clr-command);
+    font-size: var(--fs-small);
+    margin-bottom: 0.25rem;
+}

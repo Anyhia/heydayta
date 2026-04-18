@@ -1,8 +1,9 @@
 import { Container, Button, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPenToSquare, faTrashCan, faFloppyDisk} from '@fortawesome/free-solid-svg-icons';
+import {faPenToSquare, faTrashCan, faFloppyDisk, faMicrophone, faStop} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import api from '../api';
+import { useVoiceRecording } from './useVoiceRecording';
 import './ShowLogs.css';
 
 export const ShowLogs = ({logs, refreshLogs}) => {
@@ -23,6 +24,17 @@ export const LogCard = ({log, refreshLogs}) => {
     // state for edit
     const [editing, setEditing] = useState(false);
     const [newLog, setNewLog] = useState(log.entry);
+    const [editError, setEditError] = useState(null);
+
+    const { isRecording, startRecording, stopRecording } = useVoiceRecording(
+        (transcribedText) => {
+            setNewLog(prev => prev + (prev ? ' ' : '') + transcribedText);
+            setEditError(null);
+        },
+        (errorMessage) => {
+            setEditError(errorMessage);
+        }
+    );
 
     // Call for edit button
     function updateLog() {
@@ -83,16 +95,28 @@ export const LogCard = ({log, refreshLogs}) => {
                 </div>
             </div>
             
-            {editing ? (<Form.Control
-                        id='editLog'
-                        as="textarea"
-                        placeholder={log.entry}
-                        value={newLog}
-                        onChange={(e) => setNewLog(e.target.value)}
-                        className='create-log-form-control bg-grey-inner'
-                    />) : <div className='entry-text'> {newLog} </div>
-
-            }
+            {editing ? (
+                <>
+                    {editError && <div className='edit-error'>{editError}</div>}
+                    <div className='textarea-wrapper'>
+                        <Form.Control
+                            id='editLog'
+                            as="textarea"
+                            placeholder={log.entry}
+                            value={newLog}
+                            onChange={(e) => setNewLog(e.target.value)}
+                            className='create-log-form-control bg-grey-inner'
+                        />
+                        <Button
+                            type="button"
+                            className={isRecording ? "voice-recording-btn" : "voice-mic-btn"}
+                            onClick={isRecording ? stopRecording : startRecording}
+                        >
+                            <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
+                        </Button>
+                    </div>
+                </>
+            ) : <div className='entry-text'> {newLog} </div>}
             
         </Container>
     )

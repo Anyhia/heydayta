@@ -28,6 +28,7 @@ function CreateLog() {
     const [isLoadingLogs, setIsLoadingLogs] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [clearQuestion, setClearQuestion] = useState(0);
+    const [reminderTime, setReminderTime] = useState(null);
 
     const { isAuthenticated } = useAuth();
 
@@ -109,19 +110,25 @@ function CreateLog() {
         }
         api.post('/logs/', logData)
         .then((response) => {
-            setSuccess('Entry Log Created');
             setError(null);
             setEntry('');
-           // Reset textarea height after clearing
             if (textareaRef.current) {
                 textareaRef.current.style.height = 'auto';
             }
+            setLogs((prevlogs) => [response.data, ...prevlogs]);
 
-            setLogs((prevlogs) => [response.data,...prevlogs])
-
-            setTimeout(() => {
+            if (response.data.entry_type === 'reminders' && response.data.reminder_time) {
+                const dt = new Date(response.data.reminder_time);
+                const formatted = dt.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                    + ' at '
+                    + dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+                setReminderTime(formatted);
                 setSuccess(null);
-            }, 3000);
+            } else {
+                setReminderTime(null);
+                setSuccess('Entry Log Created');
+                setTimeout(() => setSuccess(null), 3000);
+            }
         })
         .catch((error) => {
             if (error.response?.data?.error) {
@@ -143,6 +150,11 @@ function CreateLog() {
                 <Form onSubmit={handleSubmit} className='create-log-form'>
                     <div>
                         {success && <Alert variant="success">{success}</Alert>}
+                        {reminderTime && (
+                            <Alert variant="success" onClose={() => setReminderTime(null)} dismissible>
+                                Reminder set for {reminderTime}
+                            </Alert>
+                        )}
                         {error && <Alert variant='danger'>{error}</Alert>}
                     </div>
 

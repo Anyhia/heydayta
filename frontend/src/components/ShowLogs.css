@@ -107,3 +107,32 @@ button.btn.delete.btn-primary:hover {
     font-size: var(--fs-small);
     margin-bottom: 0.25rem;
 }
+
+.edit-type-toggle {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--grey-border);
+    margin-bottom: 0.5rem;
+}
+
+.edit-type-btn {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: var(--grey-text-muted);
+    padding: 0.4rem 1rem;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-500);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-type-btn:hover {
+    color: var(--grey-text-light);
+}
+
+.edit-type-active {
+    color: var(--grey-text-light);
+    border-bottom-color: var(--clr-lcars-purple);
+}

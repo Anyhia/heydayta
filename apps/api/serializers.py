@@ -14,8 +14,11 @@ class LogSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        if data.get('entry_type') == 'reminders' and not data.get('reminder_time'):
-            raise serializers.ValidationError('For Reminders, the date the reminder should be sent is required')
+        # Only enforce reminder_time requirement on creation (partial=False)
+        # On partial updates, reminder_time is handled by the view before reaching here
+        if not self.partial:
+            if data.get('entry_type') == 'reminders' and not data.get('reminder_time'):
+                raise serializers.ValidationError('For Reminders, the date the reminder should be sent is required')
         return data
 
 

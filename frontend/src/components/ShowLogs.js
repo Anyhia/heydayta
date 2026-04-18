@@ -25,6 +25,8 @@ export const LogCard = ({log, refreshLogs}) => {
     const [editing, setEditing] = useState(false);
     const [newLog, setNewLog] = useState(log.entry);
     const [editError, setEditError] = useState(null);
+    const [entryType, setEntryType] = useState(log.entry_type);
+    const localDate = new Date().getTimezoneOffset();
 
     const { isRecording, startRecording, stopRecording } = useVoiceRecording(
         (transcribedText) => {
@@ -38,11 +40,14 @@ export const LogCard = ({log, refreshLogs}) => {
 
     // Call for edit button
     function updateLog() {
-        api.patch(`/logs/${log.id}/`, {entry : newLog} )
+        api.patch(`/logs/${log.id}/`, {entry: newLog, entry_type: entryType, localDate: localDate})
         .then((response) => {
             setNewLog(response.data.entry);
             setEditing(false);
             refreshLogs();
+        })
+        .catch((error) => {
+            setEditError(error.response?.data?.error || 'Update failed. Please try again.');
         })
     }
 
@@ -59,15 +64,8 @@ export const LogCard = ({log, refreshLogs}) => {
     const date = d.toLocaleDateString();
     // Only hours and minutes
     const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-    let tag;
-    let logClass;
-    if(log.entry_type==='journal') {
-        logClass = 'log-card-journal';
-        tag = 'Journal';
-    } else {
-        logClass = 'log-card-reminder';
-        tag = 'Reminder';
-    }
+    const logClass = entryType === 'journal' ? 'log-card-journal' : 'log-card-reminder';
+    const tag = entryType === 'journal' ? 'Journal' : 'Reminder';
 
     return (
         
@@ -98,6 +96,22 @@ export const LogCard = ({log, refreshLogs}) => {
             {editing ? (
                 <>
                     {editError && <div className='edit-error'>{editError}</div>}
+                    <div className='edit-type-toggle'>
+                        <button
+                            type="button"
+                            className={`edit-type-btn ${entryType === 'journal' ? 'edit-type-active' : ''}`}
+                            onClick={() => setEntryType('journal')}
+                        >
+                            Journal
+                        </button>
+                        <button
+                            type="button"
+                            className={`edit-type-btn ${entryType === 'reminders' ? 'edit-type-active' : ''}`}
+                            onClick={() => setEntryType('reminders')}
+                        >
+                            Reminder
+                        </button>
+                    </div>
                     <div className='textarea-wrapper'>
                         <Form.Control
                             id='editLog'

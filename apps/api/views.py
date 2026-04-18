@@ -79,6 +79,67 @@ class LogViewSet(viewsets.ModelViewSet):
             return Response(LogSerializer(log).data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def partial_update(self, request, *args, **kwargs):
+        try:
+            log = self.get_object()
+            data = request.data.copy()
+            new_entry_type = data.get('entry_type', log.entry_type)
+            new_entry = data.get('entry', log.entry)
+
+            # If switching to reminder or staying as reminder with changed text
+            if new_entry_type == 'reminders':
+                timezone_offset_minutes = int(data.get('localDate', 0))
+                UTC = timezone.now()
+                user_local_datetime = UTC - timedelta(minutes=timezone_offset_minutes)
+
+                result = get_reminder_time(new_entry, user_local_datetime, timezone_offset_minutes)
+
+                if result is None:
+                    return Response({'error': 'Could not find a valid time to set your reminder. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                data['reminder_time'] = result
+                data['status'] = 'unsent'
+
+                # If it was already a reminder, mark old task as sent so it won't fire
+                if log.entry_type == 'reminders':
+                    log.status = 'sent'
+                    log.save()
+
+            # If switching to journal, clear reminder fields
+            if new_entry_type == 'journal':
+                data['reminder_time'] = None
+                data['status'] = None
+
+            # Update embedding if entry text changed
+            if new_entry != log.entry:
+                try:
+                    embedding_vector = create_embedding(new_entry)
+                    if embedding_vector is None:
+                        raise Exception("Embedding creation failed.")
+                    data['embedding'] = embedding_vector
+                except Exception as e:
+                    print(f"❌ EMBEDDING ERROR: {e}")
+                    return Response({'error': 'Embedding creation failed.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            serializer = LogSerializer(log, data=data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            log = serializer.save()
+
+            # Schedule Celery task if it's a reminder
+            if log.entry_type == 'reminders' and log.reminder_time and log.status == 'unsent':
+                try:
+                    send_email_reminder.apply_async(
+                        args=[log.id],
+                        eta=log.reminder_time
+                    )
+                except Exception as e:
+                    return Response({'error': f'Failed to schedule reminder: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return Response(LogSerializer(log).data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['post']) 
     def ask_question(self, request):

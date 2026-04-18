@@ -16,6 +16,9 @@ def send_email_reminder(reminder_id):
     except Log.DoesNotExist:
         print(f"Reminder {reminder_id} not found in database")
         return
+    if log.entry_type != 'reminders':
+        print(f"Reminder {reminder_id} is no longer a reminder, skipping")
+        return
 
     # Prevent duplicate sends
     if log.status == 'sent':

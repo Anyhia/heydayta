@@ -94,6 +94,7 @@ button.btn.delete.btn-primary:hover {
     font-size: var(--fs-normal);
     font-weight: var(--fw-500);
     color: var(--grey-text-light);
+    user-select: text;
 }
 
 .list {

@@ -45,7 +45,8 @@ class LogViewSet(viewsets.ModelViewSet):
                 
                 if result is None:
                     return Response({'error': 'Could not find a valid time to set your reminder. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
-                
+                if result <= timezone.now():
+                    return Response({'error': 'The reminder time has already passed. Please set a reminder for a future time.'}, status=status.HTTP_400_BAD_REQUEST)
                 data['reminder_time'] = result  # result is already in UTC
                 data['entry_type'] = 'reminders'
 
@@ -97,6 +98,8 @@ class LogViewSet(viewsets.ModelViewSet):
 
                 if result is None:
                     return Response({'error': 'Could not find a valid time to set your reminder. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
+                if result <= timezone.now():
+                    return Response({'error': 'The reminder time has already passed. Please set a reminder for a future time.'}, status=status.HTTP_400_BAD_REQUEST)
 
                 data['reminder_time'] = result
                 data['status'] = 'unsent'

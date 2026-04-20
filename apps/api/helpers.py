@@ -43,8 +43,11 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         "1. If the text contains absolutely NO date, time, or temporal reference, return exactly the word: None\n"
         "2. Interpret any relative time (e.g., 'in two minutes', 'tomorrow', 'next Tuesday') relative to the user's current local time.\n"
         "3. If a date or day is mentioned but no specific time of day is provided, apply these defaults: morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. If no part of the day is implied, default to 09:00.\n"
-        "4. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
-        "5. Do not include any other words, explanations, or punctuation.\n\n"
+        "4. If a time of day is mentioned without AM/PM, and that time has already passed today, interpret it as PM if the AM version has passed and PM has not, or as the next day if both have passed.\n"
+        "5. If a day of the week is mentioned without 'last' or 'past', always pick the next upcoming occurrence of that day, even if it is tomorrow.\n"
+        "6. The returned datetime must always be strictly in the future relative to the current date and time. If the only possible interpretation is in the past, return None.\n"
+        "7. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
+        "8. Do not include any other words, explanations, or punctuation.\n\n"
         f"Text to analyze: '{log}'"
     )
     
@@ -93,7 +96,7 @@ def get_answer(context):
         "2. Resolving time: Use today's date only to understand the user's question (e.g., if they ask 'what did I do last week?'). When reading the logs, rely strictly on the log's own timestamp to know when an event happened.\n"
         "3. Only mention the date or time of an entry if the user asks 'when' something happened, or if the timing is necessary to fully answer the question.\n"
         "4. Date formatting: When you DO mention a date, state the exact calendar date from the log (e.g., 'on December 11, 2025') instead of saying 'today' or 'last year'. Never use raw database timestamps, timezone offsets, or microseconds.\n"
-        "5. Never make assumptions or use outside knowledge. If the answer is not in the logs, say so.\n"
+        "5. If the logs do not contain a clear, direct answer to the question, reply only with a short sentence saying you could not find that information in the journal. Do NOT piece together an answer from unrelated entries. Do NOT infer, guess, or connect entries that do not explicitly mention the topic asked about.\n"
         "6. Answer in the same language as the question.\n\n"
         "=== LOGS ===\n"
         f"{context['closest_matches']}\n"

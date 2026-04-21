@@ -25,6 +25,8 @@ import usePushNotifications from './hooks/usePushNotifications';
 function App() {
   const { token, setToken, isAuthenticated } = useAuth();
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [waitingWorker, setWaitingWorker] = useState(null);
   usePushNotifications(isAuthenticated);
 
   useEffect(() => {
@@ -36,6 +38,15 @@ function App() {
       window.removeEventListener('offline', goOffline);
       window.removeEventListener('online', goOnline);
     };
+  }, []);
+
+  useEffect(() => {
+    const handler = (event) => {
+      setWaitingWorker(event.detail);
+      setUpdateAvailable(true);
+    };
+    window.addEventListener('swUpdateAvailable', handler);
+    return () => window.removeEventListener('swUpdateAvailable', handler);
   }, []);
 
   // whenever the token changes, call the setApiToken (declared in api.js)
@@ -109,6 +120,14 @@ function App() {
       {isOffline && (
         <div className="offline-banner">
           Your past memories are safely stored, but you need an internet connection to reach them. Please check your network.
+        </div>
+      )}
+      {updateAvailable && (
+        <div className="update-banner">
+          A new version is available!{' '}
+          <button onClick={() => waitingWorker?.postMessage({ type: 'SKIP_WAITING' })}>
+            Update now
+          </button>
         </div>
       )}
       <Routes>

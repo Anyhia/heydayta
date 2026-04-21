@@ -1,12 +1,11 @@
-export function register() {
+export function register(onUpdateFound) {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('/service-worker.js')
         .then((registration) => {
-          // Check for updates every time the page loads
           registration.update();
-
+          
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             newWorker.addEventListener('statechange', () => {
@@ -14,16 +13,17 @@ export function register() {
                 newWorker.state === 'installed' &&
                 navigator.serviceWorker.controller
               ) {
-                // New version is ready. Tell it to activate immediately.
-                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                // New version is waiting - notify the app
+                if (onUpdateFound) onUpdateFound(newWorker);
               }
             });
           });
         });
 
-      // When a new service worker takes control, reload the page
+      // Only reload when the user explicitly requests the update (and it's a genuine update)
       let hadController = !!navigator.serviceWorker.controller;
       let refreshing = false;
+      
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing && hadController) {
           refreshing = true;

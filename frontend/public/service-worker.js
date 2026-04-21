@@ -1,4 +1,4 @@
-const CACHE_NAME = 'heydayta-v2';
+const CACHE_NAME = 'heydayta-v3';
 
 // Cache the app shell so the app loads when offline
 const STATIC_ASSETS = [
@@ -8,8 +8,6 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  // Take over immediately without waiting for old tabs to close
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
@@ -24,7 +22,7 @@ self.addEventListener('activate', (event) => {
           .filter((key) => key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
-    ).then(() => self.clients.claim())
+    )
   );
 });
 

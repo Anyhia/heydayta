@@ -31,5 +31,7 @@ root.render(
 reportWebVitals();
 
 if (process.env.NODE_ENV === 'production') {
-    register();
+    register((waitingWorker) => {
+        window.dispatchEvent(new CustomEvent('swUpdateAvailable', { detail: waitingWorker }));
+    });
 }

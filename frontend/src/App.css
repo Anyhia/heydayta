@@ -55,3 +55,30 @@ a {
   font-weight: var(--fw-500);
   width: 100%;
 }
+
+.update-banner {
+  background-color: var(--clr-lcars-blue);
+  color: var(--grey-bg-deep);
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-500);
+  width: 100%;
+}
+
+.update-banner button {
+  background: none;
+  border: 1px solid var(--grey-bg-deep);
+  border-radius: 0.25rem;
+  color: var(--grey-bg-deep);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-600);
+  cursor: pointer;
+  margin-left: 0.75rem;
+  padding: 0.1rem 0.6rem;
+}
+
+.update-banner button:hover {
+  background-color: var(--grey-bg-deep);
+  color: var(--clr-lcars-blue);
+}

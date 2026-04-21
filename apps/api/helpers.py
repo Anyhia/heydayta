@@ -48,6 +48,7 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         "6. The returned datetime must always be strictly in the future relative to the current date and time. If the only possible interpretation is in the past, return None.\n"
         "7. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
         "8. Do not include any other words, explanations, or punctuation.\n\n"
+        "9. The text may be in any language. Parse temporal expressions regardless of language.\n"
         f"Text to analyze: '{log}'"
     )
     

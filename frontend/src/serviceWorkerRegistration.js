@@ -22,9 +22,10 @@ export function register() {
         });
 
       // When a new service worker takes control, reload the page
+      let hadController = !!navigator.serviceWorker.controller;
       let refreshing = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
+        if (!refreshing && hadController) {
           refreshing = true;
           window.location.reload();
         }

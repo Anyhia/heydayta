@@ -10,7 +10,7 @@ frontend/.env
 # Bubblewrap / TWA generated files
 .gradle/
 app/
-build/
+app/build/
 build.gradle
 gradle/
 gradle.properties

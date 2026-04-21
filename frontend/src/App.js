@@ -125,7 +125,10 @@ function App() {
       {updateAvailable && (
         <div className="update-banner">
           A new version is available!{' '}
-          <button onClick={() => waitingWorker?.postMessage({ type: 'SKIP_WAITING' })}>
+          <button onClick={() => {
+            waitingWorker?.postMessage({ type: 'SKIP_WAITING' });
+            setUpdateAvailable(false);
+          }}>
             Update now
           </button>
         </div>

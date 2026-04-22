@@ -115,14 +115,22 @@ function CreateLog() {
             if (textareaRef.current) {
                 textareaRef.current.style.height = 'auto';
             }
-            setLogs((prevlogs) => [response.data, ...prevlogs]);
+            fetchLogs();
 
             if (response.data.entry_type === 'reminders' && response.data.reminder_time) {
-                const dt = new Date(response.data.reminder_time);
-                const formatted = dt.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-                    + ' at '
-                    + dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-                setReminderTime(formatted);
+                try {
+                    const dt = new Date(response.data.reminder_time);
+                    if (!isNaN(dt.getTime())) {
+                        const formatted = dt.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                            + ' at '
+                            + dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+                        setReminderTime(formatted);
+                    } else {
+                        setReminderTime('your reminder');
+                    }
+                } catch(e) {
+                    setReminderTime('your reminder');
+                }
                 setSuccess(null);
             } else {
                 setReminderTime(null);

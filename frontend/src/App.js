@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import ServerError from './components/ServerError';
 import usePushNotifications from './hooks/usePushNotifications';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 
@@ -140,7 +141,7 @@ function App() {
         <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />
         {/* next Route will be wrapped in ProtectedRoute */}
-        <Route  path="/createlog" element={ <ProtectedRoute> <CreateLog /> </ProtectedRoute> } />
+        <Route path="/createlog" element={ <ProtectedRoute> <ErrorBoundary> <CreateLog /> </ErrorBoundary> </ProtectedRoute> } />
         {/* <Route path="/question" element={ <ProtectedRoute> <Question /> </ProtectedRoute> } /> */}
         <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />

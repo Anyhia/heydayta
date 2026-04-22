@@ -49,8 +49,8 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         "7. The text to analyze may be in any language. Translate the temporal meaning to English internally before calculating the date.\n"  
         "8. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
         "9. Do not include any other words, explanations, or punctuation.\n\n"
-        
         f"Text to analyze: '{log}'\n"
+        "Output:"
     )
     
     completion = client.chat.completions.create(

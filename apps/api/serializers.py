@@ -6,11 +6,11 @@ class LogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Log
-        fields = ('id', 'user', 'entry_type', 'entry', 'created_at', 'reminder_time', 'status')
+        fields = ('id', 'user', 'entry_type', 'entry', 'created_at', 'reminder_time', 'status', 'embedding')
         extra_kwargs = {
             'entry':{'required': True},
             'user': {'read_only': True},
-            'embedding': {'required': True},
+            'embedding': {'write_only': True, 'required': False}, 
         }
 
     def validate(self, data):

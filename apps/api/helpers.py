@@ -42,24 +42,15 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         "Rules:\n"
         "1. If the text contains absolutely NO date, time, or temporal reference, return exactly the word: None\n"
         "2. Interpret any relative time (e.g., 'in two minutes', 'tomorrow', 'next Tuesday') relative to the user's current local time.\n"
-        "3. If a date or day is mentioned but no specific time of day is provided, apply these defaults: morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. If no part of the day is implied, default to 09:00.\n"
+        "3. If a specific hour is stated (e.g., 'at 8'), always use that exact hour. Do not override specific hours with part-of-day defaults (e.g., 'evening at 8' means 20:00, not 18:00). Only apply these defaults when NO specific hour is given: morning = 09:00, afternoon = 14:00, evening = 18:00, night = 21:00. Default to 09:00 if no time is mentioned at all.\n"
         "4. If a time of day is mentioned without AM/PM, and that time has already passed today, interpret it as PM if the AM version has passed and PM has not, or as the next day if both have passed.\n"
         "5. If a day of the week is mentioned without 'last' or 'past', always pick the next upcoming occurrence of that day, even if it is tomorrow.\n"
         "6. The returned datetime must always be strictly in the future relative to the current date and time. If the only possible interpretation is in the past, return None.\n"
         "7. The text to analyze may be in any language. Translate the temporal meaning to English internally before calculating the date.\n"  
         "8. Return ONLY the final computed date in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS) or the word None.\n"
         "9. Do not include any other words, explanations, or punctuation.\n\n"
-        "Examples (Assuming current local time is 2026-04-21 15:00:00):\n"
-        "Input: 'Remind me to call mom in 2 hours'\n"
-        "Output: 2026-04-21T17:00:00\n\n"
-        "Input: 'Adu-mi aminte să beau apă în două minute'\n"
-        "Output: 2026-04-21T15:02:00\n\n"
-        "Input: 'Llama al doctor mañana por la tarde'\n"
-        "Output: 2026-04-22T14:00:00\n\n"
-        "Input: 'Buy milk'\n"
-        "Output: None\n\n"
+        
         f"Text to analyze: '{log}'\n"
-        "Output:"
     )
     
     completion = client.chat.completions.create(

@@ -9,6 +9,7 @@ import { useVoiceRecording } from './useVoiceRecording';
 import {useAuth} from './Auth/AuthProvider';
 import Question from './Question';
 import './Log.css';
+import ErrorBoundary from './ErrorBoundary';
 
 
 // CreateLog
@@ -270,7 +271,9 @@ function CreateLog() {
                                 <p className='empty-logs-subtitle'>Start your journey by creating your first entry above</p>
                             </div>
                         )}
-                        <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
+                        <ErrorBoundary>
+                            <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
+                        </ErrorBoundary>
                     </>
                 )}
                 

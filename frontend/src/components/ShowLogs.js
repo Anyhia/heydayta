@@ -6,6 +6,20 @@ import api from '../api';
 import { useVoiceRecording } from './useVoiceRecording';
 import './ShowLogs.css';
 
+function formatLogDate(createdAt) {
+  const d = new Date(createdAt);
+  if (Number.isNaN(d.getTime())) {
+    return { date: 'Unknown date', time: '' };
+  }
+  return {
+    date: d.toLocaleDateString(),
+    time: d.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+  };
+}
+
 export const ShowLogs = ({logs, refreshLogs}) => {
 
     return (
@@ -59,11 +73,7 @@ export const LogCard = ({log, refreshLogs}) => {
         })
     }
 
-    // Date is a built‑in JavaScript constructor for date/time objects.
-    const d = new Date(log.created_at);
-    const date = d.toLocaleDateString();
-    // Only hours and minutes
-    const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    const { date, time } = formatLogDate(log.created_at);
     const logClass = entryType === 'journal' ? 'log-card-journal' : 'log-card-reminder';
     const tag = entryType === 'journal' ? 'Journal' : 'Reminder';
 
@@ -72,7 +82,7 @@ export const LogCard = ({log, refreshLogs}) => {
         <Container className={`log-card-container ${logClass}`}>
             <div className='date-buttons-container'>
                 <div>
-                    <div className='date'>STARDATE: {date}; {time} </div>
+                    <div className='date'>STARDATE: {date}{time ? `; ${time}` : ''}</div>
                     <div className="tag"> {tag} </div>
                 </div>
                 <div className='button-container'>

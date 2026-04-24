@@ -82,3 +82,8 @@ a {
   background-color: var(--grey-bg-deep);
   color: var(--clr-lcars-blue);
 }
+
+.update-banner-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}

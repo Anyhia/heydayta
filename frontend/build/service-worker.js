@@ -107,7 +107,6 @@ self.addEventListener('push', (event) => {
       title = data.title || title;
       body = data.body || body;
     } catch (e) {
-      // If the payload isn't JSON, use it as plain text
       body = event.data.text();
     }
   }
@@ -115,8 +114,11 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(title, {
       body: body,
-      icon: '/android-chrome-192x192.png', // The colorful image for the notification body
-      badge: '/badge-96x96.png',           // The transparent/white icon for the status bar
+      icon: '/android-chrome-192x192.png',
+      badge: '/badge-96x96.png',
+      vibrate: [200, 100, 200],
+      requireInteraction: true,
+      data: { url: self.location.origin },
     })
   );
 });
@@ -124,17 +126,19 @@ self.addEventListener('push', (event) => {
 // When the user taps the notification, open the app
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  const urlToOpen = event.notification.data
+    ? event.notification.data.url
+    : self.location.origin;
+
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // If the app is already open in a tab, focus it
       for (const client of clientList) {
         if (client.url.includes(self.location.origin) && 'focus' in client) {
           return client.focus();
         }
       }
-      // Otherwise open a new tab
       if (clients.openWindow) {
-        return clients.openWindow('/');
+        return clients.openWindow(urlToOpen);
       }
     })
   );

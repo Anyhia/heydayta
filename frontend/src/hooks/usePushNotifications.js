@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import api from '../api';
 
-// Converts a base64 VAPID public key string to the Uint8Array
-// format that the browser's PushManager.subscribe() requires
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
     const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -14,64 +12,55 @@ function usePushNotifications(isAuthenticated) {
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        // Browser support check
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
             console.log('Push notifications not supported in this browser');
             return;
         }
 
-        // If the user already denied, don't ask again — respect their choice
         if (Notification.permission === 'denied') {
             console.log('Push notifications denied by user');
             return;
         }
 
-        const subscribe = async () => {
+        const syncSubscription = async () => {
             try {
-                // Get the registered service worker
                 const registration = await navigator.serviceWorker.ready;
+                let currentSubscription = await registration.pushManager.getSubscription();
 
-                // Check if already subscribed — avoid creating duplicates
-                const existingSubscription = await registration.pushManager.getSubscription();
-                if (existingSubscription) {
-                    console.log('Already subscribed to push notifications');
-                    return;
+                if (!currentSubscription) {
+                    // No subscription exists — create one (triggers permission prompt
+                    // if not yet granted, which is correct for a reminders app)
+                    const { data } = await api.get('/push/vapid-public-key/');
+                    const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
+                    currentSubscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey,
+                    });
                 }
 
-                // Fetch VAPID public key from Django
-                const { data } = await api.get('/push/vapid-public-key/');
-                const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
-
-                // Ask browser to create a push subscription
-                // This triggers the "Allow notifications?" prompt if not yet granted
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true, // Required — push must always show a notification
-                    applicationServerKey,
-                });
-
-                // Extract keys from the subscription object
-                const subscriptionJson = subscription.toJSON();
-
-                // Save subscription to Django
+                // Always POST the current subscription to keep the server in sync.
+                // This fixes the Android FCM token rotation issue — when Chrome
+                // internally refreshes the push endpoint, we sync the new one
+                // to the server on every app open. update_or_create on the backend
+                // handles duplicates safely.
+                const subscriptionJson = currentSubscription.toJSON();
                 await api.post('/push/subscribe/', {
                     endpoint: subscriptionJson.endpoint,
                     p256dh: subscriptionJson.keys.p256dh,
                     auth: subscriptionJson.keys.auth,
                 });
-
-                console.log('✅ Push subscription saved');
+                console.log('✅ Push subscription synced');
             } catch (error) {
-                // User clicked "Block" on the prompt — not an error, just their choice
                 if (Notification.permission === 'denied') {
                     console.log('User denied notification permission');
                 } else {
-                    console.error('Push subscription failed:', error);
+                    console.error('Push subscription sync failed:', error);
                 }
             }
         };
 
-        subscribe();
-    }, [isAuthenticated]); // Runs when isAuthenticated changes to true
+        syncSubscription();
+    }, [isAuthenticated]);
 }
 
 export default usePushNotifications;

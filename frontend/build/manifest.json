@@ -1,7 +1,7 @@
 {
   "short_name": "HeyDayta",
-  "name": "HEYDAYTA - Your Personal Captain's Log",
-  "description": "A Star Trek-themed personal journal and AI assistant",
+  "name": "HeyDayta - Remember Everything, Find Anything",
+  "description": "A journal you can search by asking questions, with smart reminders.",
   "icons": [
     {
       "src": "favicon.ico",

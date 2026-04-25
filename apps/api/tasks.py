@@ -61,6 +61,10 @@ def send_email_reminder(reminder_id):
                 }),
                 vapid_private_key=settings.VAPID_PRIVATE_KEY,
                 vapid_claims={"sub": settings.VAPID_MAILTO},
+                headers={
+                    "Urgency": "high",
+                    "TTL": "86400",
+                }
             )
             print(f"✅ Push sent to subscription {subscription.id}")
         except WebPushException as e:

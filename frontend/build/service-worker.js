@@ -14,7 +14,6 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  // Remove old caches from previous versions
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
@@ -22,7 +21,7 @@ self.addEventListener('activate', (event) => {
           .filter((key) => key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.claim())
   );
 });
 

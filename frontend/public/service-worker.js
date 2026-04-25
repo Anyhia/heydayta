@@ -118,7 +118,7 @@ self.addEventListener('push', (event) => {
       badge: '/badge-96x96.png',
       vibrate: [200, 100, 200],
       requireInteraction: true,
-      data: { url: self.location.origin },
+      data: { url: self.location.origin + '/createlog' },
     })
   );
 });
@@ -126,9 +126,9 @@ self.addEventListener('push', (event) => {
 // When the user taps the notification, open the app
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const urlToOpen = event.notification.data
-    ? event.notification.data.url
-    : self.location.origin;
+  const urlToOpen = (event.notification.data && event.notification.data.url)
+      ? event.notification.data.url
+      : self.location.origin + '/createlog';
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './Auth/AuthProvider';
 import api from '../api';
+import { PUSH_PREF_KEY } from '../hooks/usePushNotifications';
 import './AccountSettings.css';
 
 function urlBase64ToUint8Array(base64String) {
@@ -61,6 +62,7 @@ function AccountSettings() {
                 p256dh: subscriptionJson.keys.p256dh,
                 auth: subscriptionJson.keys.auth,
             });
+            localStorage.setItem(PUSH_PREF_KEY, 'true');
             setNotifStatus('subscribed');
         } catch (e) {
             if (Notification.permission === 'denied') {
@@ -72,6 +74,7 @@ function AccountSettings() {
 
     const handleDisableNotifications = async () => {
         try {
+            localStorage.setItem(PUSH_PREF_KEY, 'false');
             const registration = await navigator.serviceWorker.ready;
             const subscription = await registration.pushManager.getSubscription();
             if (subscription) {

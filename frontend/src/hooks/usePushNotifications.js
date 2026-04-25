@@ -1,12 +1,7 @@
 import { useEffect } from 'react';
 import api from '../api';
 
-function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
-}
+export const PUSH_PREF_KEY = 'heydayta_push_enabled';
 
 function usePushNotifications(isAuthenticated) {
     useEffect(() => {
@@ -22,27 +17,28 @@ function usePushNotifications(isAuthenticated) {
             return;
         }
 
+        // If the user explicitly disabled via Account Settings, respect that choice
+        if (localStorage.getItem(PUSH_PREF_KEY) === 'false') {
+            console.log('Push notifications disabled by user preference');
+            return;
+        }
+
         const syncSubscription = async () => {
             try {
                 const registration = await navigator.serviceWorker.ready;
-                let currentSubscription = await registration.pushManager.getSubscription();
+                const currentSubscription = await registration.pushManager.getSubscription();
 
+                // Only sync if a subscription already exists — never auto-create one.
+                // New subscriptions are created only when the user clicks Enable
+                // in Account Settings. This follows browser best practices for push.
                 if (!currentSubscription) {
-                    // No subscription exists — create one (triggers permission prompt
-                    // if not yet granted, which is correct for a reminders app)
-                    const { data } = await api.get('/push/vapid-public-key/');
-                    const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
-                    currentSubscription = await registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey,
-                    });
+                    console.log('No active push subscription to sync');
+                    return;
                 }
 
-                // Always POST the current subscription to keep the server in sync.
-                // This fixes the Android FCM token rotation issue — when Chrome
-                // internally refreshes the push endpoint, we sync the new one
-                // to the server on every app open. update_or_create on the backend
-                // handles duplicates safely.
+                // Always POST to keep the server in sync with the current FCM endpoint.
+                // Fixes Android token rotation — update_or_create on backend handles
+                // duplicates safely.
                 const subscriptionJson = currentSubscription.toJSON();
                 await api.post('/push/subscribe/', {
                     endpoint: subscriptionJson.endpoint,
@@ -51,11 +47,7 @@ function usePushNotifications(isAuthenticated) {
                 });
                 console.log('✅ Push subscription synced');
             } catch (error) {
-                if (Notification.permission === 'denied') {
-                    console.log('User denied notification permission');
-                } else {
-                    console.error('Push subscription sync failed:', error);
-                }
+                console.error('Push subscription sync failed:', error);
             }
         };
 

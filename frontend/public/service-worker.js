@@ -110,16 +110,18 @@ self.addEventListener('push', (event) => {
     }
   }
 
-  event.waitUntil(
-    self.registration.showNotification(title, {
-      body: body,
-      icon: '/android-chrome-192x192.png',
-      badge: '/badge-96x96.png',
-      vibrate: [200, 100, 200],
-      requireInteraction: true,
-      data: { url: self.location.origin + '/createlog' },
-    })
-  );
+  const notificationPromise = self.registration.showNotification(title, {
+    body: body,
+    icon: '/android-chrome-192x192.png',
+    badge: '/badge-96x96.png',
+    vibrate: [200, 100, 200],
+    requireInteraction: true,
+    data: { url: self.location.origin + '/createlog' },
+  }).catch(err => {
+    console.error('Failed to show notification:', err);
+  });
+
+  event.waitUntil(notificationPromise);
 });
 
 // When the user taps the notification, open the app

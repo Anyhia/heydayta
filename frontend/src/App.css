@@ -53,7 +53,9 @@ a {
   padding: 0.5rem 1rem;
   font-size: var(--fs-small);
   font-weight: var(--fw-500);
-  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 0 0 0.375rem 0.375rem;
 }
 
 .update-banner {
@@ -63,7 +65,9 @@ a {
   padding: 0.5rem 1rem;
   font-size: var(--fs-small);
   font-weight: var(--fw-500);
-  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 0 0 0.375rem 0.375rem;
 }
 
 .update-banner button {
@@ -83,7 +87,3 @@ a {
   color: var(--clr-lcars-blue);
 }
 
-.update-banner-inner {
-  max-width: 900px;
-  margin: 0 auto;
-}

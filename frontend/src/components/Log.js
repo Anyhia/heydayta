@@ -99,7 +99,9 @@ function CreateLog() {
         fetchLogs();
     }, [isAuthenticated]); 
     
-
+    useEffect(() => {
+        textareaRef.current?.focus();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();

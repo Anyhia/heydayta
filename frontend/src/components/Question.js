@@ -25,9 +25,7 @@ function Question({ clearSignal }) {
         }
     }, [clearSignal]);
 
-    useEffect(() => {
-        questionRef.current.focus();
-    }, []);   
+  
 
     // Auto-expand textarea function
     const handleQuestionChange = (e) => {

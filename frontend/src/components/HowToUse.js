@@ -45,6 +45,7 @@ function HowToUse() {
                 {/* SECTION 1 — Journal + Video side by side */}
                 <div className='howto-split-section'>
                     <div className='howto-split-video'>
+                        <p className='howto-video-caption'>See it in 60 seconds</p>
                         <video
                             src={HeyVideo}
                             controls
@@ -251,8 +252,13 @@ function HowToUse() {
                         <li><strong>Write more than you think you need to</strong> — you might not know today what detail you'll need in three months</li>
                         <li><strong>For reminders, always include a time</strong> — "in 2 hours", "next Monday", "in 3 days"</li>
                         <li><strong>Reminders arrive by email at the scheduled time</strong> — not immediately after saving</li>
-                        <li><strong>Ask Dayta understands meaning, not just keywords</strong> — you don't need to remember exact words, just describe what you're looking for</li>
                     </ul>
+                    <div className='howto-tip howto-tip-distinction'>
+                        <span className='howto-tip-icon'>🤔</span>
+                        <span>
+                            <strong>Journal or reminder?</strong> If you want to remember something for later, use the Journal tab. If you need to be nudged at a specific time, use the Reminder tab. You can do both — write the detail in the journal and set a separate reminder to act on it.
+                        </span>
+                    </div>
                 </section>
 
                 <div className='policy-footer'>

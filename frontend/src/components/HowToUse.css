@@ -114,6 +114,105 @@
     border-bottom: none;
 }
 
+/* ===== INTRO BLOCK ===== */
+.howto-intro {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.howto-intro-headline {
+    color: var(--clr-gold);
+    font-size: var(--fs-large);
+    font-weight: var(--fw-700);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.howto-intro-subhead {
+    color: var(--grey-text-light);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-300);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.howto-intro-hook {
+    color: var(--grey-text-muted);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-400);
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.howto-exchange {
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--clr-lcars-purple);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.howto-exchange-row {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 0.2rem;
+}
+
+.howto-exchange-row:last-child {
+    border-bottom: none;
+}
+
+.howto-exchange-answer {
+    background-color: rgba(204, 153, 255, 0.05);
+}
+
+.howto-exchange-label {
+    color: var(--clr-lcars-purple);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-600);
+    letter-spacing: 0.05em;
+    font-family: monospace;
+    flex-shrink: 0;
+}
+
+.howto-exchange-text {
+    color: var(--grey-text-light);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-300);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.howto-intro-reminder {
+    color: var(--grey-text-light);
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-300);
+    line-height: 1.7;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.policy-contact-links {
+    margin-top: 0.5rem;
+}
+
+@media (min-width: 576px) {
+    .howto-exchange-row {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .howto-exchange-label {
+        min-width: 9rem;
+    }
+}
+
 @media (min-width: 576px) {
     .howto-example-row {
         flex-direction: row;

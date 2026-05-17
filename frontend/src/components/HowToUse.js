@@ -15,6 +15,32 @@ function HowToUse() {
             </div>
 
             <div className='policy-content'>
+                    <section className='howto-intro'>
+                        <h2 className='howto-intro-headline'>Your memory, searchable.</h2>
+                        <p className='howto-intro-subhead'>
+                            For the small but important things you don't want to lose: what the doctor said, a gift idea, travel details, something a colleague mentioned. Write it now in plain language. Ask for it later the same way.
+                        </p>
+                        <p className='howto-intro-hook'>
+                            You don't need to remember the exact words you used. You just need to remember that you wrote something about it.
+                        </p>
+                        <div className='howto-exchange'>
+                            <div className='howto-exchange-row'>
+                                <span className='howto-exchange-label'>You wrote</span>
+                                <span className='howto-exchange-text'>"went to the doctor today, everything looks fine"</span>
+                            </div>
+                            <div className='howto-exchange-row'>
+                                <span className='howto-exchange-label'>You asked</span>
+                                <span className='howto-exchange-text'>"when was my last doctor visit?"</span>
+                            </div>
+                            <div className='howto-exchange-row howto-exchange-answer'>
+                                <span className='howto-exchange-label'>HeyDayta answered</span>
+                                <span className='howto-exchange-text'>"Your last visit was on 24 May 2025."</span>
+                            </div>
+                        </div>
+                        <p className='howto-intro-reminder'>
+                            And when something needs to happen at a specific time: <em>"Remind me next Monday to cancel my streaming trial."</em> No date pickers. No dropdowns. Just say it.
+                        </p>
+                    </section>
 
                 {/* SECTION 1 — Journal + Video side by side */}
                 <div className='howto-split-section'>
@@ -235,7 +261,7 @@ function HowToUse() {
                         Something not working as expected? Contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>
                     </p>
-                    <p className='policy-contact' style={{ marginTop: '0.5rem' }}>
+                    <p className='policy-contact policy-contact-links'>
                         <Link to='/privacy-policy' className='policy-link'>Privacy Policy</Link>
                         {' · '}
                         <Link to='/terms-of-service' className='policy-link'>Terms of Service</Link>

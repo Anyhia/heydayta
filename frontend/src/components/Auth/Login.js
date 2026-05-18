@@ -1,6 +1,6 @@
 import {Container, Button, Form, InputGroup, Alert} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faUser, faLock, faArrowRight} from '@fortawesome/free-solid-svg-icons';
+import {faUser, faLock, faArrowRight, faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import {useEffect, useRef, useState} from 'react';
 import {useAuth} from './AuthProvider';
@@ -22,6 +22,7 @@ const Login = () => {
     const [username,setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null); // for error messages, if any
+    const [showPassword, setShowPassword] = useState(false); 
     
 
     const handleSubmit = async(e) => {
@@ -66,7 +67,7 @@ const Login = () => {
                 
                     <Form.Group controlId="registerPassword">
                         <Form.Label className='label'>Password</Form.Label>
-                        <InputGroup hasValidation>
+                        <InputGroup hasValidation className='password-group'>
                             <InputGroup.Text className='input-icon'><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
                             <Form.Control
                                 onChange={(e) => {
@@ -75,10 +76,20 @@ const Login = () => {
                                 }}
                                 value={password}
                                 required
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 placeholder="••••••••"
                                 className='input-login'
                             />
+                            <InputGroup.Text className='input-toggle'>
+                                <button
+                                    type="button"
+                                    className='btn btn-toggle-password'
+                                    onClick={() => setShowPassword(p => !p)}
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                >
+                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                                </button>
+                            </InputGroup.Text>
                             <Form.Control.Feedback type="invalid">
                                 Password is incorrect
                             </Form.Control.Feedback>

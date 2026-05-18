@@ -135,6 +135,7 @@
   background-color: var(--grey-bg-inner);
   border: 0 solid var(--grey-bg-inner);
   padding: 0;
+  cursor: pointer;
 }
 
 .btn.btn-toggle-password {
@@ -143,12 +144,27 @@
   color: var(--grey-text-muted);
   padding: 0.375rem 0.75rem;
   line-height: 1;
+  cursor: pointer;
+}
+
+.input-group-text.input-toggle .btn.btn-toggle-password {
+  color: var(--grey-text-muted);
+  cursor: pointer;
 }
 
 .btn.btn-toggle-password:hover,
-.btn.btn-toggle-password:focus {
+.btn.btn-toggle-password:focus,
+.input-group-text.input-toggle .btn.btn-toggle-password:hover {
   color: var(--grey-text-light);
   box-shadow: none;
+}
+
+.form-control.input-login:-webkit-autofill,
+.form-control.input-login:-webkit-autofill:hover,
+.form-control.input-login:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #1f2937 inset;
+  -webkit-text-fill-color: var(--grey-text-light);
+  caret-color: var(--grey-text-light);
 }
 
 /* Larger phones, tablets */

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'heydayta-v6';
+const CACHE_NAME = 'heydayta-v7';
 
 // Cache the app shell so the app loads when offline
 const STATIC_ASSETS = [

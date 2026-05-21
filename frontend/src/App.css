@@ -1,9 +1,4 @@
-.App {
-  text-align: center;
-}
-
-
-/* Box sizing - the width and height of an element include its padding and border widths*/
+/* Global resets */
 *,
 *::before,
 *::after {
@@ -12,25 +7,10 @@
     padding: 0;
 }
 
-/* Set core root defaults - the browser will scroll smoothly to the element, rather than jumping to it abruptly.*/
 html:focus-within {
     scroll-behavior: smooth;
 }
-  
-  
-  /* Set core body defaults */
-body {
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
-    margin-inline: auto;
-    width: 100%;
-    font-family: system-ui, sans-serif; 
-    font-size: 1rem;
-    background-color: black;
-}
 
-/* Inherit fonts for inputs and buttons */
-/* Specifying font: inherit; for these elements ensures consistency across all browsers. */
 input,
 button,
 textarea,
@@ -43,47 +23,43 @@ li, ul[role="list"] {
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
+}
+
+/* Banners */
+.offline-banner,
+.update-banner {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-500);
 }
 
 .offline-banner {
-  background-color: var(--clr-alert);
-  color: var(--clr-light);
-  text-align: center;
-  padding: 0.5rem 1rem;
-  font-size: var(--fs-small);
-  font-weight: var(--fw-500);
-  max-width: 900px;
-  margin: 0 auto;
-  border-radius: 0 0 0.375rem 0.375rem;
+    background-color: var(--clr-alert);
+    color: var(--clr-light);
 }
 
 .update-banner {
-  background-color: var(--clr-lcars-blue);
-  color: var(--grey-bg-deep);
-  text-align: center;
-  padding: 0.5rem 1rem;
-  font-size: var(--fs-small);
-  font-weight: var(--fw-500);
-  max-width: 900px;
-  margin: 0 auto;
-  border-radius: 0 0 0.375rem 0.375rem;
+    background-color: var(--clr-lcars-blue);
+    color: var(--grey-bg-deep);
 }
 
 .update-banner button {
-  background: none;
-  border: 1px solid var(--grey-bg-deep);
-  border-radius: 0.25rem;
-  color: var(--grey-bg-deep);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-600);
-  cursor: pointer;
-  margin-left: 0.75rem;
-  padding: 0.1rem 0.6rem;
+    background: none;
+    border: 1px solid var(--grey-bg-deep);
+    border-radius: 0.25rem;
+    color: var(--grey-bg-deep);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-600);
+    cursor: pointer;
+    margin-left: 0.75rem;
+    padding: 0.1rem 0.6rem;
 }
 
 .update-banner button:hover {
-  background-color: var(--grey-bg-deep);
-  color: var(--clr-lcars-blue);
+    background-color: var(--grey-bg-deep);
+    color: var(--clr-lcars-blue);
 }
-

@@ -292,44 +292,49 @@ textarea.create-log-form-control::placeholder {
 
 .empty-state {
     text-align: center;
-    padding: 2rem 0;
+    padding: 1.25rem 0;
 }
 
 .empty-state-title {
     color: var(--grey-text-light);
-    font-size: var(--fs-large);
-    font-weight: var(--fw-700);
-    margin-bottom: 0.5rem;
+    font-size: var(--fs-normal);
+    font-weight: var(--fw-600);
+    margin-bottom: 0.4rem;
 }
 
 .empty-state-subline {
-    color: var(--grey-text-muted);
+    color: var(--grey-text-light);
     font-size: var(--fs-small);
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 .empty-state-cards {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.empty-state-card {
+    margin-bottom: 1.25rem;
     background-color: var(--grey-bg-card);
     border: 0.5px solid rgba(255, 255, 255, 0.08);
-    border-left: 3px solid var(--clr-lcars-purple);
+    border-left: 3px solid var(--clr-gold);
     border-radius: 0.5rem;
-    padding: 1rem 1.25rem;
+    overflow: hidden;
     text-align: left;
 }
 
+.empty-state-card {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.empty-state-card:last-child {
+    border-bottom: none;
+}
+
 .empty-state-card-label {
-    color: var(--clr-lcars-purple);
+    color: var(--clr-gold);
     font-size: var(--fs-small);
     font-weight: var(--fw-600);
     letter-spacing: 0.04em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .empty-state-card-example {
@@ -338,29 +343,28 @@ textarea.create-log-form-control::placeholder {
     font-family: monospace;
     background-color: var(--grey-bg-inner);
     border-radius: 0.25rem;
-    padding: 0.4rem 0.6rem;
-    margin-bottom: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    margin-bottom: 0.4rem;
 }
 
 .empty-state-card-payoff {
-    color: var(--grey-text-muted);
+    color: var(--grey-text-light);
     font-size: var(--fs-small);
-    font-weight: var(--fw-300);
+    font-weight: var(--fw-400);
     line-height: 1.5;
 }
 
 .empty-state-link {
-    color: var(--clr-lcars-purple);
+    color: var(--clr-gold);
     font-size: var(--fs-small);
     font-weight: var(--fw-500);
-    text-decoration: none;
     opacity: 0.8;
     transition: opacity 0.2s ease;
 }
 
 .empty-state-link:hover {
     opacity: 1;
-    color: var(--clr-lcars-purple);
+    color: var(--clr-gold);
 }
 
 
@@ -400,14 +404,23 @@ textarea.create-log-form-control::placeholder {
     .create-log-form {
         padding: 1.5rem;
     }
-    
+    .empty-state-title {
+        font-size: var(--fs-large);
+        font-weight: var(--fw-700);
+    }
+
     .empty-state-cards {
         flex-direction: row;
-        align-items: stretch;
     }
 
     .empty-state-card {
         flex: 1;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .empty-state-card:last-child {
+        border-right: none;
     }
 }
 

@@ -267,12 +267,40 @@ function CreateLog() {
                     </div>
                 ) : (
                     <>
-                        {filteredLogs.length === 0 && (
-                            <div className='empty-logs-message'>
-                                <p className='empty-logs-title'>No logs yet</p>
-                                <p className='empty-logs-subtitle'>Start your journey by creating your first entry above</p>
+                    {logs.length === 0 ? (
+                        <div className='empty-state'>
+                            <h2 className='empty-state-title'>How to talk to Dayta</h2>
+                            <p className='empty-state-subline'>Try one of these — Dayta turns it into memories, reminders, and answers for future you.</p>
+
+                            <div className='empty-state-cards'>
+                                <div className='empty-state-card'>
+                                    <div className='empty-state-card-label'>Log today's episode</div>
+                                    <div className='empty-state-card-example'>"Watched Dune Part 2 with Alex. Still arguing about the ending."</div>
+                                    <div className='empty-state-card-payoff'>Later: "What did I think of Dune?" — Dayta reads your past self back to you.</div>
+                                </div>
+
+                                <div className='empty-state-card'>
+                                    <div className='empty-state-card-label'>Boss your future self around</div>
+                                    <div className='empty-state-card-example'>"Remind me on Friday to call the dentist."</div>
+                                    <div className='empty-state-card-payoff'>No date pickers, no math — just type it like you'd say it.</div>
+                                </div>
+
+                                <div className='empty-state-card'>
+                                    <div className='empty-state-card-label'>Interrogate your past self</div>
+                                    <div className='empty-state-card-example'>"When did I last mention work stress?"</div>
+                                    <div className='empty-state-card-payoff'>Dayta searches your logs like a geeky librarian and answers in plain language.</div>
+                                </div>
                             </div>
-                        )}
+
+                            <Link to='/how-to-use' className='empty-state-link'>Need the full mission briefing? →</Link>
+                        </div>
+                    ) : filteredLogs.length === 0 ? (
+                        <div className='empty-logs-message'>
+                            <p className='empty-logs-title'>
+                                {filter === 'reminders' ? 'No reminders yet' : 'No journal entries yet'}
+                            </p>
+                        </div>
+                    ) : null}
                         <ErrorBoundary>
                             <ShowLogs logs={filteredLogs} refreshLogs={fetchLogs}/>
                         </ErrorBoundary>

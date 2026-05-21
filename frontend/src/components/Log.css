@@ -8,9 +8,8 @@
 .create-log-form-container {
     background-color: var(--grey-bg-card);
     border: 0.5px solid var(--grey-bg-card);
-    border-left: 3px solid var(--clr-tactical); /* Softer: 4px → 3px */
-    border-bottom-right-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-left: 3px solid var(--clr-tactical);
+    border-radius:0.5rem;
 }
 
 .create-log-form {
@@ -183,6 +182,7 @@
 textarea.create-log-form-control::placeholder {
     color: var(--grey-text-muted);
     opacity: 1;
+    font-size: var(--fs-small);
 }
 
 .create-log-form-container .form-control {
@@ -427,12 +427,17 @@ textarea.create-log-form-control::placeholder {
 /* Desktop */
 @media (min-width: 992px) {
     .container.create-log-container {
-        max-width: 55%;
+        max-width: 70%;
         margin: 0 auto;
     }
-    
+
     .type-toggle-btn.btn.btn-primary,
     .create-log-form-button.btn.btn-primary {
+        font-weight: var(--fw-600);
+    }
+
+    .empty-state-title {
+        font-size: var(--fs-normal);
         font-weight: var(--fw-600);
     }
 }

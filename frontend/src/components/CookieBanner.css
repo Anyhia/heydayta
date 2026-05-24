@@ -81,31 +81,3 @@
 }
 
 
-@media (min-width: 576px) {
-    .cookie-banner {
-        padding: 1rem 1.5rem;
-    }
-
-    .cookie-banner-content {
-        flex-wrap: nowrap;
-    }
-}
-
-@media (min-width: 768px) {
-    .cookie-banner {
-        bottom: 1.5rem; /* Lift it up! */
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        width: 720px;
-        border-radius: 0.5rem; /* Round all 4 corners */
-        border: 1px solid var(--clr-tactical); /* Put the orange border all the way around */
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* Add a shadow to sell the float */
-    }
-}
-
-@media (min-width: 992px) {
-    .cookie-banner {
-        width: 70%;
-    }
-}

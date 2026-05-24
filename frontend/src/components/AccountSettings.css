@@ -1,4 +1,4 @@
-.settings-page-container {
+.container.settings-page-container {
     padding-bottom: 3rem;
 }
 
@@ -259,7 +259,7 @@
 
 
 @media (min-width: 992px) {
-    .settings-page-container {
+    .container.settings-page-container {
         max-width: 70%;
         margin: 0 auto;
     }

@@ -4,7 +4,7 @@
 
 /* Header */
 .policy-header {
-    padding: 2rem 1.5rem 1.5rem;
+    padding: 2rem 1.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     margin-bottom: 2rem;
 }
@@ -41,7 +41,7 @@
 
 /* Content */
 .policy-content {
-    padding-inline: 1.5rem;
+    padding-inline: 0rem;
 }
 
 /* Sections */
@@ -169,11 +169,11 @@
 /* Responsive */
 @media (min-width: 576px) {
     .policy-header {
-        padding: 2.5rem 2rem 1.5rem;
+        padding: 2.5rem 0 1.5rem;
     }
 
     .policy-content {
-        padding-inline: 2rem;
+        padding-inline: 0;
     }
 
     .policy-data-row {

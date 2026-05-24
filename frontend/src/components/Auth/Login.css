@@ -1,6 +1,6 @@
 /* small screens */
 
-.login-page-container {
+.container.login-page-container {
     text-align: center;
 }
 
@@ -186,7 +186,7 @@
 
 /* Large screens */
 @media (min-width: 992px) {
-    .login-page-container {
+    .container.login-page-container {
         max-width: 70%;
         margin: 0 auto;
     }

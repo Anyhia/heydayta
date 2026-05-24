@@ -98,10 +98,7 @@ a.get-started-button.btn.btn-primary:hover {
   padding: 1.2rem 1rem;
   background-color: var(--grey-bg-card);
   border: 0.5px solid var(--grey-bg-card);
-  border-bottom-right-radius: 1rem;
-  border-top-right-radius: 1rem;
-  border-bottom-left-radius: 0.25rem;
-  border-top-left-radius: 0.25rem;
+  border-radius: 0.5rem;
 }
 
 .blue   { border-left: 4px solid var(--clr-lcars-blue); }

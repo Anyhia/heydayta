@@ -30,6 +30,7 @@
 
 ---
 
+<a name="overview"></a>
 ## 🎯 Overview
 
 HeyDayta is a personal memory journaling application that helps users capture daily moments and retrieve them through natural language questions. Unlike traditional journaling apps, HeyDayta uses OpenAI embeddings and PostgreSQL's pgvector extension to enable semantic search—allowing users to ask questions like *"What did I eat for dinner last Tuesday?"* and receive accurate, context-aware answers.
@@ -50,6 +51,7 @@ HeyDayta is a personal memory journaling application that helps users capture da
 
 ---
 
+<a name="why-i-built-this"></a>
 ## 💭 Why I Built This
 
 In our fast-paced world, we're drowning in apps, notifications, and calendars. I wanted to create something **simple**—a single place to capture thoughts, set reminders without fighting with date pickers, and actually *find* what I wrote months ago by just asking a question.

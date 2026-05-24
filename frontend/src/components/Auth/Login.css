@@ -11,8 +11,7 @@
     padding: 1rem;
     background-color: var(--grey-bg-card);
     border: 0.5px solid var(--grey-bg-card);
-    border-bottom-right-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-radius: 0.5rem;
     border-left: 4px solid var(--clr-tactical);
 }
 

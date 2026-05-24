@@ -1,7 +1,5 @@
 .settings-page-container {
-    padding-inline: 0;
     padding-bottom: 3rem;
-    max-width: 100%;
 }
 
 .settings-header {
@@ -259,15 +257,10 @@
     }
 }
 
-@media (min-width: 768px) {
-    .settings-page-container {
-        max-width: 70%;
-        margin: 0 auto;
-    }
-}
 
 @media (min-width: 992px) {
     .settings-page-container {
-        max-width: 60%;
+        max-width: 70%;
+        margin: 0 auto;
     }
 }

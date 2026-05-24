@@ -1,7 +1,5 @@
 .container.policy-page-container {
-    padding-inline: 0;
     padding-bottom: 3rem;
-    max-width: 100%;
 }
 
 /* Header */
@@ -190,16 +188,11 @@
     }
 }
 
-@media (min-width: 768px) {
-    .container.policy-page-container {
-        max-width: 80%;
-        margin: 0 auto;
-    }
-}
 
 @media (min-width: 992px) {
     .container.policy-page-container {
         max-width: 70%;
+        margin: 0 auto;
     }
 
     .policy-title {

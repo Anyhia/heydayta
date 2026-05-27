@@ -63,6 +63,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 
 ---
 
+<a name="features"></a>
 ## ✨ Features
 
 ### Core Functionality
@@ -96,6 +97,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 
 ---
 
+<a name="tech-stack"></a>
 ## 🛠️ Tech Stack
 
 ### Backend
@@ -132,6 +134,7 @@ HeyDayta combines the speed of natural language input with the power of AI searc
 
 ---
 
+<a name="architecture"></a>
 ## 🏗️ Architecture
 
 ### Deployment Model
@@ -172,6 +175,7 @@ Single Heroku application serving both Django API and React static build via Whi
 
 ---
 
+<a name="live-demo"></a>
 ## 🚀 Live Demo
 
 **Production URL**: [https://heydayta.app](https://heydayta.app) · [https://heydayta-590c2392dfd2.herokuapp.com/](https://heydayta-590c2392dfd2.herokuapp.com/)
@@ -186,6 +190,7 @@ Single Heroku application serving both Django API and React static build via Whi
 
 ---
 
+<a name="installation"></a>
 ## 💻 Installation
 
 ### Prerequisites
@@ -242,8 +247,8 @@ Terminal 1: Start Celery worker
 celery -A CS50w_final_project worker --loglevel=info
 ```
 
-
-### 🔐 Environment Variables
+<a name="environment-variables"></a>
+## 🔐 Environment Variables
 Create a .env file in the project root
 
 #### Django Settings
@@ -343,7 +348,8 @@ https://heydayta.app/api/accounts/google
 
 https://www.heydayta.app/api/accounts/google
 
-### 🚢 Deployment
+<a name="deployment"></a>
+## 🚢 Deployment
 Heroku Deployment (Production)
 
 #### Login to Heroku
@@ -433,6 +439,7 @@ heroku pg:backups:schedule DATABASE_URL --at '02:00 Europe/Brussels'
 heroku logs --tail
 ```
 
+<a name="monitoring--maintenance"></a>
 ## **📊 Monitoring & Maintenance**
 
 ### **Error Monitoring (Sentry)**
@@ -485,6 +492,7 @@ No-Cache on index.html: `Cache-Control: no-cache` enforced via Django's `never_c
 Service Worker: Minimum viable offline support: app shell (index.html) cached on install, network-first navigation with cached fallback for offline use, cache-first for hashed static assets (JS/CSS), Chrome only-if-cached bug fix, auto-update detection, and Web Push notification handling
 
 
+<a name="security-features"></a>
 ## 🔐 Security Features
 
 - **JWT Authentication** with httpOnly refresh tokens (7-day expiration)
@@ -499,7 +507,8 @@ Service Worker: Minimum viable offline support: app shell (index.html) cached on
 - **Cross-Origin Isolation** headers for OAuth popup compatibility
 - **GDPR-compliant**: Privacy Policy and Terms of Service pages linked at registration; httpOnly JWT cookies with a cookie notice banner for EU users
 
-### 📚 API Documentation
+<a name="api-documentation"></a>
+## 📚 API Documentation
 Authentication Endpoints
 
 ```bash
@@ -569,6 +578,7 @@ curl -X POST https://heydayta.app/api/logs/ask_question/ \
   }'
 ```
 
+<a name="future-enhancements"></a>
 ## 🔮 Future Enhancements
 
  Rich Text Editor: Markdown support with image uploads
@@ -585,9 +595,11 @@ curl -X POST https://heydayta.app/api/logs/ask_question/ \
 
  Recurring Reminders: Support for daily/weekly/monthly reminders
 
+<a name="license"></a>
 ## 📄 License
 This project is licensed under the MIT License.
 
+<a name="contact"></a>
 ## 👤 Contact
 ### Gabriela Cocos
 ### Full-Stack Developer | Django & React Specialist

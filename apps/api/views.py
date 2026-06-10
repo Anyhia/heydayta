@@ -165,7 +165,6 @@ class LogViewSet(viewsets.ModelViewSet):
 
         # Try to extract a date range from the question
         date_range = extract_date_range(question, question_date, timezone_offset_minutes)
-        print("DEBUG date_range:", date_range)
 
         if date_range:
             # Date intent detected — filter by date range first, then rank by semantic similarity

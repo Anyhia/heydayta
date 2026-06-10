@@ -88,6 +88,79 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
         return None
 
 
+
+def extract_date_range(question, user_local_datetime, timezone_offset_minutes):
+    """
+    Extract a date range from a question using OpenAI.
+
+    Args:
+        question: The user's question (e.g., "what did I do last week?")
+        user_local_datetime: User's current local datetime (timezone-aware)
+        timezone_offset_minutes: User's timezone offset from UTC in minutes (e.g., -60 for CET)
+
+    Returns:
+        dict with 'date_from' and 'date_to' as timezone-aware UTC datetimes, or None
+    """
+    from datetime import datetime, timedelta, timezone as dt_timezone
+    from django.utils import timezone
+    from openai import OpenAI
+    from django.conf import settings
+    import json
+
+    client = OpenAI(api_key=settings.OPENAI_API_KEY)
+
+    local_time_str = user_local_datetime.strftime('%A, %Y-%m-%d %H:%M:%S')
+
+    prompt = (
+        f"The current date and time is {local_time_str} (user's local time). "
+        "The week starts on Monday.\n\n"
+        "Analyze the question below and determine if it contains a date or time reference.\n\n"
+        "Rules:\n"
+        "1. If the question contains NO date or time reference, return exactly: null\n"
+        "2. If a date or time reference is found, return a JSON object with exactly two keys: "
+        "\"date_from\" and \"date_to\", both in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS), "
+        "representing the full range in the user's local time.\n"
+        "3. Interpret any relative time (e.g., 'last week', 'yesterday', 'an hour ago') relative to the user's current local time.\n"
+        "4. If a specific hour is stated, always use that exact hour. Only apply these defaults when NO specific hour is given: morning = 09:00, afternoon = 12:00, evening = 18:00, night = 21:00. If no time of day is mentioned at all, use 00:00:00 for date_from and 23:59:59 for date_to.\n"
+        "5. The question may be in any language. Translate the temporal meaning to English internally before calculating.\n"
+        "6. Return ONLY the JSON object or the word null. No explanation, no markdown, no extra text.\n\n"
+        f"Question: '{question}'\n"
+        "Output:"
+    )
+
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that extracts date ranges. Return only a JSON object or null."},
+            {"role": "user", "content": prompt}
+        ],
+        max_completion_tokens=80,
+        temperature=0
+    )
+
+    result = completion.choices[0].message.content.strip()
+
+    if not result or result == "null":
+        return None
+
+    try:
+        parsed = json.loads(result)
+        offset = timedelta(minutes=timezone_offset_minutes)
+
+        date_from_naive = datetime.fromisoformat(parsed['date_from'])
+        date_to_naive = datetime.fromisoformat(parsed['date_to'])
+
+        date_from_utc = timezone.make_aware(date_from_naive + offset, dt_timezone.utc)
+        date_to_utc = timezone.make_aware(date_to_naive + offset, dt_timezone.utc)
+
+        return {'date_from': date_from_utc, 'date_to': date_to_utc}
+
+    except (ValueError, KeyError, json.JSONDecodeError) as e:
+        print(f"Error parsing date range from OpenAI: {result}, error: {e}")
+        return None
+
+
+
 def get_answer(context):
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
     prompt = (

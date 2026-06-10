@@ -114,24 +114,34 @@ def extract_date_range(question, user_local_datetime, timezone_offset_minutes):
     prompt = (
         f"The current date and time is {local_time_str} (user's local time). "
         "The week starts on Monday.\n\n"
-        "Analyze the question below and determine if it contains a date or time reference.\n\n"
+        "A user is asking a question about their personal journal. "
+        "Your job is to understand what time period they are asking about.\n\n"
         "Rules:\n"
-        "1. If the question contains NO date or time reference, return exactly: null\n"
-        "2. If a date or time reference is found, return a JSON object with exactly two keys: "
-        "\"date_from\" and \"date_to\", both in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS), "
-        "representing the full range in the user's local time.\n"
-        "3. Interpret any relative time (e.g., 'last week', 'yesterday', 'an hour ago') relative to the user's current local time.\n"
-        "4. If a specific hour is stated, always use that exact hour. Only apply these defaults when NO specific hour is given: morning = 09:00, afternoon = 12:00, evening = 18:00, night = 21:00. If no time of day is mentioned at all, use 00:00:00 for date_from and 23:59:59 for date_to.\n"
-        "5. The question may be in any language. Translate the temporal meaning to English internally before calculating.\n"
-        "6. Return ONLY the JSON object or the word null. No explanation, no markdown, no extra text.\n\n"
-        f"Question: '{question}'\n"
+        "1. If the question contains no time reference at all, return exactly: null\n"
+        "2. If you can identify a time period — even if phrased informally or ambiguously — "
+        "return a JSON object with exactly two keys: \"date_from\" and \"date_to\", "
+        "both in strict ISO 8601 format (YYYY-MM-DDTHH:MM:SS), in the user's local time.\n"
+        "3. These words always indicate a time reference and must always produce a date range, "
+        "regardless of the verb used in the question: "
+        "today, yesterday, this week, last week, this month, last month, this year, last year, "
+        "this morning, this afternoon, this evening, tonight, "
+        "and their equivalents in any language.\n"
+        "4. Be generous in interpreting all other time references. "
+        "Informal or indirect phrasing still has a clear meaning — "
+        "calculate the range that best matches the intent.\n"
+        "5. Only apply these time-of-day defaults when NO specific hour is given: "
+        "morning = 09:00, afternoon = 12:00, evening = 18:00, night = 21:00. "
+        "If no time of day is mentioned, use 00:00:00 for date_from and 23:59:59 for date_to.\n"
+        "6. The question may be in any language. Understand the meaning before calculating.\n"
+        "7. Return ONLY the JSON object or the word null. No explanation, no markdown, no extra text.\n\n"
+        f"User question: '{question}'\n"
         "Output:"
     )
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that extracts date ranges. Return only a JSON object or null."},
+            {"role": "system", "content": "You are a helpful assistant that understands what time period a user is asking about. Return only a JSON object or null."},
             {"role": "user", "content": prompt}
         ],
         max_completion_tokens=80,
@@ -163,21 +173,46 @@ def extract_date_range(question, user_local_datetime, timezone_offset_minutes):
 
 def get_answer(context):
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
-    prompt = (
-        f"Today's date is: {context['question_date']}.\n\n"
-        "You are an assistant answering a user's question based ONLY on the provided journal logs.\n\n"
-        "Guidelines:\n"
-        "1. Be friendly, direct, and concise. Do not add conversational filler.\n"
-        "2. Resolving time: Use today's date only to understand the user's question (e.g., if they ask 'what did I do last week?'). When reading the logs, rely strictly on the log's own timestamp to know when an event happened.\n"
-        "3. Only mention the date or time of an entry if the user asks 'when' something happened, or if the timing is necessary to fully answer the question.\n"
-        "4. Date formatting: When you DO mention a date, state the exact calendar date from the log (e.g., 'on December 11, 2025') instead of saying 'today' or 'last year'. Never use raw database timestamps, timezone offsets, or microseconds.\n"
-        "5. If the logs do not contain a clear, direct answer to the question, reply only with a short sentence saying you could not find that information in the journal. Do NOT piece together an answer from unrelated entries. Do NOT infer, guess, or connect entries that do not explicitly mention the topic asked about.\n"
-        "6. Answer in the same language as the question.\n\n"
-        "=== LOGS ===\n"
-        f"{context['closest_matches']}\n"
-        "=== END LOGS ===\n\n"
-        f"User Question: '{context['question']}'"
-    )
+    if context.get('has_date_filter'):
+        prompt = (
+            "You are an assistant answering a user's question based ONLY on the provided journal logs.\n\n"
+            "Guidelines:\n"
+            "1. Be friendly, direct, and concise. Do not add conversational filler.\n"
+            "2. The logs provided are already filtered to the exact time period the user asked about. "
+            "Just answer based on what is in the logs — do not reason about dates or time.\n"
+            "3. Only mention the date or time of an entry if the user asks 'when' something happened, "
+            "or if the timing is necessary to fully answer the question.\n"
+            "4. Date formatting: When you DO mention a date, state the exact calendar date from the log "
+            "(e.g., 'on December 11, 2025') instead of saying 'today' or 'last year'. "
+            "Never use raw database timestamps, timezone offsets, or microseconds.\n"
+            "5. Treat all entry types equally — journal entries and reminders are both things the user wrote. "
+            "Do not ignore reminders when answering questions about what the user said or wrote.\n"
+            "6. When the user asks what they wrote, said, or did in a time period, list ALL entries from the logs — "
+            "both journal entries and reminders. Do not filter out entries you consider unimportant. "
+            "Only say you could not find information if the logs are genuinely empty.\n"
+            "7. Answer in the same language as the question.\n\n"
+            "=== LOGS ===\n"
+            f"{context['closest_matches']}\n"
+            "=== END LOGS ===\n\n"
+            f"User Question: '{context['question']}'"
+        )
+    else:
+        prompt = (
+            f"Today's date is: {context['question_date']}.\n\n"
+            "You are an assistant answering a user's question based ONLY on the provided journal logs.\n\n"
+            "Guidelines:\n"
+            "1. Be friendly, direct, and concise. Do not add conversational filler.\n"
+            "2. Resolving time: Use today's date only to understand the user's question (e.g., if they ask 'what did I do last week?'). When reading the logs, rely strictly on the log's own timestamp to know when an event happened.\n"
+            "3. Only mention the date or time of an entry if the user asks 'when' something happened, or if the timing is necessary to fully answer the question.\n"
+            "4. Date formatting: When you DO mention a date, state the exact calendar date from the log (e.g., 'on December 11, 2025') instead of saying 'today' or 'last year'. Never use raw database timestamps, timezone offsets, or microseconds.\n"
+            "5. Treat all entry types equally — journal entries and reminders are both things the user wrote. Do not ignore reminders when answering questions about what the user said or wrote.\n"
+            "6. If the logs do not contain a clear, direct answer to the question, reply only with a short sentence saying you could not find that information in the journal. Do NOT piece together an answer from unrelated entries. Do NOT infer, guess, or connect entries that do not explicitly mention the topic asked about.\n"
+            "7. Answer in the same language as the question.\n\n"
+            "=== LOGS ===\n"
+            f"{context['closest_matches']}\n"
+            "=== END LOGS ===\n\n"
+            f"User Question: '{context['question']}'"
+        )
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo", # Cheaper and good for extracting date
         messages=[

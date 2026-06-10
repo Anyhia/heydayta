@@ -165,6 +165,7 @@ class LogViewSet(viewsets.ModelViewSet):
 
         # Try to extract a date range from the question
         date_range = extract_date_range(question, question_date, timezone_offset_minutes)
+        print("DEBUG date_range:", date_range)
 
         if date_range:
             # Date intent detected — filter by date range first, then rank by semantic similarity
@@ -203,10 +204,12 @@ class LogViewSet(viewsets.ModelViewSet):
             log_data.append(f"{date_str}: {log.entry}")
 
         logs_text = "\n".join(log_data)
+
         context = {
             'question': question,
             'closest_matches': logs_text,
             'question_date': question_date,
+            'has_date_filter': date_range is not None,
         }
         
         try:

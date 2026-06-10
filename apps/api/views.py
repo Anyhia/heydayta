@@ -5,7 +5,7 @@ from .models import Log, PushSubscription
 from .serializers import LogSerializer, PushSubscriptionSerializer
 from django.conf import settings
 from rest_framework.views import APIView
-from .helpers import create_embedding, get_reminder_time, get_answer, transcribe_audio
+from .helpers import create_embedding, get_reminder_time, get_answer, transcribe_audio, extract_date_range
 from .tasks import send_email_reminder
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -163,30 +163,45 @@ class LogViewSet(viewsets.ModelViewSet):
         if timezone.is_naive(question_date):
             question_date = timezone.make_aware(question_date, timezone.utc)
 
-        # Compare the question embedding with the embeddings from the user
-        closest_matches = list(Log.objects.filter(
-            user=request.user
-        ).order_by(
-            L2Distance('embedding', question_embedding)
-        )[:10])
-        
-        print("Closest matches", closest_matches)
-        if not closest_matches:
-            return Response(
-                {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
-                status=status.HTTP_400_BAD_REQUEST)
-    
-        # Convert query set to plain text with local timestamps
+        # Try to extract a date range from the question
+        date_range = extract_date_range(question, question_date, timezone_offset_minutes)
+
+        if date_range:
+            # Date intent detected — filter by date range first, then rank by semantic similarity
+            closest_matches = list(Log.objects.filter(
+                user=request.user,
+                created_at__gte=date_range['date_from'],
+                created_at__lte=date_range['date_to']
+            ).order_by(
+                L2Distance('embedding', question_embedding)
+            )[:25])
+
+            if not closest_matches:
+                return Response(
+                    {'error': 'I could not find any notes from that period.'},
+                    status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # No date intent — pure semantic search, existing behaviour
+            closest_matches = list(Log.objects.filter(
+                user=request.user
+            ).order_by(
+                L2Distance('embedding', question_embedding)
+            )[:10])
+
+            if not closest_matches:
+                return Response(
+                    {'error': 'Could not find an answer to your question. Please try asking a different question'},
+                    status=status.HTTP_400_BAD_REQUEST)
+
+        # Convert queryset to plain text with local timestamps
         log_data = []
         user_tz_offset = timedelta(minutes=timezone_offset_minutes)
         for log in closest_matches:
             # Convert UTC to user's local time
             local_time = log.created_at - user_tz_offset
-            
-            # Format in a friendly way
             date_str = local_time.strftime('%Y-%m-%d at %H:%M')
             log_data.append(f"{date_str}: {log.entry}")
-        
+
         logs_text = "\n".join(log_data)
         context = {
             'question': question,
@@ -198,7 +213,7 @@ class LogViewSet(viewsets.ModelViewSet):
             answer = get_answer(context)
             if answer is None:
                 return Response(
-                    {'error': 'Could not find an answer to your question. Please try asking a different question'}, 
+                    {'error': 'Could not find an answer to your question. Please try asking a different question'},
                     status=status.HTTP_400_BAD_REQUEST)
             return Response({'answer': answer})
         except Exception as e:

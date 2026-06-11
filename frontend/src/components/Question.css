@@ -130,41 +130,41 @@ textarea.question-form-control::placeholder {
     50% { opacity: 0.7; }
 }
 
-/* Search button - slim, matches input height */
-.question-form-button.btn-primary,
-.question-form-button.btn-primary:focus,
-.question-form-button.btn-primary:active,
-.question-form-button.btn-primary:active:focus {
-    display: inline-flex;
+/* Ask it button - mirrors Log it */
+.question-button-container {
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
+}
+
+.question-button-container .question-form-button.btn.btn-primary,
+.question-button-container .question-form-button.btn.btn-primary:is(:focus, :active, :active:focus) {
     background-color: transparent;
     border: 1px solid var(--clr-lcars-blue);
     border-radius: 0.375rem;
     color: var(--clr-lcars-blue);
-    font-size: 1rem;
+    font-size: var(--fs-normal);
     font-weight: var(--fw-600);
-    padding: 0.6rem 1.1rem; /* Slim padding */
+    padding: 0.4rem 1rem;
     box-shadow: none;
     outline: none;
     transition: all 0.2s ease;
-    flex-shrink: 0;
 }
 
-.question-form-button.btn-primary:hover {
-    background-color: var(--clr-lcars-blue);
+.question-button-container .question-form-button.btn.btn-primary:hover {
+    background-color: rgba(102, 153, 255, 0.15);
     border-color: var(--clr-lcars-blue);
-    color: var(--grey-bg-deep);
+    color: var(--clr-lcars-blue);
 }
 
 /* Answer box - matches input styling */
 .answer-box {
-    background-color: var(--grey-bg-inner);
-    border: 1px solid var(--grey-border);
-    border-radius: 0.375rem;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid var(--grey-border);
     outline: none;
     color: var(--grey-text-light);
-    padding: 0.75rem;
+    padding: 0.75rem 0;
     margin: 0 0 0.75rem;
     line-height: 1.6;
 }

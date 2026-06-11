@@ -236,7 +236,7 @@ function CreateLog() {
 
             
             <Container className='show-logs'>
-                <div className='d-flex gap-2 mb-3'>
+                <div className='logs-filter-row d-flex gap-2 mb-3'>
                     {/* If the button is active, add logs-buttons-active class */}
                     {/* On click, filter the logs depending on type */}
                     <Button 

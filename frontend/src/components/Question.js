@@ -123,12 +123,16 @@ function Question({ clearSignal }) {
                             <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
                         </Button>
                     </div>
+                </div>
 
-                    {/* Search button - outside wrapper */}
+                <div className='question-button-container'>
                     <Button type="submit" className='question-form-button' disabled={isAsking}>
                         {isAsking 
-                            ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            : <FontAwesomeIcon icon={faSearch} />
+                            ? <>
+                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Asking...
+                            </>
+                            : 'Ask it'
                         }
                     </Button>
                 </div>
@@ -136,7 +140,7 @@ function Question({ clearSignal }) {
 
             {answer && (
                 <div className='answer-box'>
-                    {answer}
+                    ↳ {answer}
                 </div>
             )}
         </Container>

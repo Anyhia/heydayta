@@ -61,7 +61,10 @@ function NavBar() {
                     <Dropdown.Toggle className='user-toggle'>
                         <FontAwesomeIcon icon={faBars} className='user-icon'/>
                     </Dropdown.Toggle>
-                    <Dropdown.Menu className='user-menu'>
+                    <Dropdown.Menu 
+                        className='user-menu' 
+                        align='end'
+                    >
                         {username && (
                             <Dropdown.Header className='user-header'>
                                 {username}

@@ -25,13 +25,18 @@ function Question({ clearSignal }) {
         }
     }, [clearSignal]);
 
-  
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => setError(null), 6000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     // Auto-expand textarea function
     const handleQuestionChange = (e) => {
         setQuestion(e.target.value);
         setAnswer('');
-        
+        setError(null);
         // Auto-expand textarea
         const textarea = e.target;
         textarea.style.height = 'auto';
@@ -73,7 +78,7 @@ function Question({ clearSignal }) {
         }
         api.post('/logs/ask_question/', questionData)
         .then((response) => {
-            setError('')
+            setError(null)
             setAnswer(response.data.answer)
         })
         .catch((error) => {
@@ -91,7 +96,7 @@ function Question({ clearSignal }) {
     return (        
         <Container className='question-container'>
             <Form onSubmit={handleSubmit} className='question-form'>
-                {error && <Alert variant='danger'>{error}</Alert>}
+                {error && <Alert variant='danger' dismissible onClose={() => setError(null)}>{error}</Alert>}
 
                 <div className='question-group'>
                     <div className='question-input-wrapper'>
@@ -118,7 +123,7 @@ function Question({ clearSignal }) {
                         <Button
                             type="button"
                             className={isRecording ? "question-recording-button" : "question-mic-button"}
-                            onClick={isRecording ? stopRecording : startRecording}
+                            onClick={isRecording ? stopRecording : () => { setError(null); startRecording(); }}
                         >
                             <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
                         </Button>

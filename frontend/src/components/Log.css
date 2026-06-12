@@ -228,7 +228,6 @@ textarea.create-log-form-control::placeholder {
     color: var(--clr-tactical);
     font-size: var(--fs-normal);
     font-weight: var(--fw-600);
-    padding: 0.4rem 1rem;
     transition: all 0.2s ease;
     box-shadow: none;
 }
@@ -382,6 +381,12 @@ textarea.create-log-form-control::placeholder {
 /* ========================================
    RESPONSIVE
    ======================================== */
+
+@media (max-width: 374px) {
+    .save-button-container {
+        gap: 0.5rem;
+    }
+}
 
 /* Small tablets and up */
 @media (min-width: 576px) {

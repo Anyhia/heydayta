@@ -36,7 +36,7 @@ function CreateLog() {
     // Auto-expand textarea function
     const handleTextareaChange = (e) => {
         setEntry(e.target.value);
-        
+        setError(null);
         // Auto-expand textarea
         const textarea = e.target;
         textarea.style.height = 'auto';
@@ -103,6 +103,13 @@ function CreateLog() {
         textareaRef.current?.focus();
     }, []);
 
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => setError(null), 6000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -166,7 +173,7 @@ function CreateLog() {
                                 Reminder set for {reminderTime}
                             </Alert>
                         )}
-                        {error && <Alert variant='danger'>{error}</Alert>}
+                        {error && <Alert variant='danger' dismissible onClose={() => setError(null)}>{error}</Alert>}
                     </div>
 
                     {/* Top row: Just tabs */}
@@ -208,7 +215,7 @@ function CreateLog() {
                         <Button
                             type="button"
                             className={isRecording ? "voice-recording-btn" : "voice-mic-btn"}
-                            onClick={isRecording ? stopRecording : startRecording}
+                            onClick={isRecording ? stopRecording : () => { setError(null); startRecording(); }}
                         >
                             <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
                         </Button>
@@ -224,7 +231,7 @@ function CreateLog() {
                         <Button type="submit" className='create-log-form-button' disabled={isSubmitting}>
                             {isSubmitting ? (
                                 <>
-                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {entryType === 'reminders' ? 'Scheduling...' : 'Saving...'}
                                 </>
                             ) : 'Log it'}

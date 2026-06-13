@@ -8,7 +8,6 @@ function HowToUse() {
     return (
         <Container className='policy-page-container'>
             <div className='policy-header'>
-                <div className='policy-stardate'>STARDATE: {new Date().toLocaleDateString()}</div>
                 <h1 className='policy-title'>How to Use HeyDayta</h1>
                 <p className='policy-subtitle'>Your mission briefing. Read before starting the journey.</p>
                 <div className='policy-divider' />
@@ -168,7 +167,7 @@ function HowToUse() {
                         The <strong>Ask Dayta</strong> field lets you search your journal using natural language questions.
                         You don't need to remember exact words. Just ask what you want to know.
                     </p>
-                    <div className='howto-examples'>
+                    <div className='howto-examples howto-examples-ask'>
                         <div className='howto-example-row'>
                             <span className='howto-example-label'>🔍 Example</span>
                             <span className='howto-example-text'>"What is the gate code for the Airbnb in Lisbon?"</span>
@@ -277,11 +276,6 @@ function HowToUse() {
                     <p className='policy-contact'>
                         Something not working as expected? Contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>
-                    </p>
-                    <p className='policy-contact policy-contact-links'>
-                        <Link to='/privacy-policy' className='policy-link'>Privacy Policy</Link>
-                        {' · '}
-                        <Link to='/terms-of-service' className='policy-link'>Terms of Service</Link>
                     </p>
                 </div>
 

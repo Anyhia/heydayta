@@ -12,11 +12,8 @@ function formatLogDate(createdAt) {
     return { date: 'Unknown date', time: '' };
   }
   return {
-    date: d.toLocaleDateString(),
-    time: d.toLocaleTimeString(undefined, {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
+    date: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    time: d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
   };
 }
 
@@ -81,9 +78,10 @@ export const LogCard = ({log, refreshLogs}) => {
         
         <Container className={`log-card-container ${logClass}`}>
             <div className='date-buttons-container'>
-                <div>
-                    <div className='date'>STARDATE: {date}{time ? `; ${time}` : ''}</div>
-                    <div className="tag"> {tag} </div>
+                <div className='log-meta'>
+                    <span className="tag">{tag}</span>
+                    <span className='log-meta-dot'>·</span>
+                    <span className='date'>{date} {time}</span>
                 </div>
                 <div className='button-container'>
                     {editing ? 

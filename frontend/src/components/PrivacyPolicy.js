@@ -5,9 +5,8 @@ function PrivacyPolicy() {
     return (
         <Container className='policy-page-container'>
             <div className='policy-header'>
-                <div className='policy-stardate'>STARDATE: {new Date().toLocaleDateString()}</div>
                 <h1 className='policy-title'>Privacy Policy</h1>
-                <p className='policy-subtitle'>HeyDayta — Personal Memory Vault</p>
+                <p className='policy-subtitle'>Last updated: June 2026</p>
                 <div className='policy-divider' />
             </div>
 
@@ -16,12 +15,14 @@ function PrivacyPolicy() {
                 <section className='policy-section'>
                     <h2 className='policy-section-title'>01 — Who We Are</h2>
                     <p>
-                        HeyDayta (<strong>heydayta.app</strong>) is a personal journaling and reminder application
-                        developed and operated by <strong>Gabriela Cocos</strong>, an individual developer based in Belgium.
+                        HeyDayta (<strong>heydayta.app</strong>) is developed and operated by <strong>Gabriela Cocos</strong>,
+                        an independent software developer based in Belgium. For the purposes of the GDPR,
+                        Gabriela Cocos is the data controller responsible for the processing of personal data
+                        described in this Privacy Policy.
                     </p>
                     <p>
-                        As the data controller, Gabriela Cocos is responsible for the personal data you provide when
-                        using this application. For any privacy-related questions, contact us at{' '}
+                        If you have questions about this Privacy Policy or how your personal data is processed,
+                        contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>.
                     </p>
                 </section>
@@ -40,7 +41,7 @@ function PrivacyPolicy() {
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Vector Embeddings</span>
-                            <span className='policy-data-value'>Numerical representations of your journal entries, generated via OpenAI, used to power AI-based search.</span>
+                            <span className='policy-data-value'>Numerical representations of your journal entries, generated via OpenAI, used to power natural language search.</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Timezone Data</span>
@@ -54,20 +55,30 @@ function PrivacyPolicy() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>03 — How We Use Your Data</h2>
+                    <h2 className='policy-section-title'>03 — Legal Bases for Processing</h2>
+                    <p>We process your personal data on the following legal bases under the GDPR:</p>
+                    <ul className='policy-list'>
+                        <li><strong>Contract performance</strong> — Processing necessary to provide the service you signed up for, including storing your entries and sending reminders.</li>
+                        <li><strong>Legitimate interests</strong> — Monitoring application errors and maintaining the security and reliability of the service.</li>
+                        <li><strong>Legal obligation</strong> — Complying with applicable Belgian and EU law.</li>
+                    </ul>
+                </section>
+
+                <section className='policy-section'>
+                    <h2 className='policy-section-title'>04 — How We Use Your Data</h2>
                     <p>Your data is used exclusively to provide and improve HeyDayta's features:</p>
                     <ul className='policy-list'>
                         <li>To create and manage your account and authenticate your identity</li>
                         <li>To store, display, and search your journal entries and reminders</li>
-                        <li>To send reminder emails at your requested times via email</li>
-                        <li>To power the AI-based natural language search ("Ask Dayta")</li>
+                        <li>To send reminder emails at your requested times</li>
+                        <li>To power the natural language search feature (Ask Dayta)</li>
                         <li>To monitor application errors and maintain service reliability</li>
                     </ul>
                     <p>We do <strong>not</strong> sell, rent, or share your personal data with third parties for marketing purposes. We do not display advertisements.</p>
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>04 — Cookies & Authentication</h2>
+                    <h2 className='policy-section-title'>05 — Cookies & Authentication</h2>
                     <p>
                         HeyDayta uses <strong>strictly necessary cookies</strong> to keep you securely logged in.
                         These are not tracking or advertising cookies — they are essential for the application to function.
@@ -85,7 +96,7 @@ function PrivacyPolicy() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>05 — Third-Party Services</h2>
+                    <h2 className='policy-section-title'>06 — Third-Party Services</h2>
                     <p>HeyDayta relies on the following trusted third-party services to operate:</p>
                     <div className='policy-data-table'>
                         <div className='policy-data-row'>
@@ -94,7 +105,7 @@ function PrivacyPolicy() {
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>OpenAI</span>
-                            <span className='policy-data-value'>Used to generate text embeddings for AI search and to answer natural language questions about your entries. Your journal content is sent to OpenAI's API for this purpose. Privacy policy: openai.com/privacy</span>
+                            <span className='policy-data-value'>Journal entries submitted to Ask Dayta are transmitted to OpenAI's API for processing in order to generate search results and answers. According to OpenAI, data submitted through its API is not used to train OpenAI models. Privacy policy: openai.com/privacy</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Google OAuth 2.0</span>
@@ -109,23 +120,29 @@ function PrivacyPolicy() {
                             <span className='policy-data-value'>Email service provider used to send reminder notifications from hello@heydayta.app. Privacy policy: ovhcloud.com/en/personal-data-protection</span>
                         </div>
                     </div>
+                    <p>
+                        Some of our service providers may process data outside the European Economic Area (EEA),
+                        including in the United States. Where this occurs, we rely on appropriate safeguards such
+                        as Standard Contractual Clauses approved by the European Commission.
+                    </p>
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>06 — Data Retention</h2>
+                    <h2 className='policy-section-title'>07 — Data Retention</h2>
                     <p>
                         Your data is retained for as long as your account is active. When you delete a journal entry,
                         it is permanently removed from our database. When you delete your account, all associated data —
-                        including journal entries, embeddings, and reminders — is permanently deleted.
+                        including journal entries, embeddings, reminders, and push notification subscriptions — is
+                        permanently deleted.
                     </p>
                     <p>
-                        Database backups are retained for a short period for disaster recovery purposes and are then
-                        automatically deleted.
+                        We perform manual database backups for disaster recovery purposes. These backups may retain
+                        your data for a short period after deletion until the backup is replaced.
                     </p>
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>07 — Your GDPR Rights</h2>
+                    <h2 className='policy-section-title'>08 — Your GDPR Rights</h2>
                     <p>
                         As a user based in the European Union, you have the following rights under the
                         General Data Protection Regulation (GDPR):
@@ -149,11 +166,11 @@ function PrivacyPolicy() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>08 — Data Security</h2>
+                    <h2 className='policy-section-title'>09 — Data Security</h2>
                     <p>
-                        We take reasonable technical measures to protect your data, including HTTPS encryption in transit,
-                        httpOnly cookies to prevent XSS attacks, hashed passwords, JWT-based authentication,
-                        and regular automated database backups.
+                        We take reasonable technical measures to protect your data, including HTTPS encryption
+                        in transit, httpOnly cookies, hashed passwords, JWT-based authentication, and access
+                        controls to limit who can interact with your data.
                     </p>
                     <p>
                         However, no method of transmission over the internet is 100% secure. We encourage you to use
@@ -162,7 +179,7 @@ function PrivacyPolicy() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>09 — Children's Privacy</h2>
+                    <h2 className='policy-section-title'>10 — Children's Privacy</h2>
                     <p>
                         HeyDayta is not directed at children under the age of 16. We do not knowingly collect
                         personal data from children. If you believe a child has provided us with personal data,
@@ -171,17 +188,16 @@ function PrivacyPolicy() {
                 </section>
 
                 <section className='policy-section'>
-                    <h2 className='policy-section-title'>10 — Changes to This Policy</h2>
+                    <h2 className='policy-section-title'>11 — Changes to This Policy</h2>
                     <p>
                         We may update this Privacy Policy from time to time. When we do, we will update the
-                        "Last Updated" date below. Continued use of HeyDayta after changes constitutes acceptance
-                        of the updated policy.
+                        date at the top of this page. Continued use of HeyDayta after changes constitutes
+                        acceptance of the updated policy.
                     </p>
                 </section>
 
                 <div className='policy-footer'>
                     <div className='policy-divider' />
-                    <p className='policy-last-updated'>Last updated: February 2026</p>
                     <p className='policy-contact'>
                         Questions? Contact us at{' '}
                         <a href='mailto:hello@heydayta.app' className='policy-link'>hello@heydayta.app</a>

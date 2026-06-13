@@ -215,6 +215,31 @@
     border-color: rgba(255, 153, 102, 0.2);
 }
 
+.howto-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.howto-nav-link {
+    color: var(--grey-text-muted);
+    text-decoration: none;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-400);
+    transition: color 0.2s ease;
+}
+
+.howto-nav-link:hover {
+    color: var(--clr-lcars-purple);
+}
+
+.howto-nav-dot {
+    color: var(--grey-text-muted);
+    font-size: var(--fs-small);
+}
+
 @media (min-width: 576px) {
     .howto-exchange-row {
         flex-direction: row;

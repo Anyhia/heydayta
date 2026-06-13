@@ -11,6 +11,7 @@ function HowToUse() {
                 <h1 className='policy-title'>How to Use HeyDayta</h1>
                 <p className='policy-subtitle'>Your mission briefing. Read before starting the journey.</p>
                 <div className='policy-divider' />
+                <p className='howto-nav-label'>Jump to section</p>
                 <nav className='howto-nav'>
                     <a href='#journal' className='howto-nav-link'>Journal</a>
                     <span className='howto-nav-dot'>·</span>

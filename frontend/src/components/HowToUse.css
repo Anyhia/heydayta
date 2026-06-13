@@ -221,7 +221,16 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+    margin-top: 0rem;
+}
+
+.howto-nav-label {
+    color: var(--grey-text-muted);
+    font-size: var(--fs-mobilesmall);
+    font-weight: var(--fw-300);
+    letter-spacing: 0.05em;
     margin-top: 1rem;
+    margin-bottom: 0.25rem;
 }
 
 .howto-nav-link {
@@ -234,6 +243,7 @@
 
 .howto-nav-link:hover {
     color: var(--clr-lcars-purple);
+    text-decoration: underline;
 }
 
 .howto-nav-dot {

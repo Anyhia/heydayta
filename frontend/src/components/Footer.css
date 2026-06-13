@@ -1,23 +1,32 @@
 .footer-container {
   margin-top: auto;
   padding: 0.75rem 1rem;
-  border-top: 1px solid #2b2b3a;
-  background-color: #050816;
+  border-top: 1px solid var(--grey-border);
+  background-color: var(--grey-bg-deep);
   text-align: center;
 }
 
 .footer-text {
   margin: 0;
-  font-size: 0.85rem;
-  color: #9ca3af;
+  font-size: var(--fs-small);
+  color: var(--grey-text-muted);
   letter-spacing: 0.05em;
 }
 
-/* Large screens - Match the 70% width of the Navbar */
+.footer-text a {
+  color: var(--grey-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-text a:hover {
+  color: var(--grey-text-light);
+}
+
 @media (min-width: 992px) {
-    .footer-container {
-        max-width: 70%;
-        margin-left: auto;
-        margin-right: auto;
-    }
+  .footer-container {
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

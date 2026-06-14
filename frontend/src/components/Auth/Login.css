@@ -2,6 +2,7 @@
 
 .container.login-page-container {
     text-align: center;
+    padding-inline: 0.5rem;
 }
 
 .login-container {
@@ -67,11 +68,11 @@
 
 .login-button.btn-primary {
   margin-top: 1.5rem;
-  border: 1px solid var(--clr-gold);
+  border: 1px solid var(--clr-tactical);
   padding-inline: 2rem;
   padding-block: 0.5rem;
   color: var(--grey-bg-deep);
-  background-color: var(--clr-gold);
+  background-color: var(--clr-tactical);
   font-size: var(--fs-normal);
   font-weight: var(--fw-500);
   width: 100%;
@@ -79,9 +80,10 @@
 
 .btn.login-button.btn-primary:active,
 .btn.login-button.btn-primary:hover {
-  border: 0.5px solid var(--clr-gold-hover);
+  border: 0.5px solid var(--clr-tactical-hover);
   color: var(--grey-bg-deep);
-  background-color: var(--clr-gold-hover);
+  background-color: var(--clr-tactical-hover);
+  opacity: 0.85;
 }
 
 .google-option {

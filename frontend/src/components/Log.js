@@ -276,30 +276,30 @@ function CreateLog() {
                     <>
                     {logs.length === 0 ? (
                         <div className='empty-state'>
-                            <h2 className='empty-state-title'>How to talk to Dayta</h2>
-                            <p className='empty-state-subline'>Try one of these — Dayta turns it into memories, reminders, and answers for future you.</p>
+                            <h2 className='empty-state-title'>Here's how it works</h2>
+                            <p className='empty-state-subline'>Write something. Ask something. Set a reminder.</p>
 
                             <div className='empty-state-cards'>
                                 <div className='empty-state-card'>
-                                    <div className='empty-state-card-label'>Log today's episode</div>
-                                    <div className='empty-state-card-example'>"Watched Dune Part 2 with Alex. Still arguing about the ending."</div>
-                                    <div className='empty-state-card-payoff'>Later: "What did I think of Dune?" — Dayta reads your past self back to you.</div>
+                                    <div className='empty-state-card-label'>Brain dump your day</div>
+                                    <div className='empty-state-card-example'>"Tried that new sushi place downtown. The spicy tuna was incredible."</div>
+                                    <div className='empty-state-card-payoff'>Later, just ask "Where did I get sushi?" and Dayta will find it for you.</div>
+                                </div>
+
+                                <div className='empty-state-card'>
+                                    <div className='empty-state-card-label'>Ask instead of search</div>
+                                    <div className='empty-state-card-example'>"What was the name of that book Mark recommended?"</div>
+                                    <div className='empty-state-card-payoff'>Dayta connects the dots in your entries and simply tells you the answer.</div>
                                 </div>
 
                                 <div className='empty-state-card'>
                                     <div className='empty-state-card-label'>Boss your future self around</div>
-                                    <div className='empty-state-card-example'>"Remind me on Friday to call the dentist."</div>
-                                    <div className='empty-state-card-payoff'>No date pickers, no math — just type it like you'd say it.</div>
-                                </div>
-
-                                <div className='empty-state-card'>
-                                    <div className='empty-state-card-label'>Interrogate your past self</div>
-                                    <div className='empty-state-card-example'>"When did I last mention work stress?"</div>
-                                    <div className='empty-state-card-payoff'>Dayta searches your logs like a geeky librarian and answers in plain language.</div>
+                                    <div className='empty-state-card-example'>"Remind me in two weeks to cancel my free trial."</div>
+                                    <div className='empty-state-card-payoff'>No date pickers, no calendars. Just say when, and Dayta will handle the rest.</div>
                                 </div>
                             </div>
 
-                            <Link to='/how-to-use' className='empty-state-link'>Need the full mission briefing? →</Link>
+                            <Link to='/how-to-use' className='empty-state-link'>Not sure where to start? See how it works →</Link>
                         </div>
                     ) : filteredLogs.length === 0 ? (
                         <div className='empty-logs-message'>

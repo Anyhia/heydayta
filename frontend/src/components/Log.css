@@ -45,6 +45,10 @@
     transition: all 0.2s ease;
 }
 
+.create-log-form-button .spinner-border {
+    margin-right: 0.35rem;
+}
+
 /* Tab buttons - subtle grey text */
 .type-toggle-btn.btn.btn-primary {
     background-color: transparent;

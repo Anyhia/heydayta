@@ -63,3 +63,27 @@ a {
     background-color: var(--grey-bg-deep);
     color: var(--clr-lcars-blue);
 }
+
+/* ===== ALERT OVERRIDES ===== */
+.alert.alert-success {
+    background-color: rgba(25, 135, 84, 0.15);
+    border: 0.5px solid rgba(25, 135, 84, 0.2);
+    border-left: 3px solid #198754;
+    color: var(--grey-text-light);
+}
+
+.alert.alert-danger {
+    background-color: rgba(158, 42, 43, 0.15);
+    border: 0.5px solid rgba(158, 42, 43, 0.2);
+    border-left: 3px solid var(--clr-alert);
+    color: var(--grey-text-light);
+}
+
+.alert .btn-close {
+    filter: invert(1);
+    opacity: 0.6;
+}
+
+.alert .btn-close:hover {
+    opacity: 1;
+}

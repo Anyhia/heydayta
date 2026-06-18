@@ -76,7 +76,9 @@ function App() {
           return Promise.reject(error);
         }
         if (error.config?.url?.includes('/token/refresh/')) {
-          // If refresh endpoint fails, don't try to refresh again
+          if (error.config?._isInitialRefresh) {
+              return Promise.reject(error);
+          }
           setToken(null);
           window.location.href = '/login';
           return Promise.reject(error);

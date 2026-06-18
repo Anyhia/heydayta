@@ -30,7 +30,7 @@ function AuthProvider({ children }) {
             
             setLoading(true); 
             try {
-                const response = await api.post('/token/refresh/'); // Try to get a new access token using the refresh_token cookie
+                const response = await api.post('/token/refresh/', {}, { _isInitialRefresh: true }); // Try to get a new access token using the refresh_token cookie
                 setToken(response.data.access);
             } catch (error) {
                 setToken(null); // User will be redirected to login by ProtectedRoute

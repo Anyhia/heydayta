@@ -41,11 +41,19 @@ function PrivacyPolicy() {
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Vector Embeddings</span>
-                            <span className='policy-data-value'>Numerical representations of your journal entries, generated via OpenAI, used to power natural language search.</span>
+                            <span className='policy-data-value'>Numerical representations of your notes, generated via OpenAI and stored by HeyDayta to support semantic search.</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Timezone Data</span>
                             <span className='policy-data-value'>Your local timezone offset, used only to schedule reminders at the correct local time.</span>
+                        </div>
+                        <div className='policy-data-row'>
+                            <span className='policy-data-label'>Push Notification Tokens</span>
+                            <span className='policy-data-value'>Technical identifiers required to deliver push notifications to your device. Collected only if you choose to enable notifications, and stored by HeyDayta to send reminder alerts.</span>
+                        </div>
+                        <div className='policy-data-row'>
+                            <span className='policy-data-label'>Voice Recordings (optional)</span>
+                            <span className='policy-data-value'>Audio recorded via the microphone button when you choose to use voice input. Transmitted immediately to OpenAI's API for transcription and not stored by HeyDayta.</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Error Logs</span>
@@ -105,7 +113,7 @@ function PrivacyPolicy() {
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>OpenAI</span>
-                            <span className='policy-data-value'>Journal entries submitted to Ask Dayta are transmitted to OpenAI's API for processing in order to generate search results and answers. According to OpenAI, data submitted through its API is not used to train OpenAI models. Privacy policy: openai.com/privacy</span>
+                            <span className='policy-data-value'>Information required to process Ask Dayta requests, including your questions and relevant note content, is transmitted to OpenAI's API. Audio recorded via voice input is also transmitted to OpenAI for transcription. According to OpenAI, data submitted through its API is not used to train OpenAI models. Privacy policy: openai.com/privacy</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Google OAuth 2.0</span>
@@ -136,8 +144,7 @@ function PrivacyPolicy() {
                         permanently deleted.
                     </p>
                     <p>
-                        We perform manual database backups for disaster recovery purposes. These backups may retain
-                        your data for a short period after deletion until the backup is replaced.
+                        We perform manual database backups for disaster recovery purposes. These backups are retained until manually deleted and may contain data from before your deletion date.
                     </p>
                 </section>
 

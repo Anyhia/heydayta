@@ -68,7 +68,7 @@ function TermsOfService() {
                         <li>Use the service in a way that could damage, disable, or impair it</li>
                     </ul>
                     <p>
-                        We reserve the right to suspend or terminate accounts that violate these terms.
+                        We reserve the right to suspend or terminate accounts that violate these terms or that are used in a manner that threatens the security, integrity, or operation of the service.
                     </p>
                 </section>
 
@@ -84,7 +84,7 @@ function TermsOfService() {
                         sending your journal text to OpenAI's API to enable the search and transcription features.
                     </p>
                     <p>
-                        While we use industry-standard security practices (such as JWT tokens and secure connections), <strong>your journal entries are stored in plain text in our database, not encrypted at rest.</strong> Please do not use HeyDayta to store critical financial or medical data.
+                        While we use industry-standard security practices (such as JWT tokens and secure connections), <strong>your journal entries are stored in plain text in our database, not encrypted at rest.</strong> Please do not use HeyDayta to store highly sensitive information, including financial, medical, legal, or government identification data.
                     </p>
                     <p>
                         We do not claim ownership of your content and will never sell it, use it for advertising,
@@ -101,8 +101,7 @@ function TermsOfService() {
                     <ul className='policy-list'>
                         <li>Your specific queries or audio inputs are sent securely to OpenAI for processing</li>
                         <li>According to OpenAI, data submitted through its API is not used to train OpenAI models</li>
-                        <li>Search responses may occasionally be inaccurate or incomplete</li>
-                        <li>You should not rely on search responses for critical decisions</li>
+                        <li>Search responses may occasionally be inaccurate, incomplete, or fail to find relevant entries.</li>
                     </ul>
                 </section>
 
@@ -110,8 +109,7 @@ function TermsOfService() {
                     <h2 className='policy-section-title'>07 — Availability & Data Loss</h2>
                     <p>
                         We aim to keep HeyDayta available and your data safe, but we cannot guarantee
-                        uninterrupted access. We perform manual database backups, but we
-                        are not liable for any data loss.
+                        uninterrupted access. We perform manual database backups as a safeguard, but no backup system is guaranteed and we cannot accept liability for data loss.
                     </p>
                     <p>
                         We strongly recommend you keep offline copies of any highly important information.
@@ -146,8 +144,7 @@ function TermsOfService() {
                     <p>
                         You may delete your account at any time from within the application. Upon deletion,
                         all your data — including entries, reminders, embeddings, and push notification
-                        subscriptions — will be permanently removed from our active systems. Manual backups
-                        may retain your data for a short period until they are replaced.
+                        subscriptions — will be permanently removed from our active systems. Manual backups are retained until manually deleted and may contain data from before your deletion date.
                     </p>
                 </section>
 

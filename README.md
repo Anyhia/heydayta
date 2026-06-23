@@ -1,6 +1,6 @@
-# HeyDayta - Personal Memory Vault
+# HeyDayta 
 
-> A full-stack web application for capturing life's moments with AI-powered semantic search and intelligent reminders.
+> A full-stack web application built with Django, React, and the OpenAI API. Save notes by typing or voice, create reminders in plain language, and ask questions about anything you saved later, in any language.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://heydayta.app)
 [![Python](https://img.shields.io/badge/Python-3.10.12-blue)](https://www.python.org/)
@@ -33,33 +33,34 @@
 <a name="overview"></a>
 ## 🎯 Overview
 
-HeyDayta is a personal memory journaling application that helps users capture daily moments and retrieve them through natural language questions. Unlike traditional journaling apps, HeyDayta uses OpenAI embeddings and PostgreSQL's pgvector extension to enable semantic search—allowing users to ask questions like *"What did I eat for dinner last Tuesday?"* and receive accurate, context-aware answers.
+You write things down so you won't forget them. But later, you forget where you wrote them. HeyDayta solves that problem.
 
-**What Makes HeyDayta Different:**
+Add a note in plain language and ask about it later. Type *"Where did I park?"* or *"What did the pharmacist warn me about?"* and get a direct answer. No folders, tags, or keyword searches required.
 
-- **Natural Language Reminders**: No calendar pickers or date dropdowns—just type *"remind me in 2 hours"*, *"tomorrow at 3pm"*, or *"in two weeks"* and HeyDayta understands. Fast, intuitive, and human.
+Built with Django, React, PostgreSQL with pgvector, Celery, Redis, and the OpenAI API.
 
-- **All-in-One Memory Hub**: Journal entries, smart reminders, and AI-powered search in a single interface. No app-switching, no complexity—just one place for everything you need to remember.
+**Key features:**
 
-- **Multilingual AI Search**: Ask questions in any language (*"¿Qué comí ayer?"* or *"Ce am mâncat ieri?"*) and get answers in the same language, thanks to GPT-3.5-turbo integration.
-
-- **Timezone-Aware Reminders**: Schedule reminders that fire at the correct local time, no matter where you are in the world. Celery + Redis handle background processing with precision.
-
-- **Designed for Modern Life**: Built for people who need a fast, simple tool in an increasingly complex world. No learning curve, no feature bloat—just capture, search, and remember.
-
-- **Bank-Level Security**: Google OAuth 2.0 with httpOnly cookie-based JWT refresh tokens. Your memories are private and protected.
+- **Ask Dayta**: Ask questions about information you have previously saved and get direct answers in the language you ask.
+- **Natural Language Reminders**: Create reminders by typing or speaking phrases like *"remind me in 2 hours to call mom"* without selecting dates or times manually.
 
 ---
 
 <a name="why-i-built-this"></a>
 ## 💭 Why I Built This
 
-In our fast-paced world, we're drowning in apps, notifications, and calendars. I wanted to create something **simple**—a single place to capture thoughts, set reminders without fighting with date pickers, and actually *find* what I wrote months ago by just asking a question.
+HeyDayta started with a simple frustration.
 
-HeyDayta combines the speed of natural language input with the power of AI search, wrapped in a clean, Star Trek-inspired interface. It's the app I wish existed when I needed to remember everything but had no time to organize anything.
+I would often remember something important just as I was going to sleep. Sometimes it was an idea, sometimes a task for tomorrow, sometimes information I knew I would need later. I could save it in a notes app, add it to a reminder, create a calendar event, or set an alarm, but after a while everything became scattered across different places.
 
-**Technology used:** Django, React, OpenAI GPT-3.5-turbo, PostgreSQL pgvector, Celery, Redis  
-**Deployment:** Production-ready on Heroku with 99.9% uptime
+The information was saved, but finding it again was often harder than saving it. I had notes, reminders, alarms, and calendar entries, yet no simple way to ask: *"What was that thing I needed to do?"* or *"When did I save that information?"*
+
+I built HeyDayta to keep everything in one place. A place where you can quickly save information, create reminders using natural language, and later get answers by asking a question instead of scrolling through lists or switching between apps.
+
+The goal was not to create another notes app or another reminder app. The goal was to make remembering easier.
+
+**Built with:** Django · React · PostgreSQL with pgvector · Celery · Redis · OpenAI API  
+**Deployment:** Heroku
 
 ---
 

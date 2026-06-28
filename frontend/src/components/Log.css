@@ -261,7 +261,7 @@ textarea.create-log-form-control::placeholder {
     border-radius: 0;
     color: var(--grey-text-muted);
     padding: 0.4rem 0.75rem;
-    font-size: var(--fs-mobilesmall);
+    font-size: var(--fs-small);
     font-weight: var(--fw-500);
     text-transform: capitalize;
     transition: all 0.2s ease;
@@ -379,6 +379,28 @@ textarea.create-log-form-control::placeholder {
 .empty-state-link:hover {
     opacity: 1;
     color: var(--clr-gold);
+}
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid var(--grey-border);
+    border-radius: 50%;
+    color: var(--clr-tactical);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: opacity 0.2s ease;
+}
+
+.scroll-to-top-btn:hover {
+    opacity: 0.8;
 }
 
 

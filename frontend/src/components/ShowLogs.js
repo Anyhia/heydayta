@@ -1,7 +1,7 @@
 import { Container, Button, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPenToSquare, faTrashCan, faFloppyDisk, faMicrophone, faStop} from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import {faPenToSquare, faTrashCan, faFloppyDisk, faMicrophone, faStop, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
+import { useState, useRef, useEffect } from 'react';
 import api from '../api';
 import { useVoiceRecording } from './useVoiceRecording';
 import './ShowLogs.css';
@@ -37,6 +37,16 @@ export const LogCard = ({log, refreshLogs}) => {
     const [newLog, setNewLog] = useState(log.entry);
     const [editError, setEditError] = useState(null);
     const [entryType, setEntryType] = useState(log.entry_type);
+    const [expanded, setExpanded] = useState(false);
+    const [isOverflowing, setIsOverflowing] = useState(false);
+    const entryTextRef = useRef(null);
+
+    useEffect(() => {
+        const el = entryTextRef.current;
+        if (!el) return;
+        setIsOverflowing(el.scrollHeight > el.clientHeight);
+    }, [newLog, editing]);
+
     const localDate = new Date().getTimezoneOffset();
 
     const { isRecording, startRecording, stopRecording } = useVoiceRecording(
@@ -138,7 +148,25 @@ export const LogCard = ({log, refreshLogs}) => {
                         </Button>
                     </div>
                 </>
-            ) : <div className='entry-text'> {newLog} </div>}
+            ) : (
+                    <div>
+                        <div
+                            ref={entryTextRef}
+                            className={`entry-text ${expanded ? '' : 'entry-text-clamped'}`}
+                        >
+                            {newLog}
+                        </div>
+                        {isOverflowing || expanded ? (
+                            <button
+                                className='read-more-btn'
+                                onClick={() => setExpanded(prev => !prev)}
+                            >
+                                <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} />
+                                {expanded ? ' Show less' : ' Read more'}
+                            </button>
+                        ) : null}
+                    </div>
+                )}
             
         </Container>
     )

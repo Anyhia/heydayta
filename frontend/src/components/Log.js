@@ -1,6 +1,6 @@
 import { Alert, Button, Container, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
@@ -25,11 +25,32 @@ function CreateLog() {
 
     const [filter, setFilter] = useState('all');
     const textareaRef = useRef(null);
+    const scrollTimerRef = useRef(null);
 
     const [isLoadingLogs, setIsLoadingLogs] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [clearQuestion, setClearQuestion] = useState(0);
     const [reminderTime, setReminderTime] = useState(null);
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+            if (window.scrollY <= 350) {
+                setShowScrollTop(false);
+                return;
+            }
+            setShowScrollTop(false);
+            scrollTimerRef.current = setTimeout(() => {
+                setShowScrollTop(window.scrollY > 350);
+            }, 200);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+        };
+    }, []);
 
     const { isAuthenticated } = useAuth();
 
@@ -316,6 +337,15 @@ function CreateLog() {
                 
                 
             </Container>
+            {showScrollTop && (
+                <button
+                    className='scroll-to-top-btn'
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    aria-label='Scroll to top'
+                >
+                    <FontAwesomeIcon icon={faArrowUp} />
+                </button>
+            )}
         </Container>
     )
 }

@@ -256,9 +256,9 @@ const Register = () => {
                         }}
                         label={
                             <>
-                                I consent to my journal entries being securely processed by{' '}
+                                I consent to my entries being processed by{' '}
                                 <a href='https://openai.com/policies/privacy-policy' target='_blank' rel='noreferrer' className='policy-link'>OpenAI</a>
-                                {' '}to enable AI search features
+                                {' '}to enable question answering and voice transcription
                             </>
                         }
                         feedback='You must consent to AI processing to use HeyDayta'
@@ -271,11 +271,11 @@ const Register = () => {
                     <div className='google-option-text'>Or continue with Google</div>
                     <GoogleLoginButton />
                     <p className='google-consent-note'>
-                        By signing in, you agree to our{' '}
+                        By signing in, I agree to the{' '}
                         <a href='/terms-of-service' target='_blank' className='policy-link'>Terms</a>
                         {' '}&amp;{' '}
                         <a href='/privacy-policy' target='_blank' className='policy-link'>Privacy Policy</a>
-                        , and consent to your entries being processed by OpenAI for AI search.
+                        , and consent to my entries being processed by OpenAI for question answering and voice transcription.
                     </p>
                 </div>
                 <div className='sign-up-option'>

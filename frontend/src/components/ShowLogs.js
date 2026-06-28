@@ -72,7 +72,7 @@ export const LogCard = ({log, refreshLogs}) => {
 
     const { date, time } = formatLogDate(log.created_at);
     const logClass = entryType === 'journal' ? 'log-card-journal' : 'log-card-reminder';
-    const tag = entryType === 'journal' ? 'Journal' : 'Reminder';
+    const tag = entryType === 'journal' ? 'Entry' : 'Reminder';
 
     return (
         

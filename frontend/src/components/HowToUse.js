@@ -13,7 +13,7 @@ function HowToUse() {
                 <div className='policy-divider' />
                 <p className='howto-nav-label'>Jump to section</p>
                 <nav className='howto-nav'>
-                    <a href='#journal' className='howto-nav-link'>Journal</a>
+                    <a href='#journal' className='howto-nav-link'>Entry</a>
                     <span className='howto-nav-dot'>·</span>
                     <a href='#reminders' className='howto-nav-link'>Reminders</a>
                     <span className='howto-nav-dot'>·</span>
@@ -33,7 +33,7 @@ function HowToUse() {
                             For the small but important things you don't want to lose: what the doctor said, a gift idea, travel details, something a colleague mentioned. Write it now in plain language. Ask for it later the same way.
                         </p>
                         <p className='howto-intro-reminder'>
-                            Your journal is private. Only you can search it.
+                            Your entries are private. Only you can see them.
                         </p>
                         <div className='howto-exchange'>
                             <div className='howto-exchange-row'>
@@ -67,9 +67,9 @@ function HowToUse() {
                     </div>
                     <div className='howto-split-content'>
                         <section className='policy-section'>
-                            <h2 className='policy-section-title'>01 — Journal Entries</h2>
+                            <h2 className='policy-section-title'>01 — Entries</h2>
                             <p>
-                                Switch to the <strong>Journal</strong> tab and write anything on your mind —
+                                Switch to the <strong>Entry</strong> tab and write anything on your mind —
                                 a thought, a meal, a conversation, a decision. No formatting required.
                             </p>
                             <div className='howto-examples'>
@@ -165,7 +165,7 @@ function HowToUse() {
                 <section id='ask-dayta' className='policy-section'>
                     <h2 className='policy-section-title'>03 — Ask Dayta (AI Search)</h2>
                     <p>
-                        The <strong>Ask Dayta</strong> field lets you search your journal using natural language questions.
+                        The <strong>Ask Dayta</strong> field lets you search your entries using natural language questions.
                         You don't need to remember exact words. Just ask what you want to know.
                     </p>
                     <div className='howto-examples howto-examples-ask'>
@@ -206,13 +206,13 @@ function HowToUse() {
                         <span className='howto-tip-icon'>🌍</span>
                         <span>
                             <strong>Ask in any language.</strong> HeyDayta will answer in the same language you asked in,
-                            even if your journal entries are in a different language.
+                            even if your entries are in a different language.
                         </span>
                     </div>
                     <div className='howto-tip'>
                         <span className='howto-tip-icon'>⚠️</span>
                         <span>
-                            <strong>Keep in mind:</strong> Ask Dayta searches only your own journal entries.
+                            <strong>Keep in mind:</strong> Ask Dayta searches only your own entries.
                             It won't know something you haven't written down yet.
                         </span>
                     </div>
@@ -222,7 +222,7 @@ function HowToUse() {
                 <section id='voice' className='policy-section'>
                     <h2 className='policy-section-title'>04 — Voice Input (Microphone)</h2>
                     <p>
-                        Both the journal/reminder field and the Ask Dayta field have a built-in microphone button.
+                        Both the entry/reminder field and the Ask Dayta field have a built-in microphone button.
                         Instead of typing, you can speak your entry or question out loud.
                     </p>
                     <div className='howto-steps'>
@@ -267,7 +267,7 @@ function HowToUse() {
                     <div className='howto-tip howto-tip-distinction'>
                         <span className='howto-tip-icon'>🤔</span>
                         <span>
-                            <strong>Journal or reminder?</strong> If you want to remember something for later, use the Journal tab. If you need to be nudged at a specific time, use the Reminder tab. You can do both. Write the detail in the journal and set a separate reminder to act on it.
+                            <strong>Entry or reminder?</strong> If you want to remember something for later, use the Entry tab. If you need to be nudged at a specific time, use the Reminder tab. You can do both. Write the detail in an entry and set a separate reminder to act on it.
                         </span>
                     </div>
                 </section>

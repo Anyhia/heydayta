@@ -28,11 +28,11 @@ function TermsOfService() {
                 <section className='policy-section'>
                     <h2 className='policy-section-title'>02 — Description of Service</h2>
                     <p>
-                        HeyDayta is a searchable memory and reminder tool that allows you to:
+                        HeyDayta is a personal memory and reminder tool that allows you to:
                     </p>
                     <ul className='policy-list'>
-                        <li>Create and manage private journal entries and reminders</li>
-                        <li>Search your entries using natural language questions</li>
+                        <li>Create and manage private entries and reminders</li>
+                        <li>Ask questions about your entries in plain language</li>
                         <li>Receive push notifications and email reminders at your requested times</li>
                         <li>Access your entries from supported web browsers and devices</li>
                     </ul>
@@ -75,16 +75,16 @@ function TermsOfService() {
                 <section className='policy-section'>
                     <h2 className='policy-section-title'>05 — Your Content & Data Privacy</h2>
                     <p>
-                        You retain full ownership of the content you create in HeyDayta — your journal
+                        You retain full ownership of the content you create in HeyDayta — your
                         entries and reminders are yours.
                     </p>
                     <p>
                         By using the service, you grant us a limited licence to store and process your
                         content solely for the purpose of providing the service to you. This includes
-                        sending your journal text to OpenAI's API to enable the search and transcription features.
+                        sending your entry text to OpenAI's API to enable the search and transcription features.
                     </p>
                     <p>
-                        While we use industry-standard security practices (such as JWT tokens and secure connections), <strong>your journal entries are stored in plain text in our database, not encrypted at rest.</strong> Please do not use HeyDayta to store highly sensitive information, including financial, medical, legal, or government identification data.
+                        While we use industry-standard security practices (such as JWT tokens and secure connections), <strong>your entries are stored in plain text in our database, not encrypted at rest.</strong> Please do not use HeyDayta to store highly sensitive information, including financial, medical, legal, or government identification data.
                     </p>
                     <p>
                         We do not claim ownership of your content and will never sell it, use it for advertising,

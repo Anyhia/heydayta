@@ -36,8 +36,8 @@ function PrivacyPolicy() {
                             <span className='policy-data-value'>Username, email address, and password (hashed) when you register with email. Name and email when you sign in with Google.</span>
                         </div>
                         <div className='policy-data-row'>
-                            <span className='policy-data-label'>Journal Entries</span>
-                            <span className='policy-data-value'>The text content you write in your journal entries and reminders, along with timestamps.</span>
+                            <span className='policy-data-label'>Entries</span>
+                            <span className='policy-data-value'>The text content you write in your entries and reminders, along with timestamps.</span>
                         </div>
                         <div className='policy-data-row'>
                             <span className='policy-data-label'>Vector Embeddings</span>
@@ -77,9 +77,9 @@ function PrivacyPolicy() {
                     <p>Your data is used exclusively to provide and improve HeyDayta's features:</p>
                     <ul className='policy-list'>
                         <li>To create and manage your account and authenticate your identity</li>
-                        <li>To store, display, and search your journal entries and reminders</li>
-                        <li>To send reminder emails at your requested times</li>
-                        <li>To power the natural language search feature (Ask Dayta)</li>
+                        <li>To store, display, and manage your entries and reminders</li>
+                        <li>To send reminder emails and push notifications at your requested times</li>
+                        <li>To provide the Ask Dayta question-and-answer feature</li>
                         <li>To monitor application errors and maintain service reliability</li>
                     </ul>
                     <p>We do <strong>not</strong> sell, rent, or share your personal data with third parties for marketing purposes. We do not display advertisements.</p>
@@ -138,9 +138,9 @@ function PrivacyPolicy() {
                 <section className='policy-section'>
                     <h2 className='policy-section-title'>07 — Data Retention</h2>
                     <p>
-                        Your data is retained for as long as your account is active. When you delete a journal entry,
+                        Your data is retained for as long as your account is active. When you delete an entry,
                         it is permanently removed from our database. When you delete your account, all associated data —
-                        including journal entries, embeddings, reminders, and push notification subscriptions — is
+                        including entries, embeddings, reminders, and push notification subscriptions — is
                         permanently deleted.
                     </p>
                     <p>

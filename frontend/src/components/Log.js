@@ -144,7 +144,7 @@ function CreateLog() {
                 setSuccess(null);
             } else {
                 setReminderTime(null);
-                setSuccess('Entry Log Created');
+                setSuccess('Entry saved');
                 setTimeout(() => setSuccess(null), 3000);
             }
         })
@@ -152,7 +152,7 @@ function CreateLog() {
             if (error.response?.data?.error) {
                 setError(error.response.data.error);
             } else {
-                setError('Entry Log not created. Please try again.');
+                setError('Could not save entry. Please try again.');
             }
         })
         .finally(() => {
@@ -184,7 +184,7 @@ function CreateLog() {
                                 className={`type-toggle-btn ${entryType === 'journal' ? 'type-toggle-active' : ''}`}
                                 onClick={() => { setEntryType('journal'); setClearQuestion(c => c + 1); }}
                             >
-                                Journal
+                                Entry
                             </Button>
                             <Button
                                 type="button"
@@ -203,7 +203,7 @@ function CreateLog() {
                             id='captainsLog'
                             as="textarea"
                             rows={2}
-                            placeholder={entryType === 'journal' ? "What's on your mind?" : "Set reminder for..."}
+                            placeholder={entryType === 'journal' ? "What do you want to remember?" : "Set reminder for..."}
                             aria-label="Entry text"
                             value={entry}
                             onChange={handleTextareaChange}
@@ -256,7 +256,7 @@ function CreateLog() {
                         className={`logs-buttons ${filter==='journal'? 'logs-buttons-active':''}`} 
                         onClick={() => setFilter('journal')}
                     >
-                        Journal
+                        Entry
                     </Button>
                     <Button 
                         className={`logs-buttons ${filter==='reminders'? 'logs-buttons-active':''}`} 
@@ -304,7 +304,7 @@ function CreateLog() {
                     ) : filteredLogs.length === 0 ? (
                         <div className='empty-logs-message'>
                             <p className='empty-logs-title'>
-                                {filter === 'reminders' ? 'No reminders yet' : 'No journal entries yet'}
+                                {filter === 'reminders' ? 'No reminders yet' : 'No entries yet'}
                             </p>
                         </div>
                     ) : null}

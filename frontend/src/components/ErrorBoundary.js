@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return (
                 <div style={{ padding: '1rem', color: 'var(--grey-text-muted)', textAlign: 'center' }}>
-                    Something went wrong loading your logs. Pull down to refresh.
+                    Something went wrong loading your entries. Pull down to refresh.
                 </div>
             );
         }

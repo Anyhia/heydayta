@@ -204,7 +204,7 @@ function CreateLog() {
                             </Alert>
                         )}
                         {showNotifPrompt && (
-                            <Alert variant="info" onClose={() => setShowNotifPrompt(false)} dismissible>
+                            <Alert variant="info" className='notif-prompt-alert' onClose={() => setShowNotifPrompt(false)} dismissible>
                                 Want to also receive a push notification when this reminder is due? 
                                 <Button
                                     className='notif-prompt-btn'

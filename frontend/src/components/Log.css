@@ -425,6 +425,18 @@ textarea.create-log-form-control::placeholder {
     color: var(--clr-tactical);
 }
 
+/* Notification prompt alert — override Bootstrap info style to match dark theme */
+.notif-prompt-alert.alert-info {
+    background-color: var(--grey-bg-card);
+    border: 0.5px solid var(--grey-bg-card);
+    border-left: 3px solid var(--clr-tactical);
+    color: var(--grey-text-light);
+}
+
+.notif-prompt-alert.alert-info .btn-close {
+    filter: invert(1);
+}
+
 
 /* ========================================
    RESPONSIVE

@@ -1,150 +1,29 @@
 import { Container, Button, Alert } from 'react-bootstrap';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './Auth/AuthProvider';
 import api from '../api';
-import { PUSH_PREF_KEY } from '../hooks/usePushNotifications';
+import usePushNotifications from '../hooks/usePushNotifications';
 import './AccountSettings.css';
-
-// The browser's PushManager.subscribe() requires the VAPID public key as a Uint8Array,
-// but the server sends it as a Base64URL string (a web-safe variant of Base64 that uses
-// '-' instead of '+' and '_' instead of '/', with no padding).
-// This function converts it back to the binary format the browser expects by:
-// 1. Re-adding the '=' padding that Base64URL strips out
-// 2. Swapping '-' → '+' and '_' → '/' to turn it back into standard Base64
-// 3. Decoding the Base64 string to raw binary with atob()
-// 4. Converting each character to its char code to produce a Uint8Array
-function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
-}
 
 function AccountSettings() {
     const [userInfo, setUserInfo] = useState(null);
+    // controls whether the delete account confirmation box is visible. Starts as false (hidden).
+    // Becomes true when the user clicks "Delete Account"
     const [showConfirm, setShowConfirm] = useState(false);
+    // tracks what the user is typing into the confirmation input.
+    // The delete button only becomes active when this equals the string 'DELETE' exactly.
     const [confirmText, setConfirmText] = useState('');
     const [error, setError] = useState(null);
+    // tracks whether the delete account API call is in progress.
+    // While true, the "Permanently Delete" button shows a spinner and is disabled so the user can't click it twice.
     const [isDeleting, setIsDeleting] = useState(false);
     const { logout } = useAuth();
     const navigate = useNavigate();
 
-    // 'loading' | 'unsupported' | 'denied' | 'subscribed' | 'unsubscribed'
-    const [notifStatus, setNotifStatus] = useState('loading');
-    // Loading state while enable/disable operations are in progress
-    const [isNotifLoading, setIsNotifLoading] = useState(false);
-    // Holds any error message shown to the user in the notifications section
-    const [notifError, setNotifError] = useState(null);
-
-    const checkNotifStatus = useCallback(async () => {
-        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-            setNotifStatus('unsupported');
-            return;
-        }
-        if (Notification.permission === 'denied') {
-            setNotifStatus('denied');
-            return;
-        }
-        try {
-            const registration = await navigator.serviceWorker.ready;
-            const subscription = await registration.pushManager.getSubscription();
-            setNotifStatus(subscription ? 'subscribed' : 'unsubscribed');
-        } catch (e) {
-            setNotifStatus('unsubscribed');
-        }
-    }, []);
-
-    useEffect(() => {
-        checkNotifStatus();
-    }, [checkNotifStatus]);
-
-    // Clear any stale notification error whenever the status resolves to a definitive state
-    // Prevents error messages from lingering after the situation has already been resolved
-    useEffect(() => {
-        if (['subscribed', 'unsubscribed', 'denied', 'unsupported'].includes(notifStatus)) {
-            setNotifError(null);
-        }
-    }, [notifStatus]);
-
-    const handleEnableNotifications = async () => {
-        // Clear any previous error and show loading state on the button
-        setIsNotifLoading(true);
-        setNotifError(null);
-        try {
-            const registration = await navigator.serviceWorker.ready;
-
-            // Fetch the VAPID public key from the backend
-            const { data } = await api.get('/push/vapid-public-key/');
-            const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
-
-            // Ask the browser to create a push subscription
-            // If one already exists for this browser, it returns the existing one
-            const subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey,
-            });
-
-            const subscriptionJson = subscription.toJSON();
-            const payload = {
-                endpoint: subscriptionJson.endpoint,
-                p256dh: subscriptionJson.keys.p256dh,
-                auth: subscriptionJson.keys.auth,
-            };
-
-            // First attempt to save subscription to backend
-            try {
-                await api.post('/push/subscribe/', payload);
-            } catch {
-                // First attempt failed — wait 3 seconds and retry once
-                // Covers the case where the Heroku dyno is waking up from sleep
-                // Safe to retry because the backend uses update_or_create on endpoint
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                await api.post('/push/subscribe/', payload);
-            }
-
-            // Mark user preference in localStorage so usePushNotifications
-            // hook knows the user intentionally enabled notifications
-            localStorage.setItem(PUSH_PREF_KEY, 'true');
-            setNotifStatus('subscribed');
-        } catch (e) {
-            if (Notification.permission === 'denied') {
-                // Permission was denied by the user — update status to reflect that
-                setNotifStatus('denied');
-            } else {
-                // Both attempts failed — browser subscription stays in place
-                // so the user can try again and it will retry the API call
-                setNotifError('Something went wrong. Please try again.');
-            }
-            console.error('Failed to enable notifications:', e);
-        } finally {
-            setIsNotifLoading(false);
-        }
-    };
-
-    const handleDisableNotifications = async () => {
-        // Clear any previous error and show loading state on the button
-        setIsNotifLoading(true);
-        setNotifError(null);
-        try {
-            // Set localStorage flag first so the hook knows this was intentional
-            localStorage.setItem(PUSH_PREF_KEY, 'false');
-            const registration = await navigator.serviceWorker.ready;
-            const subscription = await registration.pushManager.getSubscription();
-            if (subscription) {
-                await api.delete('/push/subscribe/', {
-                    data: { endpoint: subscription.endpoint }
-                });
-                await subscription.unsubscribe();
-            }
-            setNotifStatus('unsubscribed');
-        } catch (e) {
-            setNotifError('Could not disable notifications. Please try again.');
-            console.error('Failed to disable notifications:', e);
-        } finally {
-            setIsNotifLoading(false);
-        }
-    };
+    // Push notification state and actions come from the shared hook.
+    // Passing true because AccountSettings is always rendered for authenticated users only.
+    const { notifStatus, isNotifLoading, notifError, enableNotifications, disableNotifications } = usePushNotifications(true);
 
     useEffect(() => {
         api.get('/accounts/me/')
@@ -228,7 +107,7 @@ function AccountSettings() {
                             <div className='settings-info-row'>
                                 <Button
                                     className='settings-notif-btn'
-                                    onClick={handleEnableNotifications}
+                                    onClick={enableNotifications}
                                     disabled={isNotifLoading}
                                 >
                                     {isNotifLoading
@@ -245,7 +124,7 @@ function AccountSettings() {
                             <div className='settings-info-row'>
                                 <Button
                                     className='settings-notif-btn settings-notif-btn--off'
-                                    onClick={handleDisableNotifications}
+                                    onClick={disableNotifications}
                                     disabled={isNotifLoading}
                                 >
                                     {isNotifLoading

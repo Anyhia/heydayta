@@ -147,9 +147,10 @@ function HowToUse() {
                         <span className='howto-tip-icon'>📬</span>
                         <span>
                             <strong>How reminders are delivered:</strong> When the scheduled time arrives, you'll receive
-                            an email at your registered address and, if you've allowed notifications, a push notification
-                            on your device. The reminder won't arrive immediately after you set it.
-                            It will arrive exactly at the time you specified.
+                            an email at your registered address. To also receive a push notification on this device,
+                            go to <Link to='/account' className='policy-link'>Account Settings</Link> and enable
+                            notifications there. The reminder will arrive exactly at the time you specified, not
+                            immediately after saving.
                         </span>
                     </div>
                     <div className='howto-tip howto-tip-multilingual'>
@@ -262,7 +263,7 @@ function HowToUse() {
                     <ul className='policy-list'>
                         <li><strong>Be specific when you write.</strong> "Had pasta" is less useful than "Had pasta at the Italian place near work on Tuesday with Ana"</li>
                         <li><strong>For reminders, always include a time.</strong> "in 2 hours", "next Monday", "on October 15th"</li>
-                        <li><strong>Reminders arrive by email at the scheduled time,</strong> not immediately after saving</li>
+                        <li><strong>Reminders arrive by email at the scheduled time,</strong> not immediately after saving. To also get a push notification, enable notifications in <Link to='/account' className='policy-link'>Account Settings</Link>.</li>
                     </ul>
                     <div className='howto-tip howto-tip-distinction'>
                         <span className='howto-tip-icon'>🤔</span>

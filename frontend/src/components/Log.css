@@ -403,6 +403,28 @@ textarea.create-log-form-control::placeholder {
     opacity: 0.8;
 }
 
+/* Notification prompt button — inside the reminder success alert */
+.notif-prompt-btn.btn.btn-primary,
+.notif-prompt-btn.btn.btn-primary:is(:focus, :active, :active:focus) {
+    display: block;
+    margin-top: 0.5rem;
+    background-color: transparent;
+    border: 1px solid var(--clr-tactical);
+    border-radius: 0.375rem;
+    color: var(--clr-tactical);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-600);
+    padding: 0.3rem 0.75rem;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.notif-prompt-btn.btn.btn-primary:hover {
+    background-color: rgba(255, 153, 51, 0.15);
+    border-color: var(--clr-tactical);
+    color: var(--clr-tactical);
+}
+
 
 /* ========================================
    RESPONSIVE

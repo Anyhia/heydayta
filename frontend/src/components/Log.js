@@ -2,6 +2,7 @@ import { Alert, Button, Container, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, useRef } from 'react';
+import usePushNotifications from '../hooks/usePushNotifications';
 import { Link } from 'react-router-dom';
 import api from '../api';
 import { ShowLogs } from './ShowLogs';
@@ -32,6 +33,9 @@ function CreateLog() {
     const [clearQuestion, setClearQuestion] = useState(0);
     const [reminderTime, setReminderTime] = useState(null);
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [showNotifPrompt, setShowNotifPrompt] = useState(false);
+
+    const NOTIF_PROMPT_KEY = 'heydayta_notif_prompt_seen';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -53,6 +57,7 @@ function CreateLog() {
     }, []);
 
     const { isAuthenticated } = useAuth();
+    const { notifStatus, isNotifLoading, enableNotifications } = usePushNotifications(isAuthenticated);
 
     // Auto-expand textarea function
     const handleTextareaChange = (e) => {
@@ -162,6 +167,10 @@ function CreateLog() {
                 } catch(e) {
                     setReminderTime('your reminder');
                 }
+                if (notifStatus === 'unsubscribed' && localStorage.getItem(NOTIF_PROMPT_KEY) !== 'true') {
+                    localStorage.setItem(NOTIF_PROMPT_KEY, 'true');
+                    setShowNotifPrompt(true);
+                }
                 setSuccess(null);
             } else {
                 setReminderTime(null);
@@ -192,6 +201,24 @@ function CreateLog() {
                         {reminderTime && (
                             <Alert variant="success" onClose={() => setReminderTime(null)} dismissible>
                                 Reminder set for {reminderTime}
+                            </Alert>
+                        )}
+                        {showNotifPrompt && (
+                            <Alert variant="info" onClose={() => setShowNotifPrompt(false)} dismissible>
+                                Want to also receive a push notification when this reminder is due? 
+                                <Button
+                                    className='notif-prompt-btn'
+                                    onClick={() => {
+                                        enableNotifications();
+                                        setShowNotifPrompt(false);
+                                    }}
+                                    disabled={isNotifLoading}
+                                >
+                                    {isNotifLoading
+                                        ? <><span className="spinner-border spinner-border-sm me-2" role="status" />Enabling...</>
+                                        : 'Enable Notifications'
+                                    }
+                                </Button>
                             </Alert>
                         )}
                         {error && <Alert variant='danger' dismissible onClose={() => setError(null)}>{error}</Alert>}

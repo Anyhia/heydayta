@@ -54,7 +54,7 @@ def get_reminder_time(log, user_local_datetime, timezone_offset_minutes):
     )
     
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that extracts dates and times. Return only ISO 8601 datetime strings."},
             {"role": "user", "content": prompt}
@@ -142,7 +142,7 @@ def extract_date_range(question, user_local_datetime, timezone_offset_minutes):
     )
 
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that understands what time period a user is asking about. Return only a JSON object or null."},
             {"role": "user", "content": prompt}
@@ -217,7 +217,7 @@ def get_answer(context):
             f"User Question: '{context['question']}'"
         )
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo", # Cheaper and good for extracting date
+        model="gpt-4o-mini", 
         messages=[
             {"role": "system", "content": "You are a helpful assistant that answers questions"},
             {"role": "user", "content": prompt}

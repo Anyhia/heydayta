@@ -63,7 +63,8 @@ class LogViewSet(viewsets.ModelViewSet):
 
             # Save the data
             serializer = LogSerializer(data=data)
-            serializer.is_valid(raise_exception=True)
+            if not serializer.is_valid():
+                return Response({'error': 'Entry cannot be empty and must be under 5000 characters.'}, status=status.HTTP_400_BAD_REQUEST)
             # Get the saved log instance, to access the id and the reminder_time  
             log=serializer.save(user=request.user)
             if log.entry_type == 'reminders' and log.reminder_time and log.status != 'sent':
@@ -126,7 +127,8 @@ class LogViewSet(viewsets.ModelViewSet):
                     return Response({'error': 'Embedding creation failed.'}, status=status.HTTP_400_BAD_REQUEST)
 
             serializer = LogSerializer(log, data=data, partial=True)
-            serializer.is_valid(raise_exception=True)
+            if not serializer.is_valid():
+                return Response({'error': 'Entry cannot be empty and must be under 5000 characters.'}, status=status.HTTP_400_BAD_REQUEST)
             log = serializer.save()
 
             # Schedule Celery task if it's a reminder
@@ -146,81 +148,81 @@ class LogViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post']) 
     def ask_question(self, request):
-        # Get the question from user and embed it
-        question = request.data['question']
-        question_embedding = create_embedding(question)
-        if question_embedding is None:
-            return Response(
-                {'error': 'Embedding creation failed. Please check your OpenAI quota and API key.'}, 
-                status=status.HTTP_400_BAD_REQUEST)
-        
-        # Get the timezone offset from the request
-        timezone_offset_minutes = int(request.data.get('localDate', 0))  # e.g., -60 for CET
-        UTC = timezone.now()  # current UTC date and time
-        question_date = UTC - timedelta(minutes=timezone_offset_minutes)  # user's local datetime
-
-        # If the date is naive, add timezone
-        if timezone.is_naive(question_date):
-            question_date = timezone.make_aware(question_date, timezone.utc)
-
-        # Try to extract a date range from the question
-        date_range = extract_date_range(question, question_date, timezone_offset_minutes)
-
-        if date_range:
-            # Date intent detected — filter by date range first, then rank by semantic similarity
-            closest_matches = list(Log.objects.filter(
-                user=request.user,
-                created_at__gte=date_range['date_from'],
-                created_at__lte=date_range['date_to']
-            ).order_by(
-                L2Distance('embedding', question_embedding)
-            )[:25])
-
-            if not closest_matches:
-                return Response(
-                    {'error': 'I could not find any notes from that period.'},
-                    status=status.HTTP_400_BAD_REQUEST)
-        else:
-            # No date intent — pure semantic search, existing behaviour
-            closest_matches = list(Log.objects.filter(
-                user=request.user
-            ).order_by(
-                L2Distance('embedding', question_embedding)
-            )[:10])
-
-            if not closest_matches:
-                return Response(
-                    {'error': 'Could not find an answer to your question. Please try asking a different question'},
-                    status=status.HTTP_400_BAD_REQUEST)
-
-        # Convert queryset to plain text with local timestamps
-        log_data = []
-        user_tz_offset = timedelta(minutes=timezone_offset_minutes)
-        for log in closest_matches:
-            # Convert UTC to user's local time
-            local_time = log.created_at - user_tz_offset
-            date_str = local_time.strftime('%Y-%m-%d at %H:%M')
-            log_data.append(f"{date_str}: {log.entry}")
-
-        logs_text = "\n".join(log_data)
-
-        context = {
-            'question': question,
-            'closest_matches': logs_text,
-            'question_date': question_date,
-            'has_date_filter': date_range is not None,
-        }
-        
         try:
+            # Get the question from user and embed it
+            question = request.data['question']
+            question_embedding = create_embedding(question)
+            if question_embedding is None:
+                return Response(
+                    {'error': 'Embedding creation failed. Please check your OpenAI quota and API key.'}, 
+                    status=status.HTTP_400_BAD_REQUEST)
+            
+            # Get the timezone offset from the request
+            timezone_offset_minutes = int(request.data.get('localDate', 0))  # e.g., -60 for CET
+            UTC = timezone.now()  # current UTC date and time
+            question_date = UTC - timedelta(minutes=timezone_offset_minutes)  # user's local datetime
+
+            # If the date is naive, add timezone
+            if timezone.is_naive(question_date):
+                question_date = timezone.make_aware(question_date, timezone.utc)
+
+            # Try to extract a date range from the question
+            date_range = extract_date_range(question, question_date, timezone_offset_minutes)
+
+            if date_range:
+                # Date intent detected — filter by date range first, then rank by semantic similarity
+                closest_matches = list(Log.objects.filter(
+                    user=request.user,
+                    created_at__gte=date_range['date_from'],
+                    created_at__lte=date_range['date_to']
+                ).order_by(
+                    L2Distance('embedding', question_embedding)
+                )[:25])
+
+                if not closest_matches:
+                    return Response(
+                        {'error': 'I could not find any notes from that period.'},
+                        status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # No date intent — pure semantic search, existing behaviour
+                closest_matches = list(Log.objects.filter(
+                    user=request.user
+                ).order_by(
+                    L2Distance('embedding', question_embedding)
+                )[:10])
+
+                if not closest_matches:
+                    return Response(
+                        {'error': 'Could not find an answer to your question. Please try asking a different question'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+            # Convert queryset to plain text with local timestamps
+            log_data = []
+            user_tz_offset = timedelta(minutes=timezone_offset_minutes)
+            for log in closest_matches:
+                # Convert UTC to user's local time
+                local_time = log.created_at - user_tz_offset
+                date_str = local_time.strftime('%Y-%m-%d at %H:%M')
+                log_data.append(f"{date_str}: {log.entry}")
+
+            logs_text = "\n".join(log_data)
+
+            context = {
+                'question': question,
+                'closest_matches': logs_text,
+                'question_date': question_date,
+                'has_date_filter': date_range is not None,
+            }
+
             answer = get_answer(context)
             if answer is None:
                 return Response(
                     {'error': 'Could not find an answer to your question. Please try asking a different question'},
                     status=status.HTTP_400_BAD_REQUEST)
             return Response({'answer': answer})
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
     @action(detail=False, methods=['post'])

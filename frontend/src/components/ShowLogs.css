@@ -172,3 +172,10 @@ button.btn.delete.btn-primary:hover {
 .read-more-btn:hover {
     opacity: 0.8;
 }
+
+#editLog {
+    field-sizing: content;
+    min-height: 3rem;
+    max-height: 20rem;
+    overflow-y: auto;
+}

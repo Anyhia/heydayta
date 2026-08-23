@@ -89,7 +89,7 @@ function AccountSettings() {
                             {notifStatus === 'unsupported' && 'Not supported in this browser.'}
                             {/* Updated denied message to be friendlier and more actionable */}
                             {notifStatus === 'denied' && (
-                                'Notifications are blocked for this site. To enable them, allow notifications in your browser or device settings.'
+                                'Notifications are blocked for this site. To enable them, go to Settings → Apps → HeyDayta → Notifications.'
                             )}
                             {notifStatus === 'subscribed' && 'Enabled on this device.'}
                             {notifStatus === 'unsubscribed' && 'Not enabled on this device.'}

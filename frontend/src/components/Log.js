@@ -167,7 +167,7 @@ function CreateLog() {
                 } catch(e) {
                     setReminderTime('your reminder');
                 }
-                if (notifStatus === 'unsubscribed' && localStorage.getItem(NOTIF_PROMPT_KEY) !== 'true') {
+                if ((notifStatus === 'unsubscribed' || notifStatus === 'denied') && localStorage.getItem(NOTIF_PROMPT_KEY) !== 'true') {
                     localStorage.setItem(NOTIF_PROMPT_KEY, 'true');
                     setShowNotifPrompt(true);
                 }
@@ -203,7 +203,7 @@ function CreateLog() {
                                 Reminder set for {reminderTime}
                             </Alert>
                         )}
-                        {showNotifPrompt && (
+                        {showNotifPrompt && notifStatus === 'unsubscribed' && (
                             <Alert variant="info" className='notif-prompt-alert' onClose={() => setShowNotifPrompt(false)} dismissible>
                                 Want to also receive a push notification when this reminder is due? 
                                 <Button
@@ -219,6 +219,11 @@ function CreateLog() {
                                         : 'Enable Notifications'
                                     }
                                 </Button>
+                            </Alert>
+                        )}
+                        {showNotifPrompt && notifStatus === 'denied' && (
+                            <Alert variant="info" className='notif-prompt-alert' onClose={() => setShowNotifPrompt(false)} dismissible>
+                                Push notifications are blocked for HeyDayta. To turn them on, go to Settings → Apps → HeyDayta → Notifications.
                             </Alert>
                         )}
                         {error && <Alert variant='danger' dismissible onClose={() => setError(null)}>{error}</Alert>}

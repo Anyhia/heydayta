@@ -105,18 +105,23 @@ function usePushNotifications(isAuthenticated) {
     }, [notifStatus]);
 
     const enableNotifications = async () => {
-        // Clear any previous error and show loading state on the button
         setIsNotifLoading(true);
         setNotifError(null);
         try {
             const registration = await navigator.serviceWorker.ready;
 
-            // Fetch the VAPID public key from the backend
+            // Explicit request — this is the call the TWA delegation service
+            // is documented to intercept, unlike the implicit prompt
+            // triggered by pushManager.subscribe() alone
+            const permission = await Notification.requestPermission();
+            if (permission !== 'granted') {
+                setNotifStatus(permission === 'denied' ? 'denied' : 'unsubscribed');
+                return;
+            }
+
             const { data } = await api.get('/push/vapid-public-key/');
             const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
 
-            // Ask the browser to create a push subscription
-            // If one already exists for this browser, it returns the existing one
             const subscription = await registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey,
@@ -129,35 +134,25 @@ function usePushNotifications(isAuthenticated) {
                 auth: subscriptionJson.keys.auth,
             };
 
-            // First attempt to save subscription to backend
             try {
                 await api.post('/push/subscribe/', payload);
             } catch {
-                // First attempt failed — wait 3 seconds and retry once
-                // Covers the case where the Heroku dyno is waking up from sleep
-                // Safe to retry because the backend uses update_or_create on endpoint
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 await api.post('/push/subscribe/', payload);
             }
 
-            // Mark user preference in localStorage so usePushNotifications
-            // hook knows the user intentionally enabled notifications
             localStorage.setItem(PUSH_PREF_KEY, 'true');
             setNotifStatus('subscribed');
-        } catch (e) {
-            if (Notification.permission === 'denied') {
-                // Permission was denied by the user — update status to reflect that
-                setNotifStatus('denied');
-            } else {
-                // Both attempts failed — browser subscription stays in place
-                // so the user can try again and it will retry the API call
-                setNotifError('Something went wrong. Please try again.');
-            }
-            console.error('Failed to enable notifications:', e);
-        } finally {
-            setIsNotifLoading(false);
-        }
-    };
+            } catch (e) {
+                if (Notification.permission === 'denied') {
+                    setNotifStatus('denied');
+                } else {
+                    setNotifError('Something went wrong. Please try again.');
+                }
+                console.error('Failed to enable notifications:', e);
+            } finally {
+                setIsNotifLoading(false);
+            }};
 
     const disableNotifications = async () => {
         // Clear any previous error and show loading state on the button

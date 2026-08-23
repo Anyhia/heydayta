@@ -89,6 +89,11 @@ function usePushNotifications(isAuthenticated) {
 
     useEffect(() => {
         checkNotifStatus();
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') checkNotifStatus();
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, [checkNotifStatus]);
 
     // Clear any stale notification error whenever the status resolves to a definitive state

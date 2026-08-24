@@ -442,6 +442,13 @@ textarea.create-log-form-control::placeholder {
     color: var(--grey-text-light);
 }
 
+/* Notification prompt error — shown if enabling notifications fails or times out */
+.notif-prompt-error {
+    margin-top: 0.5rem;
+    color: var(--clr-alert);
+    font-size: var(--fs-small);
+}
+
 /* ========================================
    RESPONSIVE
    ======================================== */

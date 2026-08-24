@@ -7,6 +7,13 @@ import AuthProvider from './components/Auth/AuthProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { register } from './serviceWorkerRegistration';
 import './index.css';
+import * as Sentry from '@sentry/browser';
+
+if (process.env.NODE_ENV === 'production') {
+    Sentry.init({
+        dsn: process.env.REACT_APP_SENTRY_DSN,
+    });
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

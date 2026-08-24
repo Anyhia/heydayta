@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import api from '../api';
+import * as Sentry from '@sentry/browser';
 
 export const PUSH_PREF_KEY = 'heydayta_push_enabled';
 
@@ -16,6 +17,18 @@ function urlBase64ToUint8Array(base64String) {
     const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
     const rawData = window.atob(base64);
     return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+}
+
+// Wraps a promise with a timeout so a hung native permission dialog
+// (e.g. broken TWA delegation) fails loudly instead of leaving the
+// button stuck on "Enabling..." forever with no signal.
+function withTimeout(promise, ms, timeoutMessage) {
+    return Promise.race([
+        promise,
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error(timeoutMessage)), ms)
+        ),
+    ]);
 }
 
 // Background sync hook — runs silently on every login via App.js.
@@ -104,55 +117,64 @@ function usePushNotifications(isAuthenticated) {
         }
     }, [notifStatus]);
 
-    const enableNotifications = async () => {
-        setIsNotifLoading(true);
-        setNotifError(null);
+const enableNotifications = async () => {
+    setIsNotifLoading(true);
+    setNotifError(null);
+    try {
+        const registration = await navigator.serviceWorker.ready;
+
+        // Explicit request — this is the call the TWA delegation service
+        // is documented to intercept, unlike the implicit prompt
+        // triggered by pushManager.subscribe() alone
+        const permission = await withTimeout(
+            Notification.requestPermission(),
+            15000,
+            'Notification.requestPermission() did not resolve within 15s'
+        );
+        if (permission !== 'granted') {
+            setNotifStatus(permission === 'denied' ? 'denied' : 'unsubscribed');
+            return false;
+        }
+
+        const { data } = await api.get('/push/vapid-public-key/');
+        const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
+
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey,
+        });
+
+        const subscriptionJson = subscription.toJSON();
+        const payload = {
+            endpoint: subscriptionJson.endpoint,
+            p256dh: subscriptionJson.keys.p256dh,
+            auth: subscriptionJson.keys.auth,
+        };
+
         try {
-            const registration = await navigator.serviceWorker.ready;
+            await api.post('/push/subscribe/', payload);
+        } catch {
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            await api.post('/push/subscribe/', payload);
+        }
 
-            // Explicit request — this is the call the TWA delegation service
-            // is documented to intercept, unlike the implicit prompt
-            // triggered by pushManager.subscribe() alone
-            const permission = await Notification.requestPermission();
-            if (permission !== 'granted') {
-                setNotifStatus(permission === 'denied' ? 'denied' : 'unsubscribed');
-                return;
+        localStorage.setItem(PUSH_PREF_KEY, 'true');
+        setNotifStatus('subscribed');
+        return true;
+        } catch (e) {
+            if (Notification.permission === 'denied') {
+                // Expected outcome, not a bug — don't report to Sentry
+                setNotifStatus('denied');
+            } else {
+                // Genuine failure: timeout, subscribe failure, backend failure, etc.
+                setNotifError('Something went wrong. Please try again.');
+                Sentry.captureException(e);
             }
-
-            const { data } = await api.get('/push/vapid-public-key/');
-            const applicationServerKey = urlBase64ToUint8Array(data.vapidPublicKey);
-
-            const subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey,
-            });
-
-            const subscriptionJson = subscription.toJSON();
-            const payload = {
-                endpoint: subscriptionJson.endpoint,
-                p256dh: subscriptionJson.keys.p256dh,
-                auth: subscriptionJson.keys.auth,
-            };
-
-            try {
-                await api.post('/push/subscribe/', payload);
-            } catch {
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                await api.post('/push/subscribe/', payload);
-            }
-
-            localStorage.setItem(PUSH_PREF_KEY, 'true');
-            setNotifStatus('subscribed');
-            } catch (e) {
-                if (Notification.permission === 'denied') {
-                    setNotifStatus('denied');
-                } else {
-                    setNotifError('Something went wrong. Please try again.');
-                }
-                console.error('Failed to enable notifications:', e);
-            } finally {
-                setIsNotifLoading(false);
-            }};
+            console.error('Failed to enable notifications:', e);
+            return false;
+        } finally {
+            setIsNotifLoading(false);
+        }};
 
     const disableNotifications = async () => {
         // Clear any previous error and show loading state on the button

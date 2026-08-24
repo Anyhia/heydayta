@@ -106,6 +106,7 @@ function AccountSettings() {
                             </div>
                             <div className='settings-info-row'>
                                 <Button
+                                    type="button"
                                     className='settings-notif-btn'
                                     onClick={enableNotifications}
                                     disabled={isNotifLoading}

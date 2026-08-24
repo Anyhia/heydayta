@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/browser';
+
 export function register(onUpdateFound) {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -13,6 +15,10 @@ export function register(onUpdateFound) {
               }
             });
           });
+        })
+        .catch((error) => {
+          console.error('Service worker registration failed:', error);
+          Sentry.captureException(error);
         });
     });
   }

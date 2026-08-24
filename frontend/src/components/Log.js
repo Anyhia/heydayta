@@ -34,8 +34,11 @@ function CreateLog() {
     const [reminderTime, setReminderTime] = useState(null);
     const [showScrollTop, setShowScrollTop] = useState(false);
     const [showNotifPrompt, setShowNotifPrompt] = useState(false);
+    const [reminderJustCreated, setReminderJustCreated] = useState(false);
 
-    const NOTIF_PROMPT_KEY = 'heydayta_notif_prompt_seen';
+    const NOTIF_PROMPT_UNSUB_KEY = 'heydayta_notif_prompt_unsub_last_shown';
+    const NOTIF_PROMPT_DENIED_KEY = 'heydayta_notif_prompt_denied_seen';
+    const NOTIF_PROMPT_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
     useEffect(() => {
         const handleScroll = () => {
@@ -57,7 +60,7 @@ function CreateLog() {
     }, []);
 
     const { isAuthenticated } = useAuth();
-    const { notifStatus, isNotifLoading, enableNotifications } = usePushNotifications(isAuthenticated);
+    const { notifStatus, isNotifLoading, notifError, enableNotifications } = usePushNotifications(isAuthenticated);
 
     // Auto-expand textarea function
     const handleTextareaChange = (e) => {
@@ -136,6 +139,33 @@ function CreateLog() {
         }
     }, [error]);
 
+    // Decides whether to show the notification prompt once notifStatus is
+    // actually known — fixes the race where notifStatus was still 'loading'
+    // at the moment the reminder save resolved.
+    useEffect(() => {
+        if (!reminderJustCreated) return;
+        if (notifStatus === 'loading') return; // wait for it to resolve
+
+        if (notifStatus === 'unsubscribed') {
+            const lastShown = localStorage.getItem(NOTIF_PROMPT_UNSUB_KEY);
+            const now = Date.now();
+            if (!lastShown || (now - parseInt(lastShown, 10)) >= NOTIF_PROMPT_COOLDOWN_MS) {
+                localStorage.setItem(NOTIF_PROMPT_UNSUB_KEY, String(now));
+                setShowNotifPrompt(true);
+            }
+            setReminderJustCreated(false);
+        } else if (notifStatus === 'denied') {
+            if (localStorage.getItem(NOTIF_PROMPT_DENIED_KEY) !== 'true') {
+                localStorage.setItem(NOTIF_PROMPT_DENIED_KEY, 'true');
+                setShowNotifPrompt(true);
+            }
+            setReminderJustCreated(false);
+        } else {
+            // subscribed or unsupported — nothing to do
+            setReminderJustCreated(false);
+        }
+    }, [reminderJustCreated, notifStatus]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -167,10 +197,7 @@ function CreateLog() {
                 } catch(e) {
                     setReminderTime('your reminder');
                 }
-                if ((notifStatus === 'unsubscribed' || notifStatus === 'denied') && localStorage.getItem(NOTIF_PROMPT_KEY) !== 'true') {
-                    localStorage.setItem(NOTIF_PROMPT_KEY, 'true');
-                    setShowNotifPrompt(true);
-                }
+                setReminderJustCreated(true);
                 setSuccess(null);
             } else {
                 setReminderTime(null);
@@ -209,9 +236,11 @@ function CreateLog() {
                                 <Button
                                     type="button"
                                     className='notif-prompt-btn'
-                                    onClick={() => {
-                                        enableNotifications();
-                                        setShowNotifPrompt(false);
+                                    onClick={async () => {
+                                        const success = await enableNotifications();
+                                        if (success) {
+                                            setShowNotifPrompt(false);
+                                        }
                                     }}
                                     disabled={isNotifLoading}
                                 >
@@ -220,6 +249,7 @@ function CreateLog() {
                                         : 'Enable Notifications'
                                     }
                                 </Button>
+                                {notifError && <div className='notif-prompt-error'>{notifError}</div>}
                             </Alert>
                         )}
                         {showNotifPrompt && notifStatus === 'denied' && (

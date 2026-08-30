@@ -1,8 +1,7 @@
 import { Alert, Button, Container, Form} from 'react-bootstrap';
 import { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPaperPlane} from '@fortawesome/free-solid-svg-icons';
-import { faMicrophone, faStop, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import api from '../api';
 import './Question.css';
 import { useVoiceRecording } from './useVoiceRecording';

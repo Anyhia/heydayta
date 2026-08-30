@@ -12,6 +12,10 @@ import Question from './Question';
 import './Log.css';
 import ErrorBoundary from './ErrorBoundary';
 
+const NOTIF_PROMPT_UNSUB_KEY = 'heydayta_notif_prompt_unsub_last_shown';
+const NOTIF_PROMPT_DENIED_KEY = 'heydayta_notif_prompt_denied_seen';
+const NOTIF_PROMPT_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
 
 // CreateLog
 function CreateLog() {
@@ -36,9 +40,6 @@ function CreateLog() {
     const [showNotifPrompt, setShowNotifPrompt] = useState(false);
     const [reminderJustCreated, setReminderJustCreated] = useState(false);
 
-    const NOTIF_PROMPT_UNSUB_KEY = 'heydayta_notif_prompt_unsub_last_shown';
-    const NOTIF_PROMPT_DENIED_KEY = 'heydayta_notif_prompt_denied_seen';
-    const NOTIF_PROMPT_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
     useEffect(() => {
         const handleScroll = () => {

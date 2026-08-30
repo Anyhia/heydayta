@@ -136,10 +136,10 @@ function AboutContent() {
             <div className='about-hero'>
                 <div className='about-hero-left'>
                     <div className='title-and-description'>
-                        <div className='title'>
+                        <h1 className='title'>
                             <div>You say it. <span className='memory-vault'>HeyDayta remembers.</span></div>
                             <div>You ask it. <span className='memory-vault'>HeyDayta answers.</span></div>
-                        </div>
+                        </h1>
                         <div className='description'>
                             Ask your notes anything.
                         </div>
@@ -159,17 +159,17 @@ function AboutContent() {
             <Container className='show-descriptions'>
                 <div className='description-card orange'>
                     <div className='description-card-icon icon-orange'><FontAwesomeIcon icon={faMicrophone} /></div>
-                    <div className='description-card-title'>Write it, say it, forget it</div>
+                    <h2 className='description-card-title'>Write it, say it, forget it</h2>
                     <div className='description-card-text'>Write or speak naturally. HeyDayta remembers the details.</div>
                 </div>
                 <div className='description-card blue'>
                     <div className='description-card-icon icon-blue'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
-                    <div className='description-card-title'>Ask. Don't search.</div>
+                    <h2 className='description-card-title'>Ask. Don't search.</h2>
                     <div className='description-card-text'>When you need something from your past, just ask. Like talking to someone who remembers everything.</div>
                 </div>
                 <div className='description-card orange'>
                     <div className='description-card-icon icon-orange'><FontAwesomeIcon icon={faBell} /></div>
-                    <div className='description-card-title'>Reminders that understand you</div>
+                    <h2 className='description-card-title'>Reminders that understand you</h2>
                     <div className='description-card-text'>No date pickers, no dropdowns. HeyDayta figures it out.</div>
                 </div>
             </Container>
